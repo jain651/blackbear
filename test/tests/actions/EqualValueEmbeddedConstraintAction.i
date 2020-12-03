@@ -144,6 +144,7 @@
     function = '0.'
   [../]
 <<<<<<< HEAD
+<<<<<<< HEAD
   # [./clamping_force]
   #   type = FunctionPresetBC
   #   variable = disp_y
@@ -151,12 +152,17 @@
   #   function = '-1E-4*y*t'
   # [../]
 =======
+=======
+>>>>>>> EqualValueEmbeddedConstraintAction_v2
   [./clamping_force]
     type = FunctionPresetBC
     variable = disp_y
     boundary = '4'
     function = '-1E-4*y*t'
   [../]
+<<<<<<< HEAD
+>>>>>>> EqualValueEmbeddedConstraintAction_v2
+=======
 >>>>>>> EqualValueEmbeddedConstraintAction_v2
 []
 
@@ -225,6 +231,10 @@
 []
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> EqualValueEmbeddedConstraintAction_v2
 =======
 
 >>>>>>> EqualValueEmbeddedConstraintAction_v2
