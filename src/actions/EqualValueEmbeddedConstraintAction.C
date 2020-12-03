@@ -39,10 +39,13 @@ EqualValueEmbeddedConstraintAction::validParams()
       "primary_variable",
       "The variable on the primary side of the domain");
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   // params.addRequiredCoupledVar("primary_variable",
   //                              "The variable on the primary side of the domain");
 >>>>>>> EqualValueEmbeddedConstraintAction_v2
+=======
+>>>>>>> EqualValueEmbeddedConstraintAction (#155)
   params.addRequiredParam<std::vector<NonlinearVariableName>>(
       "displacements", "The nonlinear displacement variables for the problem");
   MooseEnum formulation("kinematic penalty", "kinematic");
@@ -59,6 +62,7 @@ EqualValueEmbeddedConstraintAction::EqualValueEmbeddedConstraintAction(const Inp
     _primary_block(getParam<std::vector<SubdomainName>>("primary_block")),
     _secondary_block(getParam<std::vector<SubdomainName>>("secondary_block")),
 <<<<<<< HEAD
+<<<<<<< HEAD
     _primary_var (getParam<std::vector<NonlinearVariableName>>("primary_variable")),
 =======
     // _primary_var(*getVar("primary_variable", 0)),
@@ -66,6 +70,9 @@ EqualValueEmbeddedConstraintAction::EqualValueEmbeddedConstraintAction(const Inp
     // _primary_var1((getParam("primary_variable"))[1]),
     // _primary_var2((getParam("primary_variable"))[2]),
 >>>>>>> EqualValueEmbeddedConstraintAction_v2
+=======
+    _primary_var (getParam<std::vector<NonlinearVariableName>>("primary_variable")),
+>>>>>>> EqualValueEmbeddedConstraintAction (#155)
     _formulation(getParam<MooseEnum>("formulation").getEnum<Formulation>()),
     _penalty(getParam<Real>("penalty"))
 
@@ -76,9 +83,12 @@ EqualValueEmbeddedConstraintAction::EqualValueEmbeddedConstraintAction(const Inp
                "should be provided as input using `displacements`.");
   _displacements = getParam<std::vector<NonlinearVariableName>>("displacements");
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   // _displacements = getParam<std::vector<NonlinearnonlinearVariableName>>("displacements");
 >>>>>>> EqualValueEmbeddedConstraintAction_v2
+=======
+>>>>>>> EqualValueEmbeddedConstraintAction (#155)
 }
 
 void
@@ -87,10 +97,13 @@ EqualValueEmbeddedConstraintAction::act()
   const std::string constraint_name = "EqualValueEmbeddedConstraint";
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   out <<" _displacements " ;
 
 >>>>>>> EqualValueEmbeddedConstraintAction_v2
+=======
+>>>>>>> EqualValueEmbeddedConstraintAction (#155)
   SubdomainName pb, sb;
   for (size_t i = 0; i < _displacements.size(); i++)
     for (size_t p = 0; p < _primary_block.size(); p++)
@@ -105,6 +118,7 @@ EqualValueEmbeddedConstraintAction::act()
         params.set<SubdomainName>("primary") = _primary_block[p];
         params.set<SubdomainName>("secondary") = _secondary_block[s];
 <<<<<<< HEAD
+<<<<<<< HEAD
         params.set<NonlinearVariableName>("variable") = _displacements[i];
         params.set<std::vector<NonlinearVariableName>>("primary_variable") = {_primary_var[i]};
 =======
@@ -114,13 +128,20 @@ EqualValueEmbeddedConstraintAction::act()
         // params.addCoupledVar("primary_variable", "The variable on the primary side of the domain");
         // params.addRequiredCoupledVar("primary_variable", "The variable on the primary side of the domain");
 >>>>>>> EqualValueEmbeddedConstraintAction_v2
+=======
+        params.set<NonlinearVariableName>("variable") = _displacements[i];
+        params.set<std::vector<NonlinearVariableName>>("primary_variable") = {_primary_var[i]};
+>>>>>>> EqualValueEmbeddedConstraintAction (#155)
 
         params.set<Real>("penalty") = _penalty;
         params.set<MooseEnum>("formulation")= getParam<MooseEnum>("formulation");
         _problem->addConstraint(constraint_name, unique_constraint_name, params);
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> EqualValueEmbeddedConstraintAction_v2
+=======
+>>>>>>> EqualValueEmbeddedConstraintAction (#155)
       }
 }
