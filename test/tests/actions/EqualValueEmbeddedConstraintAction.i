@@ -143,27 +143,12 @@
     boundary = '2'
     function = '0.'
   [../]
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> EqualValueEmbeddedConstraintAction (#155)
   # [./clamping_force]
   #   type = FunctionPresetBC
   #   variable = disp_y
   #   boundary = '4'
   #   function = '-1E-4*y*t'
   # [../]
-<<<<<<< HEAD
-=======
-  [./clamping_force]
-    type = FunctionPresetBC
-    variable = disp_y
-    boundary = '4'
-    function = '-1E-4*y*t'
-  [../]
->>>>>>> EqualValueEmbeddedConstraintAction_v2
-=======
->>>>>>> EqualValueEmbeddedConstraintAction (#155)
 []
 
 [Postprocessors]
@@ -230,13 +215,6 @@
   dt = 1
 []
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
->>>>>>> EqualValueEmbeddedConstraintAction_v2
-=======
->>>>>>> EqualValueEmbeddedConstraintAction (#155)
 [Outputs]
   print_linear_residuals = false
   exodus = true
