@@ -767,20 +767,46 @@
    variable = disp_z
    boundary = '4'
  [../]
+ [./cyl_x]
+  type = PointsSeparation
+  variable1 = disp_x
+  variable2 = disp_y
+  variable3 = disp_z
+  point1 = '-2.8175 +0.225 +0.255'
+  point2 = '-2.8175 -0.225 +0.255'
+ [../]
+
 []
 
 [Executioner]
   type       = Transient
+  start_time = 1209600 # 28 days
+  dt = 86400 # 1 day
+  automatic_scaling = true
+  end_time = 21600000 # 250 days
+
+  # working solver conditions
   solve_type = 'NEWTON'
   nl_max_its = 100
   nl_abs_tol = 1.E-5
   nl_rel_tol = 1E-3
-
   line_search = none
-  petsc_options_iname = '-pc_type'
-  petsc_options_value = 'lu'
-  petsc_options = '-snes_converged_reason'
+  petsc_options = '-ksp_snes_ew'
+  petsc_options_iname = '-pc_type -pc_hypre_type -ksp_gmres_restart -snes_ls -pc_hypre_boomeramg_strong_threshold'
+  petsc_options_value = 'hypre boomeramg 201 cubic 0.7'
 
+
+  # other solver conditions
+  # solve_type = 'NEWTON'
+  # nl_max_its = 100
+  # nl_abs_tol = 1.E-5
+  # nl_rel_tol = 1E-3
+  #
+  # line_search = none
+  # petsc_options_iname = '-pc_type'
+  # petsc_options_value = 'lu'
+  # petsc_options = '-snes_converged_reason'
+  #
   # solve_type = 'PJFNK'
   # line_search = none
   # petsc_options = '-ksp_snes_ew'
@@ -791,10 +817,6 @@
   # nl_max_its = 20
   # nl_rel_tol = 1e-5
   # nl_abs_tol = 1e-5
-  start_time = 1209600 # 28 days
-  dt = 86400 # 1 day
-  automatic_scaling = true
-  end_time = 21600000 # 250 days
 []
 
 [Outputs]
