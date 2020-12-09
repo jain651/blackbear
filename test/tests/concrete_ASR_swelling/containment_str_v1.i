@@ -794,7 +794,7 @@
  [./surfaceAvg_cyl_z]
    type = SideAverageValue
    variable = disp_z
-   boundary = '6'
+   boundary = '4'
  [../]
  [./surfaceAvg_dome_x]
    type = SideAverageValue
