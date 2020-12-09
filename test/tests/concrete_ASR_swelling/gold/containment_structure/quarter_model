@@ -1,0 +1,337 @@
+reset
+cd "/Users/amitjain/OneDrive - Idaho National Laboratory/Task/NRC modeling/mesh"
+# {base_h	=	1016}
+# {base_r	=	3810}
+# {base_top_z	=	533}
+# {base_z	=	-base_h/2+base_top_z}
+# {mid_top_z	=	7315}
+# {mid_h	=	mid_top_z-base_top_z}
+# {mid_ri	=	3353}
+# {mid_ro	=	3353+248}
+# {dome_ri	=	3353}
+# {dome_ro	=	3353+178}
+# {conc_coarse	=	76}
+# {mat_thk	=	152}
+# {mat_r	=	6248.5}
+# {liner_thk1	=	1.59}
+# {liner_thk2	=	2.11}
+# {c		=	50.8}
+# {s_bot_grid	=	102}
+# {s_top_grid	=	152}
+# {s_top_rad_s	=	114}
+# {s_top_rad_r	=	3476}
+# {top_cir_s1	=	152}
+# {top_cir_s2	=	229}
+# {h_shear_tie =	500}
+# {s_shear_tie =	114}
+# {dia_num4	=	12.5}
+# {mrdnl2_r 	=	mid_ri+44.45}
+# {mrdnl5_r 	=	mrdnl2_r+121}
+# {mrdnl_s 	=	114}
+# {hoop1_r 	=	mrdnl2_r-dia_num4}
+# {hoop3_r 	=	mrdnl2_r+dia_num4}
+# {hoop4_r 	=	mrdnl5_r-dia_num4}
+# {hoop6_r 	=	mrdnl5_r-dia_num4}
+# {hoop_s 	=	114}
+# {seismic_ro 	=	mrdnl5_r+25.4}
+# {seismic_ri 	=	seismic_ro-dia_num4}
+# {seismic_th  =	(mid_h+base_h-2*c)/(0.5*(seismic_ro+seismic_ri))}
+# {seismic_s   =	159}
+# {mrdnl_h 	=	(34*12+10)*25.4}
+# {seismic_h 	=	(30*12+10)*25.4}
+# {seismic_dr 	=	40}
+# {sismc_dm_th =	(seismic_h-mid_top_z)/(0.5*(seismic_ro+seismic_ri))}
+# {hatch_r	=	508}
+# {lock_r	=	254}
+# {hatch_z	=	3962}
+# {elem_sz	=	100}
+
+# concrete base
+create Cylinder height {base_h} radius {base_r}
+move Volume 1 z {base_z} include_merged
+
+# concrete cylinder
+create frustum height {mid_h} radius {mid_ro} top {dome_ro}
+create Cylinder height {mid_h} radius {mid_ri}
+subtract Volume 3 from volume 2
+move Volume 2 z {base_top_z+mid_h/2}
+
+# concrete sphere
+create Sphere radius {dome_ro} inner radius {dome_ri}
+webcut Volume 4 with plane zplane offset 0 noimprint nomerge
+delete Volume 5
+move Volume 4 z {mid_top_z} include_merged
+
+# concrete coarse on base
+create Cylinder height {conc_coarse} radius {mid_ri}
+move Volume 6 z {base_top_z+conc_coarse/2} include_merged
+
+# concrete mat below base
+create Cylinder height {mat_thk} radius {mat_r}
+move Volume 7 z {base_top_z-base_h-mat_thk/2} include_merged
+
+# steel liner on concrete coarse
+create Cylinder height {liner_thk1} radius {mid_ri}
+move Volume 8 z {base_top_z+conc_coarse+liner_thk1/2} include_merged
+
+# steel liner for concrete cylinder
+create Cylinder height {mid_h} radius {mid_ri}
+create Cylinder height {mid_h} radius {mid_ri-liner_thk1}
+subtract Volume 10 from volume 9
+move Volume 9 z {base_top_z+mid_h/2}
+
+# steel liner for concrete sphere
+create sphere radius {dome_ri} inner radius {dome_ri-liner_thk2}
+webcut volume 11 with plane zplane offset 0 noimprint nomerge
+delete volume 12
+move Volume 11 z {mid_top_z} include_merged
+
+# hatch and air lock
+create Cylinder height {mat_r*2} radius {hatch_r}
+create Cylinder height {mat_r*2} radius {lock_r}
+rotate Volume 13 angle 90  about Y
+rotate Volume 14 angle 90  about X
+move Volume 13 14 location {0} {0} {hatch_z} include_merged
+subtract volume 13 14 from volume 2
+
+color volume 1 2 4 6 7 greenyellow
+color volume 8 9 11 lightsteelblue
+
+# basemat rebars: bottom #6 rectangular grid
+create vertex {-base_r} {s_bot_grid/2} {base_top_z-base_h+c} 		# vertex 41
+create vertex {0} 	  {s_bot_grid/2} {base_top_z-base_h+c} 		# vertex 42
+create curve vertex 41 42 						# curve 41
+curve 41 copy move y {-s_bot_grid} repeat 37
+create curve arc radius {base_r-c} center location {0} {0} {base_top_z-base_h+c} normal 0 0 1 start angle 0 stop angle 360
+trim curve 41 AtIntersection curve 79 keepside vertex 42
+trim curve 42 AtIntersection curve 79 keepside vertex 44
+trim curve 43 AtIntersection curve 79 keepside vertex 46
+trim curve 44 AtIntersection curve 79 keepside vertex 48
+trim curve 45 AtIntersection curve 79 keepside vertex 50
+trim curve 46 AtIntersection curve 79 keepside vertex 52
+trim curve 47 AtIntersection curve 79 keepside vertex 54
+trim curve 48 AtIntersection curve 79 keepside vertex 56
+trim curve 49 AtIntersection curve 79 keepside vertex 58
+trim curve 50 AtIntersection curve 79 keepside vertex 60
+trim curve 51 AtIntersection curve 79 keepside vertex 62
+trim curve 52 AtIntersection curve 79 keepside vertex 64
+trim curve 53 AtIntersection curve 79 keepside vertex 66
+trim curve 54 AtIntersection curve 79 keepside vertex 68
+trim curve 55 AtIntersection curve 79 keepside vertex 70
+trim curve 56 AtIntersection curve 79 keepside vertex 72
+trim curve 57 AtIntersection curve 79 keepside vertex 74
+trim curve 58 AtIntersection curve 79 keepside vertex 76
+trim curve 59 AtIntersection curve 79 keepside vertex 78
+trim curve 60 AtIntersection curve 79 keepside vertex 80
+trim curve 61 AtIntersection curve 79 keepside vertex 82
+trim curve 62 AtIntersection curve 79 keepside vertex 84
+trim curve 63 AtIntersection curve 79 keepside vertex 86
+trim curve 64 AtIntersection curve 79 keepside vertex 88
+trim curve 65 AtIntersection curve 79 keepside vertex 90
+trim curve 66 AtIntersection curve 79 keepside vertex 92
+trim curve 67 AtIntersection curve 79 keepside vertex 94
+trim curve 68 AtIntersection curve 79 keepside vertex 96
+trim curve 69 AtIntersection curve 79 keepside vertex 98
+trim curve 70 AtIntersection curve 79 keepside vertex 100
+trim curve 71 AtIntersection curve 79 keepside vertex 102
+trim curve 72 AtIntersection curve 79 keepside vertex 104
+trim curve 73 AtIntersection curve 79 keepside vertex 106
+trim curve 74 AtIntersection curve 79 keepside vertex 108
+trim curve 75 AtIntersection curve 79 keepside vertex 110
+trim curve 76 AtIntersection curve 79 keepside vertex 112
+trim curve 77 AtIntersection curve 79 keepside vertex 114
+trim curve 78 AtIntersection curve 79 keepside vertex 116
+curve 80 to 117 copy rotate 90 about Z
+curve 118 to 155 reflect x
+curve 80 to 155 rotate 180 about Z
+color curve 80 to 155 grey
+
+# basemat rebars: top #5 rectangular grid
+create vertex {-base_r} {s_top_grid/2} {base_top_z-c} 		# vertex 270
+create vertex {0} 	  {s_top_grid/2} {base_top_z-c} 		# vertex 271
+create curve vertex 270 271 						# curve 156
+curve 156 copy move y {-s_top_grid} repeat 25
+curve 79 copy move z {base_h-2*c}					# curve 182
+trim curve 156 AtIntersection curve 182 keepside vertex 271
+trim curve 157 AtIntersection curve 182 keepside vertex 273
+trim curve 158 AtIntersection curve 182 keepside vertex 275
+trim curve 159 AtIntersection curve 182 keepside vertex 277
+trim curve 160 AtIntersection curve 182 keepside vertex 279
+trim curve 161 AtIntersection curve 182 keepside vertex 281
+trim curve 162 AtIntersection curve 182 keepside vertex 283
+trim curve 163 AtIntersection curve 182 keepside vertex 285
+trim curve 164 AtIntersection curve 182 keepside vertex 287
+trim curve 165 AtIntersection curve 182 keepside vertex 289
+trim curve 166 AtIntersection curve 182 keepside vertex 291
+trim curve 167 AtIntersection curve 182 keepside vertex 293
+trim curve 168 AtIntersection curve 182 keepside vertex 295
+trim curve 169 AtIntersection curve 182 keepside vertex 297
+trim curve 170 AtIntersection curve 182 keepside vertex 299
+trim curve 171 AtIntersection curve 182 keepside vertex 301
+trim curve 172 AtIntersection curve 182 keepside vertex 303
+trim curve 173 AtIntersection curve 182 keepside vertex 305
+trim curve 174 AtIntersection curve 182 keepside vertex 307
+trim curve 175 AtIntersection curve 182 keepside vertex 309
+trim curve 176 AtIntersection curve 182 keepside vertex 311
+trim curve 177 AtIntersection curve 182 keepside vertex 313
+trim curve 178 AtIntersection curve 182 keepside vertex 315
+trim curve 179 AtIntersection curve 182 keepside vertex 317
+trim curve 180 AtIntersection curve 182 keepside vertex 319
+trim curve 181 AtIntersection curve 182 keepside vertex 321
+curve 183 to 208 copy rotate 90 about Z
+curve 209 to 234 reflect x
+curve 183 to 234 rotate 180 about Z
+color curve 183 to 234 grey
+
+# basemat rebars: top #5 radial bars
+create vertex {base_r-c} {0} {base_top_z-c} 				# vertex 427
+create vertex {0} 	     {0} {base_top_z-c} 			# vertex 428
+create curve vertex 427 428						# curve 235
+Curve 235 copy rotate {s_top_rad_s/s_top_rad_r*180/3.14} about Z repeat 48
+color curve 235 to 283 red
+
+# basemat rebars: top #6 circumfrential bars
+create curve arc radius {mid_ri-c-0*top_cir_s1} center location {0} {0} {base_top_z-c} normal 0 0 1 start angle 0 stop angle 90
+create curve arc radius {mid_ri-c-1*top_cir_s1} center location {0} {0} {base_top_z-c} normal 0 0 1 start angle 0 stop angle 90
+create curve arc radius {mid_ri-c-2*top_cir_s1} center location {0} {0} {base_top_z-c} normal 0 0 1 start angle 0 stop angle 90
+create curve arc radius {mid_ri-c-3*top_cir_s1} center location {0} {0} {base_top_z-c} normal 0 0 1 start angle 0 stop angle 90
+create curve arc radius {mid_ri-c-4*top_cir_s1} center location {0} {0} {base_top_z-c} normal 0 0 1 start angle 0 stop angle 90
+create curve arc radius {mid_ri-c-5*top_cir_s1} center location {0} {0} {base_top_z-c} normal 0 0 1 start angle 0 stop angle 90
+create curve arc radius {mid_ri-c-6*top_cir_s1} center location {0} {0} {base_top_z-c} normal 0 0 1 start angle 0 stop angle 90
+create curve arc radius {mid_ri-c-7*top_cir_s1} center location {0} {0} {base_top_z-c} normal 0 0 1 start angle 0 stop angle 90
+create curve arc radius {mid_ri-c-7*top_cir_s1-1*top_cir_s2} center location {0} {0} {base_top_z-c} normal 0 0 1 start angle 0 stop angle 90
+create curve arc radius {mid_ri-c-7*top_cir_s1-2*top_cir_s2} center location {0} {0} {base_top_z-c} normal 0 0 1 start angle 0 stop angle 90
+create curve arc radius {mid_ri-c-7*top_cir_s1-3*top_cir_s2} center location {0} {0} {base_top_z-c} normal 0 0 1 start angle 0 stop angle 90
+create curve arc radius {mid_ri-c-7*top_cir_s1-4*top_cir_s2} center location {0} {0} {base_top_z-c} normal 0 0 1 start angle 0 stop angle 90
+create curve arc radius {base_r-c} center location {0} {0} {base_top_z-c} normal 0 0 1 start angle 0 stop angle 90
+create curve arc radius {base_r-c} center location {0} {0} {base_top_z-c-(base_h-2*c)/2} normal 0 0 1 start angle 0 stop angle 90
+create curve arc radius {base_r-c} center location {0} {0} {base_top_z-c-(base_h-2*c)} normal 0 0 1 start angle 0 stop angle 90
+color curve 284 to 298 blue
+
+# basemat rebars: #3 shear tie bars
+create vertex {mid_ri-c-0*top_cir_s1} {0} {base_top_z-c} 				# vertex 555
+create vertex {mid_ri-c-0*top_cir_s1} {0} {base_top_z-c-(base_h-2*c)} 		# vertex 556
+create curve vertex 555 556								# curve 299
+curve 299 copy move x {-top_cir_s1} repeat 7
+curve 306 copy move x {-top_cir_s2} repeat 4
+curve 299 copy move x {-mid_ri+2*c}
+
+# cylinder-basemat connection rebars: #4 shear tie bars
+create vertex {mid_ro-c}  		 {0} {base_top_z+conc_coarse+h_shear_tie} 	# vertex 581
+create vertex {mid_ro-c} 		 {0} {base_top_z+conc_coarse} 		# vertex 582
+create vertex {mid_ri-c-5*top_cir_s1} {0} {base_top_z-c-(base_h-2*c)} 		# vertex 583
+create vertex {mid_ri-c-7*top_cir_s1} {0} {base_top_z-c-(base_h-2*c)} 		# vertex 584
+create curve polyline vertex 581 582 583 584						# curve 312 313 314
+create vertex {base_r-c} {0} {base_top_z-c} 						# vertex 587
+create vertex {mid_ri-c} {0} {base_top_z-c}	 					# vertex 588
+create curve vertex 587 588								# curve 315
+curve 315 copy move z {-2*c}
+
+# cylinder long rebars: hoops (layer 1, 3, 4, and 6) #4
+create curve arc radius {hoop1_r} center location {0} {0} {base_top_z} normal 0 0 1 start angle 0 stop angle 90
+create curve arc radius {hoop3_r} center location {0} {0} {base_top_z} normal 0 0 1 start angle 0 stop angle 90
+create curve arc radius {hoop4_r} center location {0} {0} {base_top_z} normal 0 0 1 start angle 0 stop angle 90
+create curve arc radius {hoop6_r} center location {0} {0} {base_top_z} normal 0 0 1 start angle 0 stop angle 90
+curve 317 to 320 copy move z {hoop_s} repeat 59
+color curve 317 to 556 pink
+
+# cylinder long rebars: meridional bars #4
+create vertex {mrdnl2_r} {0} {base_top_z-base_h+c} 			# vertex 1071
+create vertex {mrdnl2_r-seismic_dr} {0} {mid_top_z-c} 		# vertex 1072
+create curve vertex 1071 1072						# curve 557
+curve 557 copy move x {mrdnl5_r-mrdnl2_r}
+
+# cylinder long rebars: Seismic bars #4
+create vertex {seismic_ro*cos(seismic_th/2)} 	{-seismic_ro*sin(seismic_th/2)} 	{base_top_z-base_h+c}			# vertex 1075
+create vertex {seismic_ro} 			   	{0} 					{0.5*(mid_top_z+base_top_z-base_h)}	# vertex 1076
+create vertex {(seismic_ro-seismic_dr)*cos(seismic_th/2)} 	{(seismic_ro-seismic_dr)*sin(seismic_th/2)} 	{mid_top_z-c}		# vertex 1077
+create curve arc three vertex 1075 1076 1077 											# curve 559
+create vertex {seismic_ri*cos(seismic_th/2)} 	{seismic_ri*sin(seismic_th/2)}	{base_top_z-base_h+c}			# vertex 1078
+create vertex {seismic_ri} 			   	{0} 				 	{0.5*(mid_top_z+base_top_z-base_h)}	# vertex 1079
+create vertex {(seismic_ri-seismic_dr)*cos(seismic_th/2)} 	{-(seismic_ri-seismic_dr)*sin(seismic_th/2)}	{mid_top_z-c}		# vertex 1080
+create curve arc three vertex 1078 1079 1080												# curve 560
+
+# dome rebars: continuation of meridional bars
+create vertex {((dome_ri+mrdnl2_r-mid_ri-seismic_dr)^2-(0.5*(mrdnl_h-mid_top_z))^2)^0.5} {0} {mid_top_z+0.5*(mrdnl_h-mid_top_z)} 	# vertex 1081
+create vertex {((dome_ri+mrdnl2_r-mid_ri-seismic_dr)^2-(mrdnl_h-mid_top_z)^2)^0.5} 	    {0} {mrdnl_h}		 		# vertex 1082
+create vertex {0} 					  	 		    {0} {mid_top_z+dome_ri+mrdnl2_r-mid_ri} 			# vertex 1083
+create curve arc three vertex 1072 1081 1082 												# curve 561
+create vertex {((dome_ri+mrdnl5_r-mid_ri-seismic_dr)^2-(0.5*(mrdnl_h-mid_top_z))^2)^0.5} {0} {mid_top_z+0.5*(mrdnl_h-mid_top_z)} 	# vertex 1085
+create vertex {((dome_ri+mrdnl5_r-mid_ri-seismic_dr)^2-(mrdnl_h-mid_top_z)^2)^0.5} 	    {0} {mrdnl_h}		 		# vertex 1086
+create curve arc three vertex 1074 1085 1086 												# curve 562
+
+# dome rebars: continuation of seismic bars
+create vertex 	{(((dome_ri+seismic_ri-mid_ri-seismic_dr)^2-(seismic_h-mid_top_z)^2)^0.5)*cos(sismc_dm_th+seismic_th/2)} 		{(((dome_ri+seismic_ri-mid_ri-seismic_dr)^2-(seismic_h-mid_top_z)^2)^0.5)*sin(sismc_dm_th+seismic_th/2)} 		{seismic_h}					# vertex 1088
+create vertex 	{(((dome_ri+seismic_ri-mid_ri-seismic_dr)^2-(0.5*(seismic_h-mid_top_z))^2)^0.5)*cos(sismc_dm_th/2+seismic_th/2)} 	{(((dome_ri+seismic_ri-mid_ri-seismic_dr)^2-(0.5*(seismic_h-mid_top_z))^2)^0.5)*sin(sismc_dm_th/2+seismic_th/2)} 	{mid_top_z+0.5*(seismic_h-mid_top_z)}	# vertex 1089
+create curve arc three vertex 1077 1089 1088 																																		# curve 563
+create vertex 	{(((dome_ri+seismic_ri-mid_ri-seismic_dr)^2-(seismic_h-mid_top_z)^2)^0.5)*cos(-(sismc_dm_th+seismic_th/2))} 		{(((dome_ri+seismic_ri-mid_ri-seismic_dr)^2-(seismic_h-mid_top_z)^2)^0.5)*sin(-(sismc_dm_th+seismic_th/2))} 		{seismic_h}					# vertex 1091
+create vertex 	{(((dome_ri+seismic_ri-mid_ri-seismic_dr)^2-(0.5*(seismic_h-mid_top_z))^2)^0.5)*cos(-(sismc_dm_th/2+seismic_th/2))} 	{(((dome_ri+seismic_ri-mid_ri-seismic_dr)^2-(0.5*(seismic_h-mid_top_z))^2)^0.5)*sin(-(sismc_dm_th/2+seismic_th/2))}	{mid_top_z+0.5*(seismic_h-mid_top_z)}	# vertex 1092
+create curve arc three vertex 1080 1092 1091 																																		# curve 564
+
+# deleting addition rebars and free vertices
+delete curve 79 182
+delete Vertex 1076 1079 1081 1083 1085 1089 1092
+
+# basemat rebars: #3 shear tie bars
+curve 299 to 310 copy rotate {s_top_rad_s/s_top_rad_r*180/3.14} about Z repeat 48
+color curve 299 to 310 565 to 1140 pink
+# cylinder-basemat connection rebars: #4 shear tie bars
+curve 312 to 316 copy rotate {s_shear_tie/((mid_ro+mid_ri)/2)*180/3.14} about Z repeat 48
+color curve 312 to 316 1141 to 1380 pink
+# cylinder long rebars: meridional bars #4
+curve 557 558 copy rotate {mrdnl_s/((mrdnl2_r+mrdnl5_r)/2)*180/3.14} about Z repeat 48
+color curve 557 558 1381 to 1476 grey
+
+# cylinder long rebars: Seismic bars #4
+Curve 559 560 rotate {-seismic_th/2*180/3.14} about z
+curve 559 copy rotate {seismic_s/(0.5*(seismic_ro+seismic_ri))*180/3.14} about Z repeat 83
+curve 560 copy rotate {seismic_s/(0.5*(seismic_ro+seismic_ri))*180/3.14} about Z repeat 83
+color curve 559 560 1477 to 1642 yellow
+
+# dome rebars: continuation of meridional bars
+curve 561 562 copy rotate {mrdnl_s/((mrdnl2_r+mrdnl5_r)/2)*180/3.14} about Z repeat 48
+color curve 561 562 1643 to 1738 grey
+
+# dome rebars: continuation of seismic bars
+curve 563 rotate {-seismic_th/2*180/3.14 + 90} about z
+curve 564 rotate {seismic_th/2*180/3.14} about z
+curve 563 copy rotate {-seismic_s/(0.5*(seismic_ro+seismic_ri))*180/3.14} about Z repeat 49
+curve 564 copy rotate {seismic_s/(0.5*(seismic_ro+seismic_ri))*180/3.14} about Z repeat 49
+color curve 563 564 1739 to 1836 yellow
+
+webcut Volume 1 2 4 6 7 8 9 11 with plane yplane offset 0 noimprint nomerge
+webcut Volume 15 to 22 with plane xplane offset 0 noimprint nomerge
+delete volume 1 2 4 11 6 to 9 23 to 30
+
+# mat surface 		left: 142;		right 139
+# cylinder surface 	left: 79 to 81; 	right 149 to 151
+# sphere surface 	left: 166; 		right 163
+split curve 559 crossing surface 139 142 79 to 81 149 to 151 166 163
+
+split curve 1560 to 1607 crossing surface 79 to 81 142
+
+
+# Questions:
+# apex plate elevation
+# bars around the hatches and holes
+
+# mesh surface 23 2 3 24 26 33 1 16 25 32 12 10 4 17 27 15 29 21 22 11
+# volume all scheme auto
+# volume all size {elem_sz}
+# curve all size {elem_sz}
+# mesh volume all
+# mesh curve all
+
+block 1 volume 1 2 4 7 				# concrete structure
+block 2 volume 6 8 9	 				# steel liner
+block 3 curve 80 to 383 				# #6 mat: bottom grid
+block 4 curve 411 to 618				# #5 mat: top grid
+block 5 curve 619 to 810 				# #5 mat: top radial bars
+block 6 curve 811 to 825 				# #6 mat: top circumfrential bars
+block 7 curve 826 to 3321 				# #3 mat: shear ties bars
+block 8 curve 3322 to 4281 				# #4 cylinear-mat connection bars
+block 9 curve 4282 to 4521 				# #4 cylinear: long bars (layer 1 3 4 6)
+block 10 curve 4522 to 4903 5184 to 5565		# #4 cylinear-dome: meridional bars (layer 2 5)
+block 11 curve 4904 to 5183 5566 to 5845		# #4 cylinear-dome: seismic bars (layer 7 8)
+
+# export mesh 'mesh_containment.e' overwrite
