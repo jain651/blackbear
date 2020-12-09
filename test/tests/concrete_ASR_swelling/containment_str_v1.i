@@ -767,14 +767,52 @@
    variable = disp_z
    boundary = '4'
  [../]
- [./cyl_x]
+ [./cyl_z] # 500 mm gauge length
   type = PointsSeparation
   variable1 = disp_x
   variable2 = disp_y
   variable3 = disp_z
-  point1 = '-2.8175 +0.225 +0.255'
-  point2 = '-2.8175 -0.225 +0.255'
+  point1 = '2536 2536 4174'
+  point2 = '2536 2536 3674'
  [../]
+ [./cyl_tang] # 500 mm gauge length (not the arc length)
+  type = PointsSeparation
+  variable1 = disp_x
+  variable2 = disp_y
+  variable3 = disp_z
+  point1 = '2786 2286 3924' # basesd on hand calculation
+  point2 = '2286 2786 3924'
+  # point1 = '2822 2211 3924' # basesd on mesh in cubit
+  # point2 = '2211 2822 3924'
+ [../]
+ [./sph_z_arc]# 500 mm gauge length (not the arc length)
+  type = PointsSeparation
+  variable1 = disp_x
+  variable2 = disp_y
+  variable3 = disp_z
+  point1 = '2230.181410  2230.715392  8901.871361'
+  point2 = '1937.733314  1934.280578  9544.732999'
+ [../]
+ [./sph_tang]# 500 mm gauge length (not the arc length)
+  type = PointsSeparation
+  variable1 = disp_x
+  variable2 = disp_y
+  variable3 = disp_z
+  point1 = '2374 1924 9080.5'# basesd on hand calculation
+  point2 = '1924 2374 9080.5'
+  # point1 = '2372.90 1925.26 9080.5'# basesd on mesh in cubit
+  # point2 = '1925.26 2372.90 9080.5'
+ [../]
+
+
+ # [./cyl_x]
+ #  type = PointsSeparation
+ #  variable1 = disp_x
+ #  variable2 = disp_y
+ #  variable3 = disp_z
+ #  point1 = '-2.8175 +0.225 +0.255'
+ #  point2 = '-2.8175 -0.225 +0.255'
+ # [../]
 
 []
 
