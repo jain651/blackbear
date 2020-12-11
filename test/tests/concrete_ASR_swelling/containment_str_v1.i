@@ -827,7 +827,7 @@
   start_time = 1209600 # 28 days
   dt = 86400 # 1 day
   automatic_scaling = true
-  end_time = 21600000 # 250 days
+  end_time = 38880000 # 400 days
 
   # working solver conditions
   solve_type = 'NEWTON'
