@@ -6,8 +6,7 @@
 [Mesh]
  file = gold/containment_structure/quarter_containment_wo_baseMat_liner_grade.e
  construct_side_list_from_node_list = true
-# block 1 volume 8 to 12 				    # concrete structure
-# block 2 surface 103 85 95					# steel liner
+# block 1 volume 8 to 12 					  # concrete structure
 # block 3 curve 40 to 115 					# #6 mat: bottom grid
 # block 4 curve 143 to 194					# #5 mat: top grid
 # block 5 curve 195 to 243 					# #5 mat: top radial bars
@@ -17,13 +16,16 @@
 # block 9 curve 277 to 516 					# #4 cylinear: long bars (layer 1 3 4 6)
 # block 10 curve 517 to 522 1341 to 1436 1603 to 1698		# #4 cylinear-dome: meridional bars (layer 2 5)
 # block 11 curve 1712 to 1782 1966 to 2430			# #4 cylinear-dome: seismic bars (layer 7 8)
+#
 # nodeset 1 add surface 114 74 104 42 94 	# disp_y zero
 # nodeset 1 add curve 1939 1843 1924
 # nodeset 2 add surface 111 71 101 81 91 	# disp_x zero
 # nodeset 2 add curve 1934 1904 1920
-# nodeset 3 add vertex 3650 3685 3687		# disp_z zero
+# nodeset 3 add vertex 3653 3655 3618 		# disp_z zero
 # nodeset 4 add surface 113 72 83 93 73 112	# outer surface
-
+# nodeset 5 add surface 93			# dome outer surface
+# nodeset 6 add surface 83			# cylinder outer surface
+# nodeset 7 add surface 72			# base outer surface
 []
 
 [Variables]
@@ -752,57 +754,72 @@
    block = '1'
  [../]
 
- [./surfaceAvg_x]
+ [./surfaceAvg_cyl_x]
    type = SideAverageValue
    variable = disp_x
-   boundary = '4'
+   boundary = '6'
  [../]
- [./surfaceAvg_y]
+ [./surfaceAvg_cyl_y]
    type = SideAverageValue
    variable = disp_y
-   boundary = '4'
+   boundary = '6'
  [../]
- [./surfaceAvg_z]
+ [./surfaceAvg_cyl_z]
    type = SideAverageValue
    variable = disp_z
-   boundary = '4'
+   boundary = '6'
+ [../]
+ [./surfaceAvg_dome_x]
+   type = SideAverageValue
+   variable = disp_x
+   boundary = '5'
+ [../]
+ [./surfaceAvg_dome_y]
+   type = SideAverageValue
+   variable = disp_y
+   boundary = '5'
+ [../]
+ [./surfaceAvg_dome_z]
+   type = SideAverageValue
+   variable = disp_z
+   boundary = '5'
  [../]
  [./cyl_z] # 500 mm gauge length
   type = AveragePointSeparation
-  displacements = 'disp_x disp_y disp_z'
-  first_point = '2536 2536 4174'
-  last_point = '2536 2536 3674'
+  displacements = 'disp_z'
+  first_point = '2.438776     2.597033     4.252161'
+  last_point = '2.435685     2.593741     4.689710'
  [../]
- [./cyl_tang] # 500 mm gauge length (not the arc length)
+ [./cyl_tang_x] # 500 mm gauge length (not the arc length)
   type = AveragePointSeparation
-  displacements = 'disp_x disp_y disp_z'
-  first_point = '2786 2286 3924' # basesd on hand calculation
-  last_point = '2286 2786 3924'
-  # first_point = '2822 2211 3924' # basesd on mesh in cubit
-  # last_point = '2211 2822 3924'
+  displacements = 'disp_x'
+  first_point = '2.59     2.43     4.470935'
+  last_point = '2.26     2.743     4.470935'
+ [../]
+ [./cyl_tang_y] # 500 mm gauge length (not the arc length)
+  type = AveragePointSeparation
+  displacements = 'disp_y'
+  first_point = '2.59     2.43     4.470935'
+  last_point = '2.26     2.743     4.470935'
  [../]
  [./sph_z_arc]# 500 mm gauge length (not the arc length)
   type = AveragePointSeparation
-  displacements = 'disp_x disp_y disp_z'
-  first_point = '2230.181410  2230.715392  8901.871361'
-  last_point = '1937.733314  1934.280578  9544.732999'
+  displacements = 'disp_z'
+  first_point = '2.149293     2.303640     8.909285'
+  last_point = '1.876000     2.020725     9.520732'
  [../]
- [./sph_tang]# 500 mm gauge length (not the arc length)
+ [./sph_tang_x]# 500 mm gauge length (not the arc length)
   type = AveragePointSeparation
-  displacements = 'disp_x disp_y disp_z'
-  first_point = '2374 1924 9080.5'# basesd on hand calculation
-  last_point = '1924 2374 9080.5'
-  # first_point = '2372.90 1925.26 9080.5'# basesd on mesh in cubit
-  # last_point = '1925.26 2372.90 9080.5'
+  displacements = 'disp_x'
+  first_point = '2.374 1.924 9.0805'# basesd on hand calculation
+  last_point = '1.924 2.374 9.0805'
  [../]
-
- # [./cyl_x]
- #  type = PointsSeparation
- #  displacements = 'disp_x disp_y disp_z'
- #  first_point = '-2.8175 +0.225 +0.255'
- #  last_point = '-2.8175 -0.225 +0.255'
- # [../]
-
+ [./sph_tang_y]# 500 mm gauge length (not the arc length)
+  type = AveragePointSeparation
+  displacements = 'disp_y'
+  first_point = '2.374 1.924 9.0805'# basesd on hand calculation
+  last_point = '1.924 2.374 9.0805'
+ [../]
 []
 
 [Executioner]
