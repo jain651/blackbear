@@ -1,3 +1,31 @@
+# Concrete properties
+# Elastic Constants
+# Young's modulus - 4800 ksi (33100 MPa)
+# Poisson's ratio - 0.2
+# Ultimate Tensile Strength - 500 psi (3.45 MPa)
+# agg size = 3/8" (9.5 mm)
+# HRWR was used
+# w/c = 0.53
+#
+# Liner properties
+# Basemat and Cylinder liner
+# Elastic Constants:
+# Modulus - 30000 ksi (207000 MPa)
+# Poisson's ratio - 0.3
+# Yield stress - 50.2 ksi (346 MPa)
+#
+# Elastic Constants:
+# Modulus - 30000 ksi (207000 MPa)
+# Poisson's ratio  - 0.3
+# Yield stress - 51.4 ksi (354 MPa)
+#
+# Rebar Properties
+# Elastic Constants:
+# Modulus - 31000 ksi (207000 MPa)
+# Poisson's ratio  - 0.3
+# Yield stress - 66.6 ksi (459 MPa)
+
+
 [GlobalParams]
  displacements = 'disp_x disp_y disp_z'
  volumetric_locking_correction = true
@@ -532,7 +560,7 @@
    aggregate_mass                       = 1877.0    # mass of aggregate (kg) per m^3 of concrete
    cement_type                          = 2         # options: 1 2 3 4
    cement_mass                          = 354.0     # mass of cement (kg) per m^3 of concrete
-   water_to_cement_ratio                = 0.52
+   water_to_cement_ratio                = 0.53
    concrete_cure_time                   = 14.0      # curing time in (days)
 
    # options available for humidity diffusivity:
@@ -554,9 +582,9 @@
  [./logcreep]
    type                                 = ConcreteLogarithmicCreepModel
    block                                = '1'
-   poissons_ratio                       = 0.22
-   youngs_modulus                       = 37.3e9
-   recoverable_youngs_modulus           = 37.3e9
+   poissons_ratio                       = 0.2
+   youngs_modulus                       = 33.1e9
+   recoverable_youngs_modulus           = 33.1e9
    recoverable_viscosity                = 1
    long_term_viscosity                  = 1
    long_term_characteristic_time        = 1
@@ -580,11 +608,11 @@
    latency_activation_energy            = 9400.0
    stress_latency_factor                = 1.0
 
-   compressive_strength                 = 38.0e6
+   compressive_strength                 = 46.9e6
    compressive_stress_exponent          = 0.0
    expansion_stress_limit               = 8.0e6
 
-   tensile_strength                     = 3.8e6
+   tensile_strength                     = 3.45e6
    tensile_retention_factor             = 1.0
    tensile_absorption_factor            = 1.0
 
@@ -604,7 +632,7 @@
    block                                = '1'
    temperature                          = T
    thermal_expansion_coeff              = 8.0e-6
-   stress_free_temperature              = 10.6
+   stress_free_temperature              = 23.0
    eigenstrain_name                     = thermal_expansion
  []
 
@@ -624,10 +652,10 @@
  [truss]
    type                                 = LinearElasticTruss
    block                                = '3 4 5 6 7 8 9 10 11'
-   youngs_modulus                       = 2e11
+   youngs_modulus                       = 2.14e11
    temperature                          = T
    thermal_expansion_coeff              = 11.3e-6
-   temperature_ref                      = 10.6
+   temperature_ref                      = 23.0
  []
 []
 
@@ -825,9 +853,9 @@
 [Executioner]
   type       = Transient
   start_time = 1209600 # 28 days
-  dt = 86400 # 1 day
+  dt = 604800 # 7 day
   automatic_scaling = true
-  end_time = 38880000 # 400 days
+  end_time = 630720000 # 7300 days
 
   # working solver conditions
   solve_type = 'NEWTON'
