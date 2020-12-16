@@ -9,8 +9,10 @@ import pandas as pd
 import math
 
 out_file_loc = './test/tests/concrete_ASR_swelling/outputs/containment_str/'
-out_file_name = out_file_loc+'containment_str_v1_out.csv'
-out = pd.read_csv(out_file_name)
+TRH_file_loc = './test/tests/concrete_ASR_swelling/analysis/containment_str/'
+out     = pd.read_csv(out_file_loc+'containment_str_v1_out.csv')
+T_his   = pd.read_csv(TRH_file_loc+'TempProfile.csv', header = None)
+RH_his  = pd.read_csv(TRH_file_loc+'RHProfile.csv', header = None)
 
 def fcyl_hz_exp(fp, lp, dx, dy, th_old):
     th_new = math.atan((lp[1]+0.5*dy)/(lp[0]-0.5*dx)) - math.atan((fp[1]-0.5*dy)/(fp[0]+0.5*dx))
@@ -36,8 +38,8 @@ rad_cyl = 3.353+0.178
 rad_dome_hz = 0.5 * (pow((fp_hz_dome[0]**2 + fp_hz_dome[1]**2), 0.5) + pow((lp_hz_dome[0]**2 + lp_hz_dome[1]**2), 0.5))
 rad_dome_vt = 3.353+0.248
 
-t = out['time']/86400
-num_row = len(t)
+t_out = out['time']/86400/365
+num_row = len(t_out)
 cyl_hz_exp = [0]*(num_row)
 cyl_vt_exp = out['cyl_z']/gage_z*100
 dome_hz_exp = cyl_hz_exp
@@ -54,25 +56,53 @@ dir =['tangential', 'vertical']
 ASR_fig, ASR_subfig = plt.subplots(2, 2, sharex=True, sharey=True, figsize = (8,8))
 plt.subplots_adjust(left=0.10, bottom=0.10, right=0.90, top=0.90)
 ASR_fig.text(0.03, 0.5, 'ASR expansion [%]', va='center', rotation='vertical')
-ASR_fig.text(0.5, 0.02, 'Time [days]', ha='center')
+ASR_fig.text(0.5, 0.02, 'Time [years]', ha='center')
 for i in range(2):
     for j in range(2):
         ASR_subfig[i][j].set_title(surface[j] + ' ' + dir[i] + ' expansion', fontsize=11)
-ASR_subfig[0][0].plot(t, cyl_hz_exp, 'k', linewidth=1.0, label= 'cyl_hz_exp')
-ASR_subfig[1][0].plot(t, out['cyl_z']/gage_z*100, 'k', linewidth=1.0, label= 'cyl_vt_exp')
-ASR_subfig[0][1].plot(t, dome_hz_exp, 'k', linewidth=1.0, label= 'dome_hz_exp')
-ASR_subfig[1][1].plot(t, dome_vt_exp, 'k', linewidth=1.0, label= 'dome_vt_exp')
+ASR_subfig[0][0].plot(t_out, cyl_hz_exp, 'k', linewidth=1.0, label= 'cyl_hz_exp')
+ASR_subfig[1][0].plot(t_out, out['cyl_z']/gage_z*100, 'k', linewidth=1.0, label= 'cyl_vt_exp')
+ASR_subfig[0][1].plot(t_out, dome_hz_exp, 'k', linewidth=1.0, label= 'dome_hz_exp')
+ASR_subfig[1][1].plot(t_out, dome_vt_exp, 'k', linewidth=1.0, label= 'dome_vt_exp')
 for i in range(2):
     for j in range(2):
         ASR_subfig[i][j].grid(color="grey", ls = '--', lw = 0.5)
-        ASR_subfig[i][j].xaxis.set_minor_locator(MultipleLocator(20))
+        ASR_subfig[i][j].xaxis.set_minor_locator(MultipleLocator(1))
         ASR_subfig[i][j].yaxis.set_minor_locator(MultipleLocator(2))
-plt.xlim(0, 600)
+plt.xlim(0, 10)
 # plt.ylim(0, 10)
 # hand_ASR, lab_ASR = (ASR_subfig[2]).get_legend_handles_labels()
 # lgd_ASR = ASR_fig.legend(hand_ASR, lab_ASR, loc='lower center',ncol=2)
 # lgd_ASR.FontSize = 11;
 # lgd_ASR.get_frame().set_edgecolor('none')
-plt.show()
+# plt.show()
 # plt.savefig("ASR_expansion.pdf")
 # plt.savefig("ASR_expansion.png", dpi=300)
+
+## plotting T and RH history###########################################################################
+TRH_fig, TRH_subfig = plt.subplots(2, sharex=True, sharey=False, figsize = (8,8))
+plt.subplots_adjust(left=0.10, bottom=0.10, right=0.90, top=0.90)
+TRH_fig.text(0.03, 0.5, 'Temprature [C]', va='center', rotation='vertical')
+TRH_fig.text(0.5, 0.02, 'Time [years]', ha='center')
+
+TRH_subfig[0].set_title('Temperature history', fontsize=11)
+TRH_subfig[0].plot(T_his[0]/86400/365, T_his[1], 'k', linewidth=1.0, label= 'Temperature Profile')
+TRH_subfig[0].set_ylim(0, 40)
+
+TRH_subfig[1].set_title('Relative humidity history', fontsize=11)
+TRH_subfig[1].plot(RH_his[0]/86400/365, RH_his[1]*100, 'k', linewidth=1.0, label= 'RH Profile')
+TRH_subfig[1].set_ylim(0, 100)
+
+for i in range(2):
+    TRH_subfig[i].grid(color="grey", ls = '--', lw = 0.5)
+    TRH_subfig[i].xaxis.set_minor_locator(MultipleLocator(1))
+    TRH_subfig[i].yaxis.set_minor_locator(MultipleLocator(2))
+plt.xlim(0, 10)
+# plt.ylim(0, 10)
+# hand_TRH, lab_TRH = (TRH_subfig[2]).get_legend_handles_labels()
+# lgd_TRH = TRH_fig.legend(hand_TRH, lab_TRH, loc='lower center',ncol=2)
+# lgd_TRH.FontSize = 11;
+# lgd_TRH.get_frame().set_edgecolor('none')
+plt.show()
+# plt.savefig("TRH.pdf")
+# plt.savefig("TRH.png", dpi=300)
