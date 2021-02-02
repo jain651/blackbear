@@ -50,7 +50,7 @@ for i in range(num_row):
     dome_vt_exp[i] = rad_dome_vt * 100 * fdome_vt_exp(fp_vt_dome, lp_vt_dome, out['dome_z_arc'][i], th_vt_dome)
 
 surface = ['Cylinder', 'Dome']
-dir =['tangential', 'vertical']
+dir =['tangential', 'vertical', 'azimuth', 'altitude']
 
 ## plotting ASR expansion #############################################################################
 ASR_fig, ASR_subfig = plt.subplots(2, 2, sharex=True, sharey=True, figsize = (8,8))
@@ -59,7 +59,7 @@ ASR_fig.text(0.03, 0.5, 'ASR expansion [%]', va='center', rotation='vertical')
 ASR_fig.text(0.5, 0.02, 'Time [years]', ha='center')
 for i in range(2):
     for j in range(2):
-        ASR_subfig[i][j].set_title(surface[j] + ' ' + dir[i] + ' expansion', fontsize=11)
+        ASR_subfig[i][j].set_title(surface[j] + ' ' + dir[i+j*2] + ' expansion', fontsize=11)
 ASR_subfig[0][0].plot(t_out, cyl_hz_exp, 'k', linewidth=1.0, label= 'cyl_hz_exp')
 ASR_subfig[1][0].plot(t_out, out['cyl_z']/gage_z*100, 'k', linewidth=1.0, label= 'cyl_vt_exp')
 ASR_subfig[0][1].plot(t_out, dome_hz_exp, 'k', linewidth=1.0, label= 'dome_hz_exp')
