@@ -32,6 +32,7 @@ public:
 
 protected:
   virtual Real computeQpResidual() override;
+<<<<<<< HEAD
   virtual Real computeQpJacobian() override;
 
   /// A reference to the system containing the variable
@@ -41,4 +42,13 @@ protected:
   const Real & _E;
   const Real & _A;
   std::vector<Point> _point_param;
+=======
+
+  const Real & _eps;
+  const Real & _fy;
+  const Real & _E;
+  const Real & _A;
+  std::vector<Real> _point_param;
+  Point _p;
+>>>>>>> in process of scaling to 1:1 scale
 };

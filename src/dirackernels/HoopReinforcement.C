@@ -17,16 +17,26 @@ InputParameters
 HoopReinforcement::validParams()
 {
   InputParameters params = DiracKernel::validParams();
+<<<<<<< HEAD
   params.addRequiredParam<VariableName>("disp_component", "a component of strain tensor");
   params.addRequiredParam<Real>("yield_strength", "Yield strength of the rebar");
   params.addRequiredParam<Real>("youngs_modulus", "Elastic modulus of the rebar");
   params.addRequiredParam<Real>("area", "Area of the rebar");
   params.addParam<std::vector<Point>>("points", "The x,y,z coordinates of the point");
+=======
+  params.addRequiredParam<Real>("strain", "out of plane strain");
+  params.addRequiredParam<Real>("yield_strength", "Yield strength of the rebar");
+  params.addRequiredParam<Real>("elastic_modulus", "Elastic modulus of the rebar");
+  params.addRequiredParam<Real>("area", "Area of the rebar");
+  params.addRequiredParam<std::vector<Real>>("point", "The x,y,z coordinates of the point");
+  params.declareControllable("value");
+>>>>>>> in process of scaling to 1:1 scale
   return params;
 }
 
 HoopReinforcement::HoopReinforcement(const InputParameters & parameters)
   : DiracKernel(parameters),
+<<<<<<< HEAD
     _system(_subproblem.getSystem(getParam<VariableName>("disp_component"))),
     _fy(getParam<Real>("yield_strength")),
     _E(getParam<Real>("youngs_modulus")),
@@ -70,4 +80,34 @@ HoopReinforcement::computeQpJacobian()
     dforce = - fmax(_E*dstrain, _fy) * _A;
 
   return -dforce;
+=======
+    _eps(getParam<Real>("strain")),
+    _fy(getParam<Real>("yield_strength")),
+    _E(getParam<Real>("elastic_modulus")),
+    _A(getParam<Real>("area")),
+    _point_param(getParam<std::vector<Real>>("point"))
+{
+  _p(0) = _point_param[0];
+
+  if (_point_param.size() > 1)
+  {
+    _p(1) = _point_param[1];
+
+    if (_point_param.size() > 2)
+      _p(2) = _point_param[2];
+  }
+}
+
+void
+HoopReinforcement::addPoints()
+{
+  addPoint(_p);
+}
+
+Real
+HoopReinforcement::computeQpResidual()
+{
+  //  This is negative because it's a forcing function that has been brought over to the left side
+  return -_test[_i][_qp] * fmin(_E * _eps, _fy) * _A;
+>>>>>>> in process of scaling to 1:1 scale
 }

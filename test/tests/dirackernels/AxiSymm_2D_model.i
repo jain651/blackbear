@@ -4,6 +4,7 @@
   # block 1 surface 1
   # block 2 curve 5 to 8
   #
+<<<<<<< HEAD
   # nodeset 1 add curve 1    # top
   # nodeset 2 add curve 2    # left
   # nodeset 3 add curve 3    # bot
@@ -12,6 +13,16 @@
 
 [GlobalParams]
   displacements = 'disp_x disp_z'
+=======
+  # nodeset 1 add curve 1		# top
+  # nodeset 2 add curve 2		# left
+  # nodeset 3 add curve 3		# bot
+  # nodeset 4 add curve 4		# right
+[]
+
+[GlobalParams]
+  displacements = 'disp_r disp_z'
+>>>>>>> in process of scaling to 1:1 scale
   volumetric_locking_correction = true
 []
 
@@ -23,6 +34,7 @@
   [./all]
     strain = FINITE
     add_variables = true
+<<<<<<< HEAD
     block = '1'
     save_in = 'resid_x resid_z'
   [../]
@@ -238,25 +250,45 @@
     area = 2840
     points = '0.55 -0.075 0 0.55 +0.075 0 0.95 -0.075 0 0.95 +0.075 0'
   [../]
+=======
+  [../]
+[]
+
+[AuxVariables]
+  [./temperature]
+    initial_condition = 298.0
+  [../]
+>>>>>>> in process of scaling to 1:1 scale
 []
 
 [BCs]
   [./symmetry_x]
     type = DirichletBC
+<<<<<<< HEAD
     variable = disp_x
     value = 0
     boundary = '4' # right
+=======
+    variable = disp_r
+    value = 0
+    boundary = '4'
+>>>>>>> in process of scaling to 1:1 scale
   [../]
   [./roller_z]
     type = DirichletBC
     variable = disp_z
     value = 0
+<<<<<<< HEAD
     boundary = '3' # bottom
+=======
+    boundary = '3'
+>>>>>>> in process of scaling to 1:1 scale
   [../]
   [./top_load]
     type = FunctionDirichletBC
     variable = disp_z
     function = -0.001*t
+<<<<<<< HEAD
     boundary = '1' # top
   [../]
   [./left_load]
@@ -264,6 +296,9 @@
     variable = disp_x
     function = -0.001*t
     boundary = '1' # top
+=======
+    boundary = '1'
+>>>>>>> in process of scaling to 1:1 scale
   [../]
 []
 
@@ -272,6 +307,7 @@
     type = ComputeIsotropicElasticityTensor
     youngs_modulus = 1e10
     poissons_ratio = 0.3
+<<<<<<< HEAD
     block = '1'
   [../]
   [./_elastic_strain]
@@ -286,6 +322,12 @@
     thermal_expansion_coeff              = 11.3e-6
     temperature_ref                      = 23.0
   []
+=======
+  [../]
+  [./_elastic_strain]
+    type = ComputeFiniteStrainElasticStress
+  [../]
+>>>>>>> in process of scaling to 1:1 scale
 []
 
 [Executioner]
@@ -311,18 +353,24 @@
     variable = temperature
     boundary = '4'
   [../]
+<<<<<<< HEAD
   [./rebar_sxx]
     type = ElementIntegralMaterialProperty
     mat_prop = axial_stress
     block = '2'
   [../]
+=======
+>>>>>>> in process of scaling to 1:1 scale
 []
 
 [Outputs]
   csv = true
   perf_graph = true
+<<<<<<< HEAD
   [./Exo]
     type = Exodus
     elemental_as_nodal = true
   [../]
+=======
+>>>>>>> in process of scaling to 1:1 scale
 []
