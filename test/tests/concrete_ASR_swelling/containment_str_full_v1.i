@@ -272,15 +272,17 @@
    block = '1'
    strain = FINITE
    add_variables = true
+   # base_name = 'concrete'
    eigenstrain_names = 'asr_expansion thermal_expansion'
    generate_output = 'stress_xx stress_yy stress_zz stress_xy stress_yz stress_zx vonmises_stress hydrostatic_stress elastic_strain_xx elastic_strain_yy elastic_strain_zz strain_xx strain_yy strain_zz'
    save_in = 'resid_x resid_y resid_z'
  [../]
- [./soil]
+ [./soil12]
    block = '12'
    strain = FINITE
    # add_variables = true
-   generate_output = 'stress_xx stress_yy stress_zz stress_xy stress_yz stress_zx vonmises_stress hydrostatic_stress elastic_strain_xx elastic_strain_yy elastic_strain_zz strain_xx strain_yy strain_zz'
+   base_name = 'soil'
+   # generate_output = 'stress_xx stress_yy stress_zz stress_xy stress_yz stress_zx elastic_strain_xx elastic_strain_yy elastic_strain_zz strain_xx strain_yy strain_zz'
    save_in = 'resid_x resid_y resid_z'
  [../]
 []
@@ -1088,6 +1090,7 @@
    type = ElementAverageValue
    variable = vonmises_stress
    block = '1'
+   base_name = 'concrete'
  [../]
 
  [./vstrain]
