@@ -268,21 +268,21 @@
 []
 
 [Modules/TensorMechanics/Master]
+ generate_output = 'stress_xx stress_yy stress_zz stress_xy stress_yz stress_zx vonmises_stress hydrostatic_stress elastic_strain_xx elastic_strain_yy elastic_strain_zz strain_xx strain_yy strain_zz'
  [./concrete]
    block = '1'
    strain = FINITE
    add_variables = true
    # base_name = 'concrete'
    eigenstrain_names = 'asr_expansion thermal_expansion'
-   generate_output = 'stress_xx stress_yy stress_zz stress_xy stress_yz stress_zx vonmises_stress hydrostatic_stress elastic_strain_xx elastic_strain_yy elastic_strain_zz strain_xx strain_yy strain_zz'
    save_in = 'resid_x resid_y resid_z'
  [../]
  [./soil12]
    block = '12'
    strain = FINITE
-   # add_variables = true
-   base_name = 'soil'
-   # generate_output = 'stress_xx stress_yy stress_zz stress_xy stress_yz stress_zx elastic_strain_xx elastic_strain_yy elastic_strain_zz strain_xx strain_yy strain_zz'
+   add_variables = true
+   # base_name = 'soil'
+   # generate_output = 'stress_xx stress_yy stress_zz stress_xy stress_yz stress_zx vonmises_stress hydrostatic_stress elastic_strain_xx elastic_strain_yy elastic_strain_zz strain_xx strain_yy strain_zz'
    save_in = 'resid_x resid_y resid_z'
  [../]
 []
@@ -747,147 +747,153 @@
 []
 
 [Materials]
- [./concrete]
-   type                                 = PorousMediaBase
-   block                                = '1'
-   # setup thermal property models and parameters
-   # options available: CONSTANT ASCE-1992 KODUR-2004 EUROCODE-2004 KIM-2003
-   thermal_conductivity_model           = KODUR-2004
-   thermal_capacity_model               = KODUR-2004
-   aggregate_type                       = Siliceous # options: Siliceous Carbonate
+  [./concrete]
+    type                                 = PorousMediaBase
+    block                                = '1'
+    # setup thermal property models and parameters
+    # options available: CONSTANT ASCE-1992 KODUR-2004 EUROCODE-2004 KIM-2003
+    thermal_conductivity_model           = KODUR-2004
+    thermal_capacity_model               = KODUR-2004
+    aggregate_type                       = Siliceous # options: Siliceous Carbonate
 
-   ref_density_of_concrete              = 2231.0    # in kg/m^3
-   ref_specific_heat_of_concrete        = 1100.0    # in J/(Kg.0C)
-   ref_thermal_conductivity_of_concrete = 3         # in W/(m.0C)
+    ref_density_of_concrete              = 2231.0    # in kg/m^3
+    ref_specific_heat_of_concrete        = 1100.0    # in J/(Kg.0C)
+    ref_thermal_conductivity_of_concrete = 3         # in W/(m.0C)
 
-   # setup moisture capacity and humidity diffusivity models
-   aggregate_pore_type                  = dense     # options: dense porous
-   aggregate_mass                       = 1877.0    # mass of aggregate (kg) per m^3 of concrete
-   cement_type                          = 2         # options: 1 2 3 4
-   cement_mass                          = 354.0     # mass of cement (kg) per m^3 of concrete
-   water_to_cement_ratio                = 0.53
-   concrete_cure_time                   = 14.0      # curing time in (days)
+    # setup moisture capacity and humidity diffusivity models
+    aggregate_pore_type                  = dense     # options: dense porous
+    aggregate_mass                       = 1877.0    # mass of aggregate (kg) per m^3 of concrete
+    cement_type                          = 2         # options: 1 2 3 4
+    cement_mass                          = 354.0     # mass of cement (kg) per m^3 of concrete
+    water_to_cement_ratio                = 0.53
+    concrete_cure_time                   = 14.0      # curing time in (days)
 
-   # options available for humidity diffusivity:
-   moisture_diffusivity_model           = Bazant    # options: Bazant Xi Mensi
-   D1                                   = 3.0e-8
-   aggregate_vol_fraction               = 0.7       # used in Xi's moisture diffusivity model
+    # options available for humidity diffusivity:
+    moisture_diffusivity_model           = Bazant    # options: Bazant Xi Mensi
+    D1                                   = 3.0e-8
+    aggregate_vol_fraction               = 0.7       # used in Xi's moisture diffusivity model
 
-   coupled_moisture_diffusivity_factor  = 1.0e-2    # factor for mositure diffusivity due to heat
+    coupled_moisture_diffusivity_factor  = 1.0e-2    # factor for mositure diffusivity due to heat
 
-   # coupled nonlinear variables
-   relative_humidity                    = rh
-   temperature                          = T
- [../]
+    # coupled nonlinear variables
+    relative_humidity                    = rh
+    temperature                          = T
+  [../]
 
- [./creep]
-   type                                 = LinearViscoelasticStressUpdate
-   block                                = '1'
- [../]
- [./logcreep]
-   type                                 = ConcreteLogarithmicCreepModel
-   block                                = '1'
-   poissons_ratio                       = 0.2
-   youngs_modulus                       = 33.1e9
-   recoverable_youngs_modulus           = 33.1e9
-   recoverable_viscosity                = 1
-   long_term_viscosity                  = 1
-   long_term_characteristic_time        = 1
-   humidity                             = rh
-   temperature                          = T
-   activation_temperature               = 23.0
- [../]
-
- [ASR_expansion]
-   type                                 = ConcreteASREigenstrain
-   block                                = '1'
-   expansion_type                       = Anisotropic
-
-   reference_temperature                = 23.0      # parameter to play
-   temperature_unit                     = Celsius
-   max_volumetric_expansion             = 1.125e-2  # parameter to play
-
-   characteristic_time                  = 100       # parameter to play
-   latency_time                         = 50        # parameter to play
-   characteristic_activation_energy     = 5400.0
-   latency_activation_energy            = 9400.0
-   stress_latency_factor                = 1.0
-
-   compressive_strength                 = 46.9e6
-   compressive_stress_exponent          = 0.0
-   expansion_stress_limit               = 8.0e6
-
-   tensile_strength                     = 3.45e6
-   tensile_retention_factor             = 1.0
-   tensile_absorption_factor            = 1.0
-
-   ASR_dependent_tensile_strength       = false
-   residual_tensile_strength_fraction   = 1.0
-
-   temperature                          = T
-   relative_humidity                    = rh
-   rh_exponent                          = 1.0
-   eigenstrain_name                     = asr_expansion
-   absolute_tolerance                   = 1e-10
-   output_iteration_info_on_error       = true
- []
-
- [thermal_strain_concrete]
-   type                                 = ComputeThermalExpansionEigenstrain
-   block                                = '1'
-   temperature                          = T
-   thermal_expansion_coeff              = 8.0e-6
-   stress_free_temperature              = 23.0
-   eigenstrain_name                     = thermal_expansion
- []
-
- [ASR_damage_concrete]
-   type                                 = ConcreteASRMicrocrackingDamage
-   residual_youngs_modulus_fraction     = 0.1
-   block                                = '1'
- []
-
- [./stress]
-   type                                 = ComputeMultipleInelasticStress
-   block                                = '1'
-   inelastic_models                     = 'creep'
-   damage_model                         = ASR_damage_concrete
- [../]
-
- [truss]
-   type                                 = LinearElasticTruss
-   block                                = '3 4 5 6 7 8 9 10 11'
-   youngs_modulus                       = 2.14e11
-   temperature                          = T
-   thermal_expansion_coeff              = 11.3e-6
-   temperature_ref                      = 23.0
- []
-
- # [./density_conc]
- #   type                                 = GenericFunctionMaterial
+  [./creep]
+    type                                 = LinearViscoelasticStressUpdate
+    block                                = '1'
+  [../]
+  [burgers]
+    type                                = GeneralizedKelvinVoigtModel
+    creep_modulus                       = '1.52e12
+                                           5.32e18
+                                           6.15e10
+                                           6.86e10
+                                           4.48e10
+                                           1.05e128' # data from TAMU
+    creep_viscosity                     = '1
+                                           10
+                                           100
+                                           1000
+                                           10000
+                                           100000'  # data from TAMU
+    poisson_ratio                       = 0.2
+    young_modulus                       = 27.8e9 #33.03e9 Lower value from ACI eqn
+    block                               = 1
+  []
+ # [./logcreep]
+ #   type                                 = ConcreteLogarithmicCreepModel
  #   block                                = '1'
- #   prop_names                           = density
- #   prop_values                          = 2231.0 # kg/m3
+ #   poissons_ratio                       = 0.2
+ #   youngs_modulus                       = 33.1e9
+ #   recoverable_youngs_modulus           = 33.1e9
+ #   recoverable_viscosity                = 1
+ #   long_term_viscosity                  = 1
+ #   long_term_characteristic_time        = 1
+ #   humidity                             = rh
+ #   temperature                          = T
+ #   activation_temperature               = 23.0
  # [../]
- #  [./density_steel]
- #    type                                 = GenericFunctionMaterial
- #    block                                = '3 4 5 6 7 8 9 10 11'
- #    prop_names                           = density
- #    prop_values                          = 7850.0 # kg/m3
- #  [../]
 
-  [./elasticity_tensor]
-    type = ComputeElasticityTensor
-    block = '12'
-    fill_method = symmetric_isotropic
-    C_ijkl = '0 5E9' # young = 10Gpa, poisson = 0.0
+  [ASR_expansion]
+    type                                 = ConcreteASREigenstrain
+    block                                = '1'
+    expansion_type                       = Anisotropic
+
+    reference_temperature                = 23.0      # parameter to play
+    temperature_unit                     = Celsius
+    max_volumetric_expansion             = 1.125e-2  # parameter to play
+
+    characteristic_time                  = 100       # parameter to play
+    latency_time                         = 50        # parameter to play
+    characteristic_activation_energy     = 5400.0
+    latency_activation_energy            = 9400.0
+    stress_latency_factor                = 1.0
+
+    compressive_strength                 = 46.9e6
+    compressive_stress_exponent          = 0.0
+    expansion_stress_limit               = 8.0e6
+
+    tensile_strength                     = 3.45e6
+    tensile_retention_factor             = 1.0
+    tensile_absorption_factor            = 1.0
+
+    ASR_dependent_tensile_strength       = false
+    residual_tensile_strength_fraction   = 1.0
+
+    temperature                          = T
+    relative_humidity                    = rh
+    rh_exponent                          = 1.0
+    eigenstrain_name                     = asr_expansion
+    absolute_tolerance                   = 1e-10
+    output_iteration_info_on_error       = true
+  []
+
+  [thermal_strain_concrete]
+    type                                 = ComputeThermalExpansionEigenstrain
+    block                                = '1'
+    temperature                          = T
+    thermal_expansion_coeff              = 8.0e-6
+    stress_free_temperature              = 23.0
+    eigenstrain_name                     = thermal_expansion
+  []
+
+  [ASR_damage_concrete]
+    type                                 = ConcreteASRMicrocrackingDamage
+    residual_youngs_modulus_fraction     = 0.1
+    block                                = '1'
+  []
+
+  [./isotropic_plasticity]
+    type = IsotropicPlasticityStressUpdate
+    yield_stress = 285788383.2488647 # = sqrt(3)*165e6 = sqrt(3) * yield in shear
+    hardening_constant = 0.0
   [../]
-  [./strain]
-    type = ComputeIncrementalSmallStrain
-    block = '12'
-    displacements = 'disp_x disp_y disp_z'
+  [./stress_concrete]
+    type                                 = ComputeMultipleInelasticStress
+    block                                = '1'
+    # inelastic_models                     = 'creep'
+    inelastic_models                     = 'isotropic_plasticity'
+    damage_model                         = ASR_damage_concrete
   [../]
-  [./mc]
+
+  [truss]
+    type                                 = LinearElasticTruss
+    block                                = '3 4 5 6 7 8 9 10 11'
+    youngs_modulus                       = 2.14e11
+    temperature                          = T
+    thermal_expansion_coeff              = 11.3e-6
+    temperature_ref                      = 23.0
+  []
+
+  [elastic_soil]
+    type = ComputeIsotropicElasticityTensor
+    youngs_modulus = 200.e9
+    poissons_ratio = 0.3
+    block = '12'
+  []
+  [./mc_soil_stress]
     type = ComputeMultiPlasticityStress
     block = '12'
     ep_plastic_tolerance = 1E-11
@@ -895,14 +901,14 @@
     max_NR_iterations = 1000
     debug_fspb = crash
   [../]
-
 []
 
 [UserObjects]
   [./visco_update]
     type = LinearViscoelasticityManager
     block = '1'
-    viscoelastic_model = logcreep
+    # viscoelastic_model = logcreep
+    viscoelastic_model = burgers
   [../]
 
   [./mc_coh]
