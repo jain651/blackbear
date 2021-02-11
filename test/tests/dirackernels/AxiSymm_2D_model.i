@@ -4,16 +4,6 @@
   # block 1 surface 1
   # block 2 curve 5 to 8
   #
-<<<<<<< HEAD
-  # nodeset 1 add curve 1    # top
-  # nodeset 2 add curve 2    # left
-  # nodeset 3 add curve 3    # bot
-  # nodeset 4 add curve 4    # right
-[]
-
-[GlobalParams]
-  displacements = 'disp_x disp_z'
-=======
   # nodeset 1 add curve 1		# top
   # nodeset 2 add curve 2		# left
   # nodeset 3 add curve 3		# bot
@@ -22,7 +12,6 @@
 
 [GlobalParams]
   displacements = 'disp_r disp_z'
->>>>>>> in process of scaling to 1:1 scale
   volumetric_locking_correction = true
 []
 
@@ -34,9 +23,7 @@
   [./all]
     strain = FINITE
     add_variables = true
-<<<<<<< HEAD
     block = '1'
-    save_in = 'resid_x resid_z'
   [../]
 []
 
@@ -45,76 +32,21 @@
     block = '2'
     truss = true
     area = area_no6
-    displacements = 'disp_x disp_z'
-    generate_output = 'stress_xx stress_yy stress_zz stress_xy stress_yz stress_zx vonmises_stress hydrostatic_stress elastic_strain_xx elastic_strain_yy elastic_strain_zz strain_xx strain_yy strain_zz'
-    save_in = 'resid_x resid_z'
+    displacements = 'disp_r disp_z'
+    # save_in = 'resid_r resid_z'
   [../]
 []
 
 [Constraints/EqualValueEmbeddedConstraint/EqualValueEmbeddedConstraintAction]
   primary_block = '1'
   secondary_block = '2'
-  primary_variable = 'disp_x disp_z'
-  displacements = 'disp_x disp_z'
+  primary_variable = 'disp_r disp_z'
+  displacements = 'disp_r disp_z'
   penalty = 1e12
   formulation = penalty
 []
 
 [AuxVariables]
-  [./resid_x]
-  [../]
-  [./resid_y]
-  [../]
-  [./resid_z]
-  [../]
-  [./stress_xx]
-    order = CONSTANT
-    family = MONOMIAL
-  [../]
-  [./stress_xy]
-    order = CONSTANT
-    family = MONOMIAL
-  [../]
-  [./stress_xz]
-    order = CONSTANT
-    family = MONOMIAL
-  [../]
-  [./stress_yy]
-    order = CONSTANT
-    family = MONOMIAL
-  [../]
-  [./stress_yz]
-    order = CONSTANT
-    family = MONOMIAL
-  [../]
-  [./stress_zz]
-    order = CONSTANT
-    family = MONOMIAL
-  [../]
-  [./strain_xx]
-    order = CONSTANT
-    family = MONOMIAL
-  [../]
-  [./strain_xy]
-    order = CONSTANT
-    family = MONOMIAL
-  [../]
-  [./strain_xz]
-    order = CONSTANT
-    family = MONOMIAL
-  [../]
-  [./strain_yy]
-    order = CONSTANT
-    family = MONOMIAL
-  [../]
-  [./strain_yz]
-    order = CONSTANT
-    family = MONOMIAL
-  [../]
-  [./strain_zz]
-    order = CONSTANT
-    family = MONOMIAL
-  [../]
   [./temperature]
     initial_condition = 298.0
   [../]
@@ -125,180 +57,57 @@
   [./area_no6]
     order = CONSTANT
     family = MONOMIAL
-  [../]
-[]
-
-[AuxKernels]
-  [./stress_xx]
-    type = RankTwoAux
-    block = '1'
-    rank_two_tensor = stress
-    variable = stress_xx
-    index_i = 0
-    index_j = 0
-  [../]
-  [./stress_xy]
-    type = RankTwoAux
-    block = '1'
-    rank_two_tensor = stress
-    variable = stress_xy
-    index_i = 0
-    index_j = 1
-  [../]
-  [./stress_xz]
-    type = RankTwoAux
-    block = '1'
-    rank_two_tensor = stress
-    variable = stress_xz
-    index_i = 0
-    index_j = 2
-  [../]
-  [./stress_yy]
-    type = RankTwoAux
-    block = '1'
-    rank_two_tensor = stress
-    variable = stress_yy
-    index_i = 1
-    index_j = 1
-  [../]
-  [./stress_yz]
-    type = RankTwoAux
-    block = '1'
-    rank_two_tensor = stress
-    variable = stress_yz
-    index_i = 1
-    index_j = 2
-  [../]
-  [./stress_zz]
-    type = RankTwoAux
-    block = '1'
-    rank_two_tensor = stress
-    variable = stress_zz
-    index_i = 2
-    index_j = 2
-  [../]
-  [./strain_xx]
-    type = RankTwoAux
-    block = '1'
-    rank_two_tensor = elastic_strain
-    variable = strain_xx
-    index_i = 0
-    index_j = 0
-  [../]
-  [./strain_xy]
-    type = RankTwoAux
-    block = '1'
-    rank_two_tensor = elastic_strain
-    variable = strain_xy
-    index_i = 0
-    index_j = 1
-  [../]
-  [./strain_xz]
-    type = RankTwoAux
-    block = '1'
-    rank_two_tensor = elastic_strain
-    variable = strain_xz
-    index_i = 0
-    index_j = 2
-  [../]
-  [./strain_yy]
-    type = RankTwoAux
-    block = '1'
-    rank_two_tensor = elastic_strain
-    variable = strain_yy
-    index_i = 1
-    index_j = 1
-  [../]
-  [./strain_yz]
-    type = RankTwoAux
-    block = '1'
-    rank_two_tensor = elastic_strain
-    variable = strain_yz
-    index_i = 1
-    index_j = 2
-  [../]
-  [./strain_zz]
-    type = RankTwoAux
-    block = '1'
-    rank_two_tensor = elastic_strain
-    variable = strain_zz
-    index_i = 2
-    index_j = 2
-  [../]
-  [./area_no6]
-    type = ConstantAux
-    block = '2'
-    variable = area_no6
-    value = 284
-    execute_on = 'initial timestep_begin'
-  [../]
-  [./axial_stress]
-    type = MaterialRealAux
-    block = '2'
-    variable = axial_stress
-    property = axial_stress
   [../]
 []
 
 [DiracKernels]
-  [./hoop_reinforcement]
-    type = HoopReinforcement
-    variable = disp_x
-    disp_component = disp_x
-    yield_strength = 550
-    youngs_modulus = 2e3
-    area = 2840
-    points = '0.55 -0.075 0 0.55 +0.075 0 0.95 -0.075 0 0.95 +0.075 0'
-  [../]
-=======
+  [./point1]
+    type = ConstantPointSource
+    variable = disp_r
+    point = '0.55 -0.075'
+    value = -2.5 # P = 10
   [../]
 []
 
-[AuxVariables]
-  [./temperature]
-    initial_condition = 298.0
-  [../]
->>>>>>> in process of scaling to 1:1 scale
+[AuxKernels]
+  # [./resid_r]
+  # [../]
+  # [./resid_z]
+  # [../]
+
+ [./area_no6]
+   type = ConstantAux
+   block = '2'
+   variable = area_no6
+   value = 284e-6
+   execute_on = 'initial timestep_begin'
+ [../]
+ [./axial_stress]
+   type = MaterialRealAux
+   block = '2'
+   variable = axial_stress
+   property = axial_stress
+ [../]
 []
 
 [BCs]
   [./symmetry_x]
     type = DirichletBC
-<<<<<<< HEAD
-    variable = disp_x
-    value = 0
-    boundary = '4' # right
-=======
     variable = disp_r
     value = 0
     boundary = '4'
->>>>>>> in process of scaling to 1:1 scale
   [../]
   [./roller_z]
     type = DirichletBC
     variable = disp_z
     value = 0
-<<<<<<< HEAD
-    boundary = '3' # bottom
-=======
     boundary = '3'
->>>>>>> in process of scaling to 1:1 scale
   [../]
   [./top_load]
     type = FunctionDirichletBC
     variable = disp_z
     function = -0.001*t
-<<<<<<< HEAD
-    boundary = '1' # top
-  [../]
-  [./left_load]
-    type = FunctionDirichletBC
-    variable = disp_x
-    function = -0.001*t
-    boundary = '1' # top
-=======
     boundary = '1'
->>>>>>> in process of scaling to 1:1 scale
   [../]
 []
 
@@ -307,7 +116,6 @@
     type = ComputeIsotropicElasticityTensor
     youngs_modulus = 1e10
     poissons_ratio = 0.3
-<<<<<<< HEAD
     block = '1'
   [../]
   [./_elastic_strain]
@@ -322,12 +130,6 @@
     thermal_expansion_coeff              = 11.3e-6
     temperature_ref                      = 23.0
   []
-=======
-  [../]
-  [./_elastic_strain]
-    type = ComputeFiniteStrainElasticStress
-  [../]
->>>>>>> in process of scaling to 1:1 scale
 []
 
 [Executioner]
@@ -353,24 +155,18 @@
     variable = temperature
     boundary = '4'
   [../]
-<<<<<<< HEAD
   [./rebar_sxx]
     type = ElementIntegralMaterialProperty
     mat_prop = axial_stress
     block = '2'
   [../]
-=======
->>>>>>> in process of scaling to 1:1 scale
 []
 
 [Outputs]
   csv = true
   perf_graph = true
-<<<<<<< HEAD
   [./Exo]
     type = Exodus
     elemental_as_nodal = true
   [../]
-=======
->>>>>>> in process of scaling to 1:1 scale
 []
