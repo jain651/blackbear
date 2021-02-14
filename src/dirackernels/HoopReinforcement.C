@@ -17,71 +17,23 @@ InputParameters
 HoopReinforcement::validParams()
 {
   InputParameters params = DiracKernel::validParams();
-<<<<<<< HEAD
-  params.addRequiredParam<VariableName>("disp_component", "a component of strain tensor");
-  params.addRequiredParam<Real>("yield_strength", "Yield strength of the rebar");
-  params.addRequiredParam<Real>("youngs_modulus", "Elastic modulus of the rebar");
-  params.addRequiredParam<Real>("area", "Area of the rebar");
-  params.addParam<std::vector<Point>>("points", "The x,y,z coordinates of the point");
-=======
-  params.addRequiredParam<Real>("strain", "out of plane strain");
+  params.addRequiredParam<VariableName>("strain", "a component of strain tensor");
   params.addRequiredParam<Real>("yield_strength", "Yield strength of the rebar");
   params.addRequiredParam<Real>("elastic_modulus", "Elastic modulus of the rebar");
   params.addRequiredParam<Real>("area", "Area of the rebar");
   params.addRequiredParam<std::vector<Real>>("point", "The x,y,z coordinates of the point");
-  params.declareControllable("value");
->>>>>>> in process of scaling to 1:1 scale
   return params;
 }
 
 HoopReinforcement::HoopReinforcement(const InputParameters & parameters)
   : DiracKernel(parameters),
-<<<<<<< HEAD
-    _system(_subproblem.getSystem(getParam<VariableName>("disp_component"))),
-    _fy(getParam<Real>("yield_strength")),
-    _E(getParam<Real>("youngs_modulus")),
-    _A(getParam<Real>("area")),
-    _point_param(getParam<std::vector<Point>>("points"))
-{}
-
-void
-HoopReinforcement::addPoints()
-{
-  for (size_t num_pts = 0; num_pts < _point_param.size(); num_pts++)
-  {
-    if (_point_param[num_pts](0)==0.)
-      continue;
-    else
-      addPoint(_point_param[num_pts]);
-  }
-}
-
-Real
-HoopReinforcement::computeQpResidual()
-{
-  Real strain = _system.point_value(_var.number(), _current_point, false)/_current_point(0);
-  Real force;
-  if(strain>0.)
-    force = - fmin(_E*strain, _fy) * _A;
-  else
-    force = - fmax(_E*strain, _fy) * _A;
-  return -force;
-}
-
-Real
-HoopReinforcement::computeQpJacobian()
-{
-  Real strain = _system.point_value(_var.number(), _current_point, false)/_current_point(0);
-  Real dstrain = 1./_current_point(0);
-  Real dforce;
-  if(strain>0.)
-    dforce = - fmin(_E*dstrain, _fy) * _A;
-  else
-    dforce = - fmax(_E*dstrain, _fy) * _A;
-
-  return -dforce;
-=======
-    _eps(getParam<Real>("strain")),
+    _eps_number(_subproblem
+                    .getVariable(_tid,
+                                 parameters.get<VariableName>("strain"),
+                                 Moose::VarKindType::VAR_ANY,
+                                 Moose::VarFieldType::VAR_FIELD_STANDARD)
+                    .number()),
+    _system(_subproblem.getSystem(getParam<VariableName>("strain"))),
     _fy(getParam<Real>("yield_strength")),
     _E(getParam<Real>("elastic_modulus")),
     _A(getParam<Real>("area")),
@@ -107,7 +59,14 @@ HoopReinforcement::addPoints()
 Real
 HoopReinforcement::computeQpResidual()
 {
+  Real strain = _system.point_value(_eps_number, _point_param[0], false);
+  Real force;
+  if(strain>0.)
+    force = fmin(_E*strain, _fy) * _A;
+  else
+    force = fmax(_E*strain, _fy) * _A;
+
   //  This is negative because it's a forcing function that has been brought over to the left side
-  return -_test[_i][_qp] * fmin(_E * _eps, _fy) * _A;
->>>>>>> in process of scaling to 1:1 scale
+
+  return -_test[_i][_qp] * force;
 }

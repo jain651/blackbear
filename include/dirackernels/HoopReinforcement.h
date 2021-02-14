@@ -44,7 +44,12 @@ protected:
   std::vector<Point> _point_param;
 =======
 
-  const Real & _eps;
+  /// The variable number of the variable we are operating on
+  const unsigned int _eps_number;
+
+  /// A reference to the system containing the variable
+  const System & _system;
+
   const Real & _fy;
   const Real & _E;
   const Real & _A;
