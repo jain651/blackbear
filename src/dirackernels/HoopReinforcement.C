@@ -17,18 +17,23 @@ InputParameters
 HoopReinforcement::validParams()
 {
   InputParameters params = DiracKernel::validParams();
-  params.addRequiredParam<Real>("strain", "out of plane strain");
+  params.addRequiredParam<VariableName>("strain", "a component of strain tensor");
   params.addRequiredParam<Real>("yield_strength", "Yield strength of the rebar");
   params.addRequiredParam<Real>("elastic_modulus", "Elastic modulus of the rebar");
   params.addRequiredParam<Real>("area", "Area of the rebar");
   params.addRequiredParam<std::vector<Real>>("point", "The x,y,z coordinates of the point");
-  params.declareControllable("value");
   return params;
 }
 
 HoopReinforcement::HoopReinforcement(const InputParameters & parameters)
   : DiracKernel(parameters),
-    _eps(getParam<Real>("strain")),
+    _eps_number(_subproblem
+                    .getVariable(_tid,
+                                 parameters.get<VariableName>("strain"),
+                                 Moose::VarKindType::VAR_ANY,
+                                 Moose::VarFieldType::VAR_FIELD_STANDARD)
+                    .number()),
+    _system(_subproblem.getSystem(getParam<VariableName>("strain"))),
     _fy(getParam<Real>("yield_strength")),
     _E(getParam<Real>("elastic_modulus")),
     _A(getParam<Real>("area")),
@@ -54,6 +59,14 @@ HoopReinforcement::addPoints()
 Real
 HoopReinforcement::computeQpResidual()
 {
+  Real strain = _system.point_value(_eps_number, _point_param[0], false);
+  Real force;
+  if(strain>0.)
+    force = fmin(_E*strain, _fy) * _A;
+  else
+    force = fmax(_E*strain, _fy) * _A;
+
   //  This is negative because it's a forcing function that has been brought over to the left side
-  return -_test[_i][_qp] * fmin(_E * _eps, _fy) * _A;
+
+  return -_test[_i][_qp] * force;
 }

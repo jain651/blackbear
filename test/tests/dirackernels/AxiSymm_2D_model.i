@@ -11,7 +11,7 @@
 []
 
 [GlobalParams]
-  displacements = 'disp_r disp_z'
+  displacements = 'disp_x disp_z'
   volumetric_locking_correction = true
 []
 
@@ -32,7 +32,8 @@
     block = '2'
     truss = true
     area = area_no6
-    displacements = 'disp_r disp_z'
+    displacements = 'disp_x disp_z'
+    generate_output = 'stress_xx stress_yy stress_zz stress_xy stress_yz stress_zx vonmises_stress hydrostatic_stress elastic_strain_xx elastic_strain_yy elastic_strain_zz strain_xx strain_yy strain_zz'
     # save_in = 'resid_r resid_z'
   [../]
 []
@@ -40,13 +41,37 @@
 [Constraints/EqualValueEmbeddedConstraint/EqualValueEmbeddedConstraintAction]
   primary_block = '1'
   secondary_block = '2'
-  primary_variable = 'disp_r disp_z'
-  displacements = 'disp_r disp_z'
+  primary_variable = 'disp_x disp_z'
+  displacements = 'disp_x disp_z'
   penalty = 1e12
   formulation = penalty
 []
 
 [AuxVariables]
+  [./strain_xx]
+    order = CONSTANT
+    family = MONOMIAL
+  [../]
+  [./strain_xy]
+    order = CONSTANT
+    family = MONOMIAL
+  [../]
+  [./strain_xz]
+    order = CONSTANT
+    family = MONOMIAL
+  [../]
+  [./strain_yy]
+    order = CONSTANT
+    family = MONOMIAL
+  [../]
+  [./strain_yz]
+    order = CONSTANT
+    family = MONOMIAL
+  [../]
+  [./strain_zz]
+    order = CONSTANT
+    family = MONOMIAL
+  [../]
   [./temperature]
     initial_condition = 298.0
   [../]
@@ -60,40 +85,92 @@
   [../]
 []
 
-[DiracKernels]
-  [./point1]
-    type = ConstantPointSource
-    variable = disp_r
-    point = '0.55 -0.075'
-    value = -2.5 # P = 10
-  [../]
-[]
-
 [AuxKernels]
-  # [./resid_r]
+  # [./resid_x]
+  # [../]
+  # [./resid_y]
   # [../]
   # [./resid_z]
   # [../]
+  [./strain_xx]
+    type = RankTwoAux
+    block = '1'
+    rank_two_tensor = elastic_strain
+    variable = strain_xx
+    index_i = 0
+    index_j = 0
+  [../]
+  [./strain_xy]
+    type = RankTwoAux
+    block = '1'
+    rank_two_tensor = elastic_strain
+    variable = strain_xy
+    index_i = 0
+    index_j = 1
+  [../]
+  [./strain_xz]
+    type = RankTwoAux
+    block = '1'
+    rank_two_tensor = elastic_strain
+    variable = strain_xz
+    index_i = 0
+    index_j = 2
+  [../]
+  [./strain_yy]
+    type = RankTwoAux
+    block = '1'
+    rank_two_tensor = elastic_strain
+    variable = strain_yy
+    index_i = 1
+    index_j = 1
+  [../]
+  [./strain_yz]
+    type = RankTwoAux
+    block = '1'
+    rank_two_tensor = elastic_strain
+    variable = strain_yz
+    index_i = 1
+    index_j = 2
+  [../]
+  [./strain_zz]
+    type = RankTwoAux
+    block = '1'
+    rank_two_tensor = elastic_strain
+    variable = strain_zz
+    index_i = 2
+    index_j = 2
+  [../]
+  [./area_no6]
+    type = ConstantAux
+    block = '2'
+    variable = area_no6
+    value = 284e-6
+    execute_on = 'initial timestep_begin'
+  [../]
+  [./axial_stress]
+    type = MaterialRealAux
+    block = '2'
+    variable = axial_stress
+    property = axial_stress
+  [../]
+[]
 
- [./area_no6]
-   type = ConstantAux
-   block = '2'
-   variable = area_no6
-   value = 284e-6
-   execute_on = 'initial timestep_begin'
- [../]
- [./axial_stress]
-   type = MaterialRealAux
-   block = '2'
-   variable = axial_stress
-   property = axial_stress
- [../]
+[DiracKernels]
+  [./point_reinf_x]
+    type = HoopReinforcement
+    strain = strain_xx
+    yield_strength = 550e6
+    elastic_modulus = 2e11
+    area = 284e-6
+    variable = disp_x
+    point = '0.55 -0.075'
+  [../]
 []
 
 [BCs]
   [./symmetry_x]
     type = DirichletBC
-    variable = disp_r
+    variable = disp_x
     value = 0
     boundary = '4'
   [../]
