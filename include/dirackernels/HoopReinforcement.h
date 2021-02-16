@@ -39,7 +39,7 @@ protected:
   virtual void computeResidual() override;
 
   /// The variable number of the variable we are operating on
-  const unsigned int _eps_number;
+  const unsigned int _number;
 
   /// A reference to the system containing the variable
   const System & _system;
