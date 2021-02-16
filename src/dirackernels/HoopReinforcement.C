@@ -17,7 +17,7 @@ InputParameters
 HoopReinforcement::validParams()
 {
   InputParameters params = DiracKernel::validParams();
-  params.addRequiredParam<VariableName>("strain", "a component of strain tensor");
+  params.addRequiredParam<VariableName>("hoop_strain", "a component of strain tensor");
   params.addRequiredParam<Real>("yield_strength", "Yield strength of the rebar");
   params.addRequiredParam<Real>("elastic_modulus", "Elastic modulus of the rebar");
   params.addRequiredParam<Real>("area", "Area of the rebar");
@@ -28,13 +28,13 @@ HoopReinforcement::validParams()
 
 HoopReinforcement::HoopReinforcement(const InputParameters & parameters)
   : DiracKernel(parameters),
-    _eps_number(_subproblem
+    _number(_subproblem
                     .getVariable(_tid,
-                                 parameters.get<VariableName>("strain"),
+                                 parameters.get<VariableName>("hoop_strain"),
                                  Moose::VarKindType::VAR_ANY,
                                  Moose::VarFieldType::VAR_FIELD_STANDARD)
                     .number()),
-    _system(_subproblem.getSystem(getParam<VariableName>("strain"))),
+    _system(_subproblem.getSystem(getParam<VariableName>("hoop_strain"))),
     _fy(getParam<Real>("yield_strength")),
     _E(getParam<Real>("elastic_modulus")),
     _A(getParam<Real>("area")),
@@ -62,7 +62,7 @@ HoopReinforcement::computeResidual()
 
   for (size_t num_pts = 0; num_pts < _point_param.size(); num_pts++)
   {
-    strain = _system.point_value(_eps_number, _point_param[num_pts], false);
+    strain = _system.point_value(_number, _point_param[num_pts], false);
     if(strain>0.)
       force = fmin(_E*strain, _fy) * _A;
     else

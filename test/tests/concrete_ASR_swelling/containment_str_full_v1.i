@@ -275,12 +275,13 @@
    add_variables = true
    # base_name = 'concrete'
    eigenstrain_names = 'asr_expansion thermal_expansion'
+   # generate_output = 'stress_xx stress_yy stress_zz stress_xy stress_yz stress_zx vonmises_stress hydrostatic_stress elastic_strain_xx elastic_strain_yy elastic_strain_zz strain_xx strain_yy strain_zz'
    save_in = 'resid_x resid_y resid_z'
  [../]
  [./soil12]
    block = '12'
    strain = FINITE
-   add_variables = true
+   # add_variables = true
    # base_name = 'soil'
    # generate_output = 'stress_xx stress_yy stress_zz stress_xy stress_yz stress_zx vonmises_stress hydrostatic_stress elastic_strain_xx elastic_strain_yy elastic_strain_zz strain_xx strain_yy strain_zz'
    save_in = 'resid_x resid_y resid_z'
@@ -865,16 +866,10 @@
     block                                = '1'
   []
 
-  [./isotropic_plasticity]
-    type = IsotropicPlasticityStressUpdate
-    yield_stress = 285788383.2488647 # = sqrt(3)*165e6 = sqrt(3) * yield in shear
-    hardening_constant = 0.0
-  [../]
   [./stress_concrete]
     type                                 = ComputeMultipleInelasticStress
     block                                = '1'
-    # inelastic_models                     = 'creep'
-    inelastic_models                     = 'isotropic_plasticity'
+    inelastic_models                     = 'creep'
     damage_model                         = ASR_damage_concrete
   [../]
 
@@ -887,6 +882,14 @@
     temperature_ref                      = 23.0
   []
 
+  # [./elasticity_tensor]
+  #   type = ComputeElasticityTensor
+  #   block = '12'
+  #   # fill_method = symmetric_isotropic
+  #   youngs_modulus = 200.e9
+  #   poissons_ratio = 0.3
+  #   # C_ijkl = '0 5E9'
+  # [../]
   [elastic_soil]
     type = ComputeIsotropicElasticityTensor
     youngs_modulus = 200.e9
@@ -913,24 +916,20 @@
 
   [./mc_coh]
     type = TensorMechanicsHardeningConstant
-    block = '12'
     value = 10E6
   [../]
   [./mc_phi]
     type = TensorMechanicsHardeningConstant
-    block = '12'
     value = 40
     convert_to_radians = true
   [../]
   [./mc_psi]
     type = TensorMechanicsHardeningConstant
-    block = '12'
     value = 40
     convert_to_radians = true
   [../]
   [./mc]
     type = TensorMechanicsPlasticMohrCoulomb
-    block = '12'
     cohesion = mc_coh
     friction_angle = mc_phi
     dilation_angle = mc_psi
@@ -1096,7 +1095,6 @@
    type = ElementAverageValue
    variable = vonmises_stress
    block = '1'
-   base_name = 'concrete'
  [../]
 
  [./vstrain]

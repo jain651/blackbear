@@ -156,15 +156,17 @@
 []
 
 [DiracKernels]
-  [./point_reinf_x]
+  [./hoop_reinforcement]
     type = HoopReinforcement
-    strain = strain_yy
+    hoop_strain = strain_yy
     yield_strength = 550e6
-    elastic_modulus = 2e11
+    elastic_modulus = 2e14
     area = 284e-6
     variable = disp_x
     points = '0.55 -0.075 0
-              0.60 +0.075 0'
+              0.55 +0.075 0
+              0.95 -0.075 0
+              0.95 +0.075 0'
   [../]
 []
 
