@@ -21,7 +21,8 @@ HoopReinforcement::validParams()
   params.addRequiredParam<Real>("yield_strength", "Yield strength of the rebar");
   params.addRequiredParam<Real>("elastic_modulus", "Elastic modulus of the rebar");
   params.addRequiredParam<Real>("area", "Area of the rebar");
-  params.addRequiredParam<std::vector<Real>>("point", "The x,y,z coordinates of the point");
+  params.addRequiredParam<std::vector<Point>>("points", "The x,y,z coordinates of the point");
+  // params.addRequiredParam<std::vector<Real>>("point", "The x,y,z coordinates of the point");
   return params;
 }
 
@@ -37,36 +38,54 @@ HoopReinforcement::HoopReinforcement(const InputParameters & parameters)
     _fy(getParam<Real>("yield_strength")),
     _E(getParam<Real>("elastic_modulus")),
     _A(getParam<Real>("area")),
-    _point_param(getParam<std::vector<Real>>("point"))
+    _point_param(getParam<std::vector<Point>>("points"))
 {
-  _p(0) = _point_param[0];
-
-  if (_point_param.size() > 1)
-  {
-    _p(1) = _point_param[1];
-
-    if (_point_param.size() > 2)
-      _p(2) = _point_param[2];
-  }
 }
 
 void
 HoopReinforcement::addPoints()
 {
-  addPoint(_p);
+  for (size_t num_pts = 0; num_pts < _point_param.size(); num_pts++)
+    addPoint(_point_param[num_pts]);
 }
+
+void
+HoopReinforcement::computeResidual()
+{
+  prepareVectorTag(_assembly, _var.number());
+
+  const std::vector<unsigned int> * multiplicities =
+      _drop_duplicate_points ? NULL : &_local_dirac_kernel_info.getPoints()[_current_elem].second;
+  unsigned int local_qp = 0;
+  Real multiplicity = 1.0;
+  Real strain, force;
+
+  for (size_t num_pts = 0; num_pts < _point_param.size(); num_pts++)
+  {
+    strain = _system.point_value(_eps_number, _point_param[num_pts], false);
+    if(strain>0.)
+      force = fmin(_E*strain, _fy) * _A;
+    else
+      force = fmax(_E*strain, _fy) * _A;
+    out <<" force " << force << " pt "<< _point_param[num_pts](0) << " " << _point_param[num_pts](1) << " " << _point_param[num_pts](2) << std::endl;
+
+    for (_qp = 0; _qp < _qrule->n_points(); _qp++)
+    {
+      _current_point = _point_param[num_pts];
+      if (isActiveAtPoint(_current_elem, _current_point))
+      {
+        if (!_drop_duplicate_points)
+          multiplicity = (*multiplicities)[local_qp++];
+        for (_i = 0; _i < _test.size(); _i++)
+          _local_re(_i) += multiplicity * (-_test[_i][_qp] * force);
+      }
+    }
+  }
+}
+
 
 Real
 HoopReinforcement::computeQpResidual()
 {
-  Real strain = _system.point_value(_eps_number, _point_param[0], false);
-  Real force;
-  if(strain>0.)
-    force = fmin(_E*strain, _fy) * _A;
-  else
-    force = fmax(_E*strain, _fy) * _A;
-
-  //  This is negative because it's a forcing function that has been brought over to the left side
-
-  return -_test[_i][_qp] * force;
+  return 0.;
 }
