@@ -32,17 +32,11 @@ public:
 
 protected:
   virtual Real computeQpResidual() override;
-<<<<<<< HEAD
-  virtual Real computeQpJacobian() override;
 
-  /// A reference to the system containing the variable
-  const System & _system;
-
-  const Real & _fy;
-  const Real & _E;
-  const Real & _A;
-  std::vector<Point> _point_param;
-=======
+  /**
+   * Computes the residual for the current element.
+   */
+  virtual void computeResidual() override;
 
   /// The variable number of the variable we are operating on
   const unsigned int _eps_number;
@@ -53,7 +47,7 @@ protected:
   const Real & _fy;
   const Real & _E;
   const Real & _A;
-  std::vector<Real> _point_param;
-  Point _p;
->>>>>>> in process of scaling to 1:1 scale
+  std::vector<Point> _point_param;
+  // std::vector<Real> _point_param;
+  // Point _p;
 };
