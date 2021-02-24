@@ -4,10 +4,10 @@
   # block 1 surface 1
   # block 2 curve 5 to 8
   #
-  # nodeset 1 add curve 1		# top
-  # nodeset 2 add curve 2		# left
-  # nodeset 3 add curve 3		# bot
-  # nodeset 4 add curve 4		# right
+  # nodeset 1 add curve 1    # top
+  # nodeset 2 add curve 2    # left
+  # nodeset 3 add curve 3    # bot
+  # nodeset 4 add curve 4    # right
 []
 
 [GlobalParams]
@@ -24,6 +24,7 @@
     strain = FINITE
     add_variables = true
     block = '1'
+    save_in = 'resid_x resid_z'
   [../]
 []
 
@@ -34,7 +35,7 @@
     area = area_no6
     displacements = 'disp_x disp_z'
     generate_output = 'stress_xx stress_yy stress_zz stress_xy stress_yz stress_zx vonmises_stress hydrostatic_stress elastic_strain_xx elastic_strain_yy elastic_strain_zz strain_xx strain_yy strain_zz'
-    # save_in = 'resid_r resid_z'
+    save_in = 'resid_x resid_z'
   [../]
 []
 
@@ -48,6 +49,36 @@
 []
 
 [AuxVariables]
+  [./resid_x]
+  [../]
+  [./resid_y]
+  [../]
+  [./resid_z]
+  [../]
+  [./stress_xx]
+    order = CONSTANT
+    family = MONOMIAL
+  [../]
+  [./stress_xy]
+    order = CONSTANT
+    family = MONOMIAL
+  [../]
+  [./stress_xz]
+    order = CONSTANT
+    family = MONOMIAL
+  [../]
+  [./stress_yy]
+    order = CONSTANT
+    family = MONOMIAL
+  [../]
+  [./stress_yz]
+    order = CONSTANT
+    family = MONOMIAL
+  [../]
+  [./stress_zz]
+    order = CONSTANT
+    family = MONOMIAL
+  [../]
   [./strain_xx]
     order = CONSTANT
     family = MONOMIAL
@@ -86,12 +117,54 @@
 []
 
 [AuxKernels]
-  # [./resid_x]
-  # [../]
-  # [./resid_y]
-  # [../]
-  # [./resid_z]
-  # [../]
+  [./stress_xx]
+    type = RankTwoAux
+    block = '1'
+    rank_two_tensor = stress
+    variable = stress_xx
+    index_i = 0
+    index_j = 0
+  [../]
+  [./stress_xy]
+    type = RankTwoAux
+    block = '1'
+    rank_two_tensor = stress
+    variable = stress_xy
+    index_i = 0
+    index_j = 1
+  [../]
+  [./stress_xz]
+    type = RankTwoAux
+    block = '1'
+    rank_two_tensor = stress
+    variable = stress_xz
+    index_i = 0
+    index_j = 2
+  [../]
+  [./stress_yy]
+    type = RankTwoAux
+    block = '1'
+    rank_two_tensor = stress
+    variable = stress_yy
+    index_i = 1
+    index_j = 1
+  [../]
+  [./stress_yz]
+    type = RankTwoAux
+    block = '1'
+    rank_two_tensor = stress
+    variable = stress_yz
+    index_i = 1
+    index_j = 2
+  [../]
+  [./stress_zz]
+    type = RankTwoAux
+    block = '1'
+    rank_two_tensor = stress
+    variable = stress_zz
+    index_i = 2
+    index_j = 2
+  [../]
   [./strain_xx]
     type = RankTwoAux
     block = '1'
@@ -144,7 +217,7 @@
     type = ConstantAux
     block = '2'
     variable = area_no6
-    value = 284e-6
+    value = 284
     execute_on = 'initial timestep_begin'
   [../]
   [./axial_stress]
@@ -158,15 +231,13 @@
 [DiracKernels]
   [./hoop_reinforcement]
     type = HoopReinforcement
-    hoop_strain = strain_yy
-    yield_strength = 550e6
-    elastic_modulus = 2e14
-    area = 284e-6
     variable = disp_x
-    points = '0.55 -0.075 0
-              0.55 +0.075 0
-              0.95 -0.075 0
-              0.95 +0.075 0'
+    hoop_strain = strain_yy
+    yield_strength = 550
+    youngs_modulus = 2e3
+    area = 2840
+    # points_in_file = './gold/hoop_bar_location.csv'
+    points = '0.55 -0.075 0 0.55 +0.075 0 0.95 -0.075 0 0.95 +0.075 0'
   [../]
 []
 
@@ -175,19 +246,25 @@
     type = DirichletBC
     variable = disp_x
     value = 0
-    boundary = '4'
+    boundary = '4' # right
   [../]
   [./roller_z]
     type = DirichletBC
     variable = disp_z
     value = 0
-    boundary = '3'
+    boundary = '3' # bottom
   [../]
   [./top_load]
     type = FunctionDirichletBC
     variable = disp_z
     function = -0.001*t
-    boundary = '1'
+    boundary = '1' # top
+  [../]
+  [./left_load]
+    type = FunctionDirichletBC
+    variable = disp_x
+    function = -0.001*t
+    boundary = '1' # top
   [../]
 []
 

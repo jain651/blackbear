@@ -19,10 +19,12 @@ HoopReinforcement::validParams()
   InputParameters params = DiracKernel::validParams();
   params.addRequiredParam<VariableName>("hoop_strain", "a component of strain tensor");
   params.addRequiredParam<Real>("yield_strength", "Yield strength of the rebar");
-  params.addRequiredParam<Real>("elastic_modulus", "Elastic modulus of the rebar");
+  params.addRequiredParam<Real>("youngs_modulus", "Elastic modulus of the rebar");
   params.addRequiredParam<Real>("area", "Area of the rebar");
-  params.addRequiredParam<std::vector<Point>>("points", "The x,y,z coordinates of the point");
-  // params.addRequiredParam<std::vector<Real>>("point", "The x,y,z coordinates of the point");
+  // params.addParam<FileName>("points_in_file", "The x,y,z coordinates of the point in a file");
+  // params.addParam<MooseEnum>(
+        // "format", format, "Format of csv data file that is in either in columns or rows");
+  params.addParam<std::vector<Point>>("points", "The x,y,z coordinates of the point");
   return params;
 }
 
@@ -36,11 +38,28 @@ HoopReinforcement::HoopReinforcement(const InputParameters & parameters)
                     .number()),
     _system(_subproblem.getSystem(getParam<VariableName>("hoop_strain"))),
     _fy(getParam<Real>("yield_strength")),
-    _E(getParam<Real>("elastic_modulus")),
+    _E(getParam<Real>("youngs_modulus")),
     _A(getParam<Real>("area")),
     _point_param(getParam<std::vector<Point>>("points"))
+
 {
+  // if (!parameters.isParamValid("points") && !parameters.isParamValid("points_in_file"))
+  //   mooseError("Point location is not provided.");
+  // if(isParamValid("points"))
+  //   _point_param(getParam<std::vector<Point>>("points"));
+  // else(isParamValid("points_in_file"))
+  //   getPointFromFile();
 }
+
+// void
+// HoopReinforcement::getPointFromFile()
+// {
+//   // copied from PiecewiseTabularBase
+//   // Input parameters
+//   const FileName & data_file_name = getParam<FileName>("points_in_file");
+//   const MooseEnum & format = getParam<MooseEnum>("format");
+//
+// }
 
 void
 HoopReinforcement::addPoints()
@@ -49,43 +68,16 @@ HoopReinforcement::addPoints()
     addPoint(_point_param[num_pts]);
 }
 
-void
-HoopReinforcement::computeResidual()
-{
-  prepareVectorTag(_assembly, _var.number());
-
-  const std::vector<unsigned int> * multiplicities =
-      _drop_duplicate_points ? NULL : &_local_dirac_kernel_info.getPoints()[_current_elem].second;
-  unsigned int local_qp = 0;
-  Real multiplicity = 1.0;
-  Real strain, force;
-
-  for (size_t num_pts = 0; num_pts < _point_param.size(); num_pts++)
-  {
-    strain = _system.point_value(_number, _point_param[num_pts], false);
-    if(strain>0.)
-      force = fmin(_E*strain, _fy) * _A;
-    else
-      force = fmax(_E*strain, _fy) * _A;
-    out <<" force " << force << " pt "<< _point_param[num_pts](0) << " " << _point_param[num_pts](1) << " " << _point_param[num_pts](2) << std::endl;
-
-    for (_qp = 0; _qp < _qrule->n_points(); _qp++)
-    {
-      _current_point = _point_param[num_pts];
-      if (isActiveAtPoint(_current_elem, _current_point))
-      {
-        if (!_drop_duplicate_points)
-          multiplicity = (*multiplicities)[local_qp++];
-        for (_i = 0; _i < _test.size(); _i++)
-          _local_re(_i) += multiplicity * (-_test[_i][_qp] * force);
-      }
-    }
-  }
-}
-
-
 Real
 HoopReinforcement::computeQpResidual()
 {
-  return 0.;
+  Real strain = _system.point_value(_number, _current_point, false);
+  Real force;
+  if(strain>0.)
+    force = - fmin(_E*strain, _fy) * _A;
+  else
+    force = - fmax(_E*strain, _fy) * _A;
+  out <<" out force " << force << " pt "<< _current_point(0) << " " << _current_point(1) << " " << _current_point(2) << std::endl;
+
+  return -force;
 }
