@@ -33,11 +33,6 @@ public:
 protected:
   virtual Real computeQpResidual() override;
 
-  /**
-   * Computes the residual for the current element.
-   */
-  virtual void computeResidual() override;
-
   /// The variable number of the variable we are operating on
   const unsigned int _number;
 
@@ -48,6 +43,4 @@ protected:
   const Real & _E;
   const Real & _A;
   std::vector<Point> _point_param;
-  // std::vector<Real> _point_param;
-  // Point _p;
 };
