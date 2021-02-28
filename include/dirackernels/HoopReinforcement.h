@@ -32,9 +32,7 @@ public:
 
 protected:
   virtual Real computeQpResidual() override;
-
-  /// The variable number of the variable we are operating on
-  const unsigned int _number;
+  virtual Real computeQpJacobian() override;
 
   /// A reference to the system containing the variable
   const System & _system;
