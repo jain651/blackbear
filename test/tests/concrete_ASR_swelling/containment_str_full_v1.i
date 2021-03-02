@@ -967,7 +967,8 @@
    value = 26.6
  [../]
  [./RH_inside_zeroFlux]
-   type = NeumannBC
+   # type = NeumannBC
+   type = FVNeumannBC
    variable = rh
    boundary = '10'
    value = 0

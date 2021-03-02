@@ -1,5 +1,5 @@
 [GlobalParams]
-  displacements = 'disp_x disp_y'
+  displacements = 'disp_x disp_z'
   volumetric_locking_correction = true
 []
 
@@ -8,7 +8,7 @@
 []
 
 [Mesh]
-  file = gold/containment_structure/FullScale2DContainmentVessel_XY.e
+  file = gold/containment_structure/FullScale2D_no_rebar_ContainmentVessel.e
   construct_side_list_from_node_list = true
   # block 1 surface 1 2 8 10      # concrete structure
   # block 3 curve 1               # #6 mat: bottom grid
@@ -21,7 +21,7 @@
   # block 12 surface 11           # soil
   #
   # ## Displacement BC
-  # nodeset 1 add curve 57    # disp_y zero
+  # nodeset 1 add curve 57    # disp_z zero
   # nodeset 2 add curve 57    # disp_x zero
   # ## Temperature and RH BC
   # nodeset 10 add curve 41 48 35 29 61 54 58         # zero flux BC
@@ -73,7 +73,7 @@
 [AuxVariables]
   [./resid_x]
   [../]
-  [./resid_y]
+  [./resid_z]
   [../]
   [./ASR_ex]
     order = CONSTANT
@@ -163,34 +163,6 @@
     order = CONSTANT
     family = MONOMIAL
   []
-  [./area_long_no8]
-    order = CONSTANT
-    family = MONOMIAL
-  [../]
-  [./area_no3]
-    order = CONSTANT
-    family = MONOMIAL
-  [../]
-  [./area_no4]
-    order = CONSTANT
-    family = MONOMIAL
-  [../]
-  [./area_no5]
-    order = CONSTANT
-    family = MONOMIAL
-  [../]
-  [./area_no6]
-    order = CONSTANT
-    family = MONOMIAL
-  [../]
-  [./axial_stress]
-    order = CONSTANT
-    family = MONOMIAL
-  [../]
-  [./axial_strain]
-    order = CONSTANT
-    family = MONOMIAL
-  [../]
   [./mc_int]
     order = CONSTANT
     family = MONOMIAL
@@ -213,75 +185,14 @@
     strain = FINITE
     add_variables = true
     eigenstrain_names = 'asr_expansion thermal_expansion'
-    save_in = 'resid_x resid_y'
+    save_in = 'resid_x resid_z'
   [../]
   [./soil]
     block = '12'
     strain = FINITE
     add_variables = true
-    save_in = 'resid_x resid_y'
+    save_in = 'resid_x resid_z'
   [../]
-[]
-
-[Modules/TensorMechanics/LineElementMaster]
-  [./btm_grid]
-    block = '3'
-    truss = true
-    area = area_no6
-    displacements = 'disp_x disp_y'
-    save_in = 'resid_x resid_y'
-  [../]
-  [./top_grid]
-    block = '4'
-    truss = true
-    area = area_no5
-    displacements = 'disp_x disp_y'
-    save_in = 'resid_x resid_y'
-  [../]
-  [./top_radial]
-    block = '5'
-    truss = true
-    area = area_no5
-    displacements = 'disp_x disp_y'
-    save_in = 'resid_x resid_y'
-  [../]
-  [./shear_stirrups]
-    block = '7'
-    truss = true
-    area = area_no3
-    displacements = 'disp_x disp_y'
-    save_in = 'resid_x resid_y'
-  [../]
-  [./cyl_mat_connection]
-    block = '8'
-    truss = true
-    area = area_no4
-    displacements = 'disp_x disp_y'
-    save_in = 'resid_x resid_y'
-  [../]
-  [./cyl_dome_meridional]
-    block = '10'
-    truss = true
-    area = area_no4
-    displacements = 'disp_x disp_y'
-    save_in = 'resid_x resid_y'
-  [../]
-  [./cyl_mat_seismic]
-    block = '11'
-    truss = true
-    area = area_no4
-    displacements = 'disp_x disp_y'
-    save_in = 'resid_x resid_y'
-  [../]
-[]
-
-[Constraints/EqualValueEmbeddedConstraint/EqualValueEmbeddedConstraintAction]
-  primary_block = '1'
-  secondary_block = '3 4 5 7 8 10 11'
-  primary_variable = 'disp_x disp_y'
-  displacements = 'disp_x disp_y'
-  penalty = 1e12
-  formulation = penalty
 []
 
 # [DiracKernels]
@@ -356,17 +267,6 @@
     variable = rh
     temperature = T
     block = '1'
-  [../]
-  [./heat_dt]
-    type = TimeDerivative
-    variable = T
-    block = '3 4 5 7 8 10 11'
-  [../]
-  [./heat_conduction]
-    type = HeatConduction
-    variable = T
-    diffusion_coefficient = 53.0
-    block = '3 4 5 7 8 10 11'
   [../]
 []
 
@@ -522,41 +422,6 @@
     property = damage_index
     execute_on = timestep_end
   []
-
-  [./area_no3]
-    type = ConstantAux
-    block = '7'
-    variable = area_no3
-    value = 71e-6
-    execute_on = 'initial timestep_begin'
-  [../]
-  [./area_no4]
-    type = ConstantAux
-    block = '8 10 11'
-    variable = area_no4
-    value = 129e-6
-    execute_on = 'initial timestep_begin'
-  [../]
-  [./area_no5]
-    type = ConstantAux
-    block = '4 5'
-    variable = area_no5
-    value = 200e-6
-    execute_on = 'initial timestep_begin'
-  [../]
-  [./area_no6]
-    type = ConstantAux
-    block = '3'
-    variable = area_no6
-    value = 284e-6
-    execute_on = 'initial timestep_begin'
-  [../]
-  [./axial_stress]
-    type = MaterialRealAux
-    block = '3 4 5 7 8 10 11'
-    variable = axial_stress
-    property = axial_stress
-  [../]
 
   [./mc_int_auxk]
     type = MaterialStdVectorAux
@@ -751,21 +616,6 @@
    prop_values                          = 2231.0 # kg/m3
   [../]
 
-  [truss]
-    type                                 = LinearElasticTruss
-    block                                = '3 4 5 7 8 10 11'
-    youngs_modulus                       = 2.14e11
-    temperature                          = T
-    thermal_expansion_coeff              = 11.3e-6
-    temperature_ref                      = 23.0
-  []
-  [./density_steel]
-    type                                = GenericFunctionMaterial
-    block                               = '3 4 5 7 8 10 11'
-    prop_names                          = density
-    prop_values                         = 7850.0 # kg/m3
-  [../]
-
   [elastic_soil]
     type = ComputeIsotropicElasticityTensor
     youngs_modulus = 2e11
@@ -830,13 +680,13 @@
   [../]
   [./z_disp]
     type = DirichletBC
-    variable = disp_y
+    variable = disp_z
     boundary = '2 3'
     value    = 0.0
   [../]
   # [./pressure_soil_z]
   #   type = Pressure
-  #   variable = disp_y
+  #   variable = disp_z
   #   component = '2'
   #   boundary = '20'
   #   function = '-2.65*9.81*(21.692-z)' # rho_soil*g*h
@@ -1042,7 +892,7 @@
   [../]
   [./surfaceAvg_cyl_z]
     type = SideAverageValue
-    variable = 'disp_y'
+    variable = 'disp_z'
     boundary = '32'
   [../]
   [./surfaceAvg_dome_x]
@@ -1052,7 +902,7 @@
   [../]
   [./surfaceAvg_dome_z]
     type = SideAverageValue
-    variable = 'disp_y'
+    variable = 'disp_z'
     boundary = '31'
   [../]
   [./cyl_tang_x] # 500 mm gauge length (not the arc length)
@@ -1063,7 +913,7 @@
   [../]
   [./cyl_tang_y] # 500 mm gauge length (not the arc length)
     type = AveragePointSeparation
-    displacements = 'disp_y'
+    displacements = 'disp_z'
     first_point = '2.59     2.43     4.470935'
     last_point = '2.26     2.743     4.470935'
   [../]
@@ -1075,7 +925,7 @@
   [../]
   [./dome_tang_y]# 500 mm gauge length (not the arc length)
     type = AveragePointSeparation
-    displacements = 'disp_y'
+    displacements = 'disp_z'
     first_point = '2.374 1.924 9.0805'# basesd on hand calculation
     last_point = '1.924 2.374 9.0805'
   [../]

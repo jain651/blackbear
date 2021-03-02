@@ -21,9 +21,6 @@ HoopReinforcement::validParams()
   params.addRequiredParam<Real>("yield_strength", "Yield strength of the rebar");
   params.addRequiredParam<Real>("youngs_modulus", "Elastic modulus of the rebar");
   params.addRequiredParam<Real>("area", "Area of the rebar");
-  // params.addParam<FileName>("points_in_file", "The x,y,z coordinates of the point in a file");
-  // params.addParam<MooseEnum>(
-        // "format", format, "Format of csv data file that is in either in columns or rows");
   params.addParam<std::vector<Point>>("points", "The x,y,z coordinates of the point");
   return params;
 }
@@ -35,25 +32,7 @@ HoopReinforcement::HoopReinforcement(const InputParameters & parameters)
     _E(getParam<Real>("youngs_modulus")),
     _A(getParam<Real>("area")),
     _point_param(getParam<std::vector<Point>>("points"))
-
-{
-  // if (!parameters.isParamValid("points") && !parameters.isParamValid("points_in_file"))
-  //   mooseError("Point location is not provided.");
-  // if(isParamValid("points"))
-  //   _point_param(getParam<std::vector<Point>>("points"));
-  // else(isParamValid("points_in_file"))
-  //   getPointFromFile();
-}
-
-// void
-// HoopReinforcement::getPointFromFile()
-// {
-//   // copied from PiecewiseTabularBase
-//   // Input parameters
-//   const FileName & data_file_name = getParam<FileName>("points_in_file");
-//   const MooseEnum & format = getParam<MooseEnum>("format");
-//
-// }
+{}
 
 void
 HoopReinforcement::addPoints()
@@ -72,7 +51,6 @@ HoopReinforcement::computeQpResidual()
   else
     force = - fmax(_E*strain, _fy) * _A;
   // out <<" out force " << force << " pt "<< _current_point(0) << " " << _current_point(1) << " " << _current_point(2) << std::endl;
-
   return -force;
 }
 

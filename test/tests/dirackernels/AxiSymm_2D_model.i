@@ -232,11 +232,10 @@
   [./hoop_reinforcement]
     type = HoopReinforcement
     variable = disp_x
-    hoop_strain = strain_yy
+    disp_component = disp_x
     yield_strength = 550
     youngs_modulus = 2e3
     area = 2840
-    # points_in_file = './gold/hoop_bar_location.csv'
     points = '0.55 -0.075 0 0.55 +0.075 0 0.95 -0.075 0 0.95 +0.075 0'
   [../]
 []
