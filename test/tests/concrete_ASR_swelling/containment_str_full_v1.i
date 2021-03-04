@@ -25,205 +25,204 @@
 # Poisson's ratio  - 0.3
 # Yield stress - 66.6 ksi (459 MPa)
 
-
 [GlobalParams]
- displacements = 'disp_x disp_y disp_z'
- volumetric_locking_correction = true
+  displacements = 'disp_x disp_y disp_z'
+  volumetric_locking_correction = true
 []
 
 [Mesh]
- file = gold/containment_structure/FullScaleContainmentVessel.e
- construct_side_list_from_node_list = true
-# block 1 volume 8 to 12           # concrete structure
-# #block 2 surface 103 85 95          # steel liner
-# block 3 curve 40 to 115           # #6 mat: bottom grid
-# block 4 curve 143 to 194          # #5 mat: top grid
-# block 5 curve 195 to 243           # #5 mat: top radial bars
-# block 6 curve 244 to 258           # #6 mat: top circumfrential bars
-# block 7 curve 259 to 271 525 to 1100        # #3 mat: shear stirrups
-# block 8 curve 272 to 276 1101 to 1340      # #4 cylinear-mat connection bars
-# block 9 curve 277 to 516           # #4 cylinear: long bars (layer 1 3 4 6)
-# block 10 curve 517 to 522 1341 to 1436 1603 to 1698    # #4 cylinear-dome: meridional bars (layer 2 5)
-# block 11 curve 1712 to 1782 1966 to 2430      # #4 cylinear-dome: seismic bars (layer 7 8)
-# block 12 volume 22             # soil
-#
-# ## Displacement BC
-# nodeset 1 add surface 94 42 74 114 138       # disp_y zero
-# nodeset 2 add surface 111 71 101 81 91 135   # disp_x zero
-# nodeset 2 add curve 1934 1904 1920
-# nodeset 3 add surface 139       # disp_z zero (soil block bottom)
-# # nodeset 3 add vertex 3653 3655 3618     # disp_z zero
-# # nodeset 3 add vertex 3650 3685 3687    # disp_z zero
-# ## Temperature and RH BC
-# nodeset 10 add surface 145 85 95      # inner surfaces (no flux BC)
-# nodeset 11 add surface 83 72 93 147 149 112 115  # outer surface for above ground BC
-# nodeset 11 remove node with z_coord < {grnd_lvl}
-# nodeset 12 add surface 83 72 93 147 149 112 115  # outer surface for underground BC first 2" depth (unscaled dimension)
-# nodeset 12 remove node with z_coord > {grnd_lvl}
-# nodeset 12 remove node with z_coord < {grnd_lvl-2*0.0254/6*scale}
-# nodeset 13 add surface 83 72 93 147 149 112 115  # outer surface for underground BC between 2" and 4" depth (unscaled dimension)
-# nodeset 13 remove node with z_coord > {grnd_lvl-2*0.0254/6*scale}
-# nodeset 13 remove node with z_coord < {grnd_lvl-5*0.0254/6*scale}
-# nodeset 14 add surface 83 72 93 147 149 112 115  # outer surface for underground BC between 4" and 8" depth (unscaled dimension)
-# nodeset 14 remove node with z_coord > {grnd_lvl-4*0.0254/6*scale}
-# nodeset 14 remove node with z_coord < {grnd_lvl-8*0.0254/6*scale}
-# nodeset 15 add surface 83 72 93 147 149 112 115  # outer surface for underground BC between 8" and 20" depth (unscaled dimension)
-# nodeset 15 remove node with z_coord > {grnd_lvl-8*0.0254/6*scale}
-# nodeset 15 remove node with z_coord < {grnd_lvl-20*0.0254/6*scale}
-# nodeset 16 add surface 83 72 93 147 149 112 115  # outer surface for underground BC between 20" depth and water table (unscaled dimension)
-# nodeset 16 remove node with z_coord > {grnd_lvl-20*0.0254/6*scale}
-# nodeset 16 remove node with z_coord < {water_table}
-# nodeset 17 add surface 83 72 93 147 149 112 115  # outer surface for underground BC below water table (unscaled dimension)
-# nodeset 17 remove node with z_coord > {water_table}
-# ## Soil pressure BC
-# nodeset 20 add surface 147 149 151      # surface for vertical pressure from soil above
-# nodeset 20 remove node with z_coord > {grnd_lvl}
-# nodeset 21 add surface 83 72 112 136      # surface for horizontal pressure from soil on the side
-# nodeset 21 remove node with z_coord > {grnd_lvl}
-# ## Measurement locations
-# nodeset 30 add surface 93 83 72 112      # outer surface for whole structure
-# nodeset 31 add surface 93        # dome outer surface
-# nodeset 32 add surface 83        # cylinder outer surface
-# nodeset 33 add surface 72        # base outer surface
-# nodeset 34 add surface 112        # base mat outer surface
+  file = gold/containment_structure/FullScaleContainmentVessel.e
+  construct_side_list_from_node_list = true
+  # block 1 volume 8 to 12           # concrete structure
+  # #block 2 surface 103 85 95          # steel liner
+  # block 3 curve 40 to 115           # #6 mat: bottom grid
+  # block 4 curve 143 to 194          # #5 mat: top grid
+  # block 5 curve 195 to 243           # #5 mat: top radial bars
+  # block 6 curve 244 to 258           # #6 mat: top circumfrential bars
+  # block 7 curve 259 to 271 525 to 1100        # #3 mat: shear stirrups
+  # block 8 curve 272 to 276 1101 to 1340      # #4 cylinear-mat connection bars
+  # block 9 curve 277 to 516           # #4 cylinear: long bars (layer 1 3 4 6)
+  # block 10 curve 517 to 522 1341 to 1436 1603 to 1698    # #4 cylinear-dome: meridional bars (layer 2 5)
+  # block 11 curve 1712 to 1782 1966 to 2430      # #4 cylinear-dome: seismic bars (layer 7 8)
+  # block 12 volume 22             # soil
+  #
+  # ## Displacement BC
+  # nodeset 1 add surface 94 42 74 114 138       # disp_y zero
+  # nodeset 2 add surface 111 71 101 81 91 135   # disp_x zero
+  # nodeset 2 add curve 1934 1904 1920
+  # nodeset 3 add surface 139       # disp_z zero (soil block bottom)
+  # # nodeset 3 add vertex 3653 3655 3618     # disp_z zero
+  # # nodeset 3 add vertex 3650 3685 3687    # disp_z zero
+  # ## Temperature and RH BC
+  # nodeset 10 add surface 145 85 95      # inner surfaces (no flux BC)
+  # nodeset 11 add surface 83 72 93 147 149 112 115  # outer surface for above ground BC
+  # nodeset 11 remove node with z_coord < {grnd_lvl}
+  # nodeset 12 add surface 83 72 93 147 149 112 115  # outer surface for underground BC first 2" depth (unscaled dimension)
+  # nodeset 12 remove node with z_coord > {grnd_lvl}
+  # nodeset 12 remove node with z_coord < {grnd_lvl-2*0.0254/6*scale}
+  # nodeset 13 add surface 83 72 93 147 149 112 115  # outer surface for underground BC between 2" and 4" depth (unscaled dimension)
+  # nodeset 13 remove node with z_coord > {grnd_lvl-2*0.0254/6*scale}
+  # nodeset 13 remove node with z_coord < {grnd_lvl-5*0.0254/6*scale}
+  # nodeset 14 add surface 83 72 93 147 149 112 115  # outer surface for underground BC between 4" and 8" depth (unscaled dimension)
+  # nodeset 14 remove node with z_coord > {grnd_lvl-4*0.0254/6*scale}
+  # nodeset 14 remove node with z_coord < {grnd_lvl-8*0.0254/6*scale}
+  # nodeset 15 add surface 83 72 93 147 149 112 115  # outer surface for underground BC between 8" and 20" depth (unscaled dimension)
+  # nodeset 15 remove node with z_coord > {grnd_lvl-8*0.0254/6*scale}
+  # nodeset 15 remove node with z_coord < {grnd_lvl-20*0.0254/6*scale}
+  # nodeset 16 add surface 83 72 93 147 149 112 115  # outer surface for underground BC between 20" depth and water table (unscaled dimension)
+  # nodeset 16 remove node with z_coord > {grnd_lvl-20*0.0254/6*scale}
+  # nodeset 16 remove node with z_coord < {water_table}
+  # nodeset 17 add surface 83 72 93 147 149 112 115  # outer surface for underground BC below water table (unscaled dimension)
+  # nodeset 17 remove node with z_coord > {water_table}
+  # ## Soil pressure BC
+  # nodeset 20 add surface 147 149 151      # surface for vertical pressure from soil above
+  # nodeset 20 remove node with z_coord > {grnd_lvl}
+  # nodeset 21 add surface 83 72 112 136      # surface for horizontal pressure from soil on the side
+  # nodeset 21 remove node with z_coord > {grnd_lvl}
+  # ## Measurement locations
+  # nodeset 30 add surface 93 83 72 112      # outer surface for whole structure
+  # nodeset 31 add surface 93        # dome outer surface
+  # nodeset 32 add surface 83        # cylinder outer surface
+  # nodeset 33 add surface 72        # base outer surface
+  # nodeset 34 add surface 112        # base mat outer surface
 []
 
 [Variables]
- [./T]
-   order = FIRST
-   family = LAGRANGE
-   initial_condition = 0.0
- [../]
- [./rh]
-   order = FIRST
-   family = LAGRANGE
-   initial_condition = 0.6
- [../]
+  [./T]
+    order = FIRST
+    family = LAGRANGE
+    initial_condition = 0.0
+  [../]
+  [./rh]
+    order = FIRST
+    family = LAGRANGE
+    initial_condition = 0.6
+  [../]
 []
 
 [AuxVariables]
- [./resid_x]
- [../]
- [./resid_y]
- [../]
- [./resid_z]
- [../]
- [./ASR_ex]
-   order = CONSTANT
-   family = MONOMIAL
-   block = '1'
- [../]
- [./ASR_vstrain]
-   order = CONSTANT
-   family = MONOMIAL
-   block = '1'
- [../]
- [./ASR_strain_xx]
-   order = CONSTANT
-   family = MONOMIAL
-   block = '1'
- [../]
- [./ASR_strain_yy]
-   order = CONSTANT
-   family = MONOMIAL
-   block = '1'
- [../]
- [./ASR_strain_zz]
-   order = CONSTANT
-   family = MONOMIAL
-   block = '1'
- [../]
- [./ASR_strain_xy]
-   order = CONSTANT
-   family = MONOMIAL
-   block = '1'
- [../]
- [./ASR_strain_yz]
-   order = CONSTANT
-   family = MONOMIAL
-   block = '1'
- [../]
- [./ASR_strain_zx]
-   order = CONSTANT
-   family = MONOMIAL
-   block = '1'
- [../]
- [./volumetric_strain]
-   order = CONSTANT
-   family = MONOMIAL
-   block = '1'
- [../]
- [./thermal_strain_xx]
-   order = CONSTANT
-   family = MONOMIAL
-   block = '1'
- [../]
- [./thermal_strain_yy]
-   order = CONSTANT
-   family = MONOMIAL
-   block = '1'
- [../]
- [./thermal_strain_zz]
-   order = CONSTANT
-   family = MONOMIAL
-   block = '1'
- [../]
- [./thermal_conductivity]
-   order = CONSTANT
-   family = Monomial
- [../]
- [./thermal_capacity]
-   order = CONSTANT
-   family = Monomial
- [../]
- [./moisture_capacity]
-   order = CONSTANT
-   family = Monomial
- [../]
- [./humidity_diffusivity]
-   order = CONSTANT
-   family = Monomial
- [../]
- [./water_content]
-   order = CONSTANT
-   family = Monomial
- [../]
- [./water_hydrated]
-   order = CONSTANT
-   family = Monomial
- [../]
- [damage_index]
-   order = CONSTANT
-   family = MONOMIAL
- []
- [./area_long_no8]
-   order = CONSTANT
-   family = MONOMIAL
- [../]
- [./area_no3]
-   order = CONSTANT
-   family = MONOMIAL
- [../]
- [./area_no4]
-   order = CONSTANT
-   family = MONOMIAL
- [../]
- [./area_no5]
-   order = CONSTANT
-   family = MONOMIAL
- [../]
- [./area_no6]
-   order = CONSTANT
-   family = MONOMIAL
- [../]
- [./axial_stress]
-   order = CONSTANT
-   family = MONOMIAL
- [../]
- [./axial_strain]
-   order = CONSTANT
-   family = MONOMIAL
- [../]
+  [./resid_x]
+  [../]
+  [./resid_y]
+  [../]
+  [./resid_z]
+  [../]
+  [./ASR_ex]
+    order = CONSTANT
+    family = MONOMIAL
+    block = '1'
+  [../]
+  [./ASR_vstrain]
+    order = CONSTANT
+    family = MONOMIAL
+    block = '1'
+  [../]
+  [./ASR_strain_xx]
+    order = CONSTANT
+    family = MONOMIAL
+    block = '1'
+  [../]
+  [./ASR_strain_yy]
+    order = CONSTANT
+    family = MONOMIAL
+    block = '1'
+  [../]
+  [./ASR_strain_zz]
+    order = CONSTANT
+    family = MONOMIAL
+    block = '1'
+  [../]
+  [./ASR_strain_xy]
+    order = CONSTANT
+    family = MONOMIAL
+    block = '1'
+  [../]
+  [./ASR_strain_yz]
+    order = CONSTANT
+    family = MONOMIAL
+    block = '1'
+  [../]
+  [./ASR_strain_zx]
+    order = CONSTANT
+    family = MONOMIAL
+    block = '1'
+  [../]
+  [./volumetric_strain]
+    order = CONSTANT
+    family = MONOMIAL
+    block = '1'
+  [../]
+  [./thermal_strain_xx]
+    order = CONSTANT
+    family = MONOMIAL
+    block = '1'
+  [../]
+  [./thermal_strain_yy]
+    order = CONSTANT
+    family = MONOMIAL
+    block = '1'
+  [../]
+  [./thermal_strain_zz]
+    order = CONSTANT
+    family = MONOMIAL
+    block = '1'
+  [../]
+  [./thermal_conductivity]
+    order = CONSTANT
+    family = Monomial
+  [../]
+  [./thermal_capacity]
+    order = CONSTANT
+    family = Monomial
+  [../]
+  [./moisture_capacity]
+    order = CONSTANT
+    family = Monomial
+  [../]
+  [./humidity_diffusivity]
+    order = CONSTANT
+    family = Monomial
+  [../]
+  [./water_content]
+    order = CONSTANT
+    family = Monomial
+  [../]
+  [./water_hydrated]
+    order = CONSTANT
+    family = Monomial
+  [../]
+  [damage_index]
+    order = CONSTANT
+    family = MONOMIAL
+  []
+  [./area_long_no8]
+    order = CONSTANT
+    family = MONOMIAL
+  [../]
+  [./area_no3]
+    order = CONSTANT
+    family = MONOMIAL
+  [../]
+  [./area_no4]
+    order = CONSTANT
+    family = MONOMIAL
+  [../]
+  [./area_no5]
+    order = CONSTANT
+    family = MONOMIAL
+  [../]
+  [./area_no6]
+    order = CONSTANT
+    family = MONOMIAL
+  [../]
+  [./axial_stress]
+    order = CONSTANT
+    family = MONOMIAL
+  [../]
+  [./axial_strain]
+    order = CONSTANT
+    family = MONOMIAL
+  [../]
 
   [./stress_xx_soil]
     order = CONSTANT
@@ -265,93 +264,107 @@
     family = MONOMIAL
     block = '12'
   [../]
+  [./penetration]
+  [../]
+  [./diag_saved_x]
+  [../]
+  [./diag_saved_y]
+  [../]
+  [./inc_slip_x]
+  [../]
+  [./inc_slip_y]
+  [../]
+  [./accum_slip_x]
+  [../]
+  [./accum_slip_y]
+  [../]
 []
 
 [Modules/TensorMechanics/Master]
- generate_output = 'stress_xx stress_yy stress_zz stress_xy stress_yz stress_zx vonmises_stress hydrostatic_stress elastic_strain_xx elastic_strain_yy elastic_strain_zz strain_xx strain_yy strain_zz'
- [./concrete]
-   block = '1'
-   strain = FINITE
-   add_variables = true
-   # base_name = 'concrete'
-   eigenstrain_names = 'asr_expansion thermal_expansion'
-   # generate_output = 'stress_xx stress_yy stress_zz stress_xy stress_yz stress_zx vonmises_stress hydrostatic_stress elastic_strain_xx elastic_strain_yy elastic_strain_zz strain_xx strain_yy strain_zz'
-   save_in = 'resid_x resid_y resid_z'
- [../]
- [./soil12]
-   block = '12'
-   strain = FINITE
-   # add_variables = true
-   # base_name = 'soil'
-   # generate_output = 'stress_xx stress_yy stress_zz stress_xy stress_yz stress_zx vonmises_stress hydrostatic_stress elastic_strain_xx elastic_strain_yy elastic_strain_zz strain_xx strain_yy strain_zz'
-   save_in = 'resid_x resid_y resid_z'
- [../]
+  generate_output = 'stress_xx stress_yy stress_zz stress_xy stress_yz stress_zx vonmises_stress hydrostatic_stress elastic_strain_xx elastic_strain_yy elastic_strain_zz strain_xx strain_yy strain_zz'
+  [./concrete]
+    block = '1'
+    strain = FINITE
+    add_variables = true
+    # base_name = 'concrete'
+    eigenstrain_names = 'asr_expansion thermal_expansion'
+    # generate_output = 'stress_xx stress_yy stress_zz stress_xy stress_yz stress_zx vonmises_stress hydrostatic_stress elastic_strain_xx elastic_strain_yy elastic_strain_zz strain_xx strain_yy strain_zz'
+    save_in = 'resid_x resid_y resid_z'
+  [../]
+  [./soil]
+    block = '12'
+    strain = FINITE
+    # add_variables = true
+    # base_name = 'soil'
+    # generate_output = 'stress_xx stress_yy stress_zz stress_xy stress_yz stress_zx vonmises_stress hydrostatic_stress elastic_strain_xx elastic_strain_yy elastic_strain_zz strain_xx strain_yy strain_zz'
+    save_in = 'resid_x resid_y resid_z'
+  [../]
 []
 
 [Modules/TensorMechanics/LineElementMaster]
- [./btm_grid]
-   block = '3'
-   truss = true
-   area = area_no6
-   displacements = 'disp_x disp_y disp_z'
-   save_in = 'resid_x resid_y resid_z'
- [../]
- [./top_grid]
-   block = '4'
-   truss = true
-   area = area_no5
-   displacements = 'disp_x disp_y disp_z'
-   save_in = 'resid_x resid_y resid_z'
- [../]
- [./top_radial]
-   block = '5'
-   truss = true
-   area = area_no5
-   displacements = 'disp_x disp_y disp_z'
-   save_in = 'resid_x resid_y resid_z'
- [../]
- [./top_circum]
-   block = '6'
-   truss = true
-   area = area_no6
-   displacements = 'disp_x disp_y disp_z'
-   save_in = 'resid_x resid_y resid_z'
- [../]
- [./shear_stirrups]
-   block = '7'
-   truss = true
-   area = area_no3
-   displacements = 'disp_x disp_y disp_z'
-   save_in = 'resid_x resid_y resid_z'
- [../]
- [./cyl_mat_connection]
-   block = '8'
-   truss = true
-   area = area_no4
-   displacements = 'disp_x disp_y disp_z'
-   save_in = 'resid_x resid_y resid_z'
- [../]
- [./cyl_long]
-   block = '9'
-   truss = true
-   area = area_no4
-   displacements = 'disp_x disp_y disp_z'
-   save_in = 'resid_x resid_y resid_z'
- [../]
- [./cyl_dome_meridional]
-   block = '10'
-   truss = true
-   area = area_no4
-   displacements = 'disp_x disp_y disp_z'
-   save_in = 'resid_x resid_y resid_z'
- [../]
- [./cyl_mat_seismic]
-   block = '11'
-   truss = true
-   area = area_no4
-   displacements = 'disp_x disp_y disp_z'
-   save_in = 'resid_x resid_y resid_z'
- [../]
+  [./btm_grid]
+    block = '3'
+    truss = true
+    area = area_no6
+    displacements = 'disp_x disp_y disp_z'
+    save_in = 'resid_x resid_y resid_z'
+  [../]
+  [./top_grid]
+    block = '4'
+    truss = true
+    area = area_no5
+    displacements = 'disp_x disp_y disp_z'
+    save_in = 'resid_x resid_y resid_z'
+  [../]
+  [./top_radial]
+    block = '5'
+    truss = true
+    area = area_no5
+    displacements = 'disp_x disp_y disp_z'
+    save_in = 'resid_x resid_y resid_z'
+  [../]
+  [./top_circum]
+    block = '6'
+    truss = true
+    area = area_no6
+    displacements = 'disp_x disp_y disp_z'
+    save_in = 'resid_x resid_y resid_z'
+  [../]
+  [./shear_stirrups]
+    block = '7'
+    truss = true
+    area = area_no3
+    displacements = 'disp_x disp_y disp_z'
+    save_in = 'resid_x resid_y resid_z'
+  [../]
+  [./cyl_mat_connection]
+    block = '8'
+    truss = true
+    area = area_no4
+    displacements = 'disp_x disp_y disp_z'
+    save_in = 'resid_x resid_y resid_z'
+  [../]
+  [./cyl_long]
+    block = '9'
+    truss = true
+    area = area_no4
+    displacements = 'disp_x disp_y disp_z'
+    save_in = 'resid_x resid_y resid_z'
+  [../]
+  [./cyl_dome_meridional]
+    block = '10'
+    truss = true
+    area = area_no4
+    displacements = 'disp_x disp_y disp_z'
+    save_in = 'resid_x resid_y resid_z'
+  [../]
+  [./cyl_mat_seismic]
+    block = '11'
+    truss = true
+    area = area_no4
+    displacements = 'disp_x disp_y disp_z'
+    save_in = 'resid_x resid_y resid_z'
+  [../]
 []
 
 [Constraints/EqualValueEmbeddedConstraint/EqualValueEmbeddedConstraintAction]
@@ -363,85 +376,79 @@
   formulation = penalty
 []
 
+[Contact]
+  [./leftright]
+    primary = '4'
+    secondary = '5'
+    model = coulomb
+    friction_coefficient = '0.25'
+  [../]
+[]
+
 [Kernels]
- [./T_td]
-   type     = ConcreteThermalTimeIntegration
-   variable = T
-   block = '1'
- [../]
- [./T_diff]
-   type     = ConcreteThermalConduction
-   variable = T
-   block = '1'
- [../]
+  [./T_td]
+    type     = ConcreteThermalTimeIntegration
+    variable = T
+    block = '1'
+    [../]
+  [./T_diff]
+    type     = ConcreteThermalConduction
+    variable = T
+    block = '1'
+    [../]
+  [./T_conv]
+    type     = ConcreteThermalConvection
+    variable = T
+    relative_humidity = rh
+    block = '1'
+  [../]
+  [./T_adsorption]
+    type     = ConcreteLatentHeat
+    variable = T
+    H = rh
+    block = '1'
+  [../]
+  [./rh_td]
+    type     = ConcreteMoistureTimeIntegration
+    variable = rh
+    block = '1'
+    [../]
+  [./rh_diff]
+    type     = ConcreteMoistureDiffusion
+    variable = rh
+    temperature = T
+    block = '1'
+  [../]
 
- [./T_conv]
-   type     = ConcreteThermalConvection
-   variable = T
-   relative_humidity = rh
-   block = '1'
- [../]
-
- [./T_adsorption]
-   type     = ConcreteLatentHeat
-   variable = T
-   H = rh
-   block = '1'
- [../]
-
- [./rh_td]
-   type     = ConcreteMoistureTimeIntegration
-   variable = rh
-   block = '1'
- [../]
-
- [./rh_diff]
-   type     = ConcreteMoistureDiffusion
-   variable = rh
-   temperature = T
-   block = '1'
- [../]
- [./heat_dt]
-   type = TimeDerivative
-   variable = T
-   block = '3 4 5 6 7 8 9 10 11'
- [../]
- [./heat_conduction]
-   type = HeatConduction
-   variable = T
-   diffusion_coefficient = 53.0
-   block = '3 4 5 6 7 8 9 10 11'
- [../]
-  # [./gravity_z]
-  #   type = Gravity
-  #   variable = disp_z
-  #   value = -9.81
-  # [../]
-
-  # [./TensorMechanics]
-  #   # type =
-  #   block = '12'
-  #   displacements = 'disp_x disp_y disp_z'
-  # [../]
+  [./heat_dt]
+    type = TimeDerivative
+    variable = T
+    block = '3 4 5 6 7 8 9 10 11'
+  [../]
+  [./heat_conduction]
+    type = HeatConduction
+    variable = T
+    diffusion_coefficient = 53.0
+    block = '3 4 5 6 7 8 9 10 11'
+  [../]
 []
 
 [AuxKernels]
- [./ASR_ex]
+  [./ASR_ex]
    type = MaterialRealAux
    variable = ASR_ex
    block = '1'
    property = ASR_extent
    execute_on = 'timestep_end'
- [../]
- [./ASR_vstrain]
+  [../]
+  [./ASR_vstrain]
    type = MaterialRealAux
    block = '1'
    variable = ASR_vstrain
    property = ASR_volumetric_strain
    execute_on = 'timestep_end'
- [../]
-
- [./ASR_strain_xx]
+  [../]
+  [./ASR_strain_xx]
    type = RankTwoAux
    block = '1'
    rank_two_tensor = asr_expansion
@@ -449,8 +456,8 @@
    index_i = 0
    index_j = 0
    execute_on = 'timestep_end'
- [../]
- [./ASR_strain_yy]
+  [../]
+  [./ASR_strain_yy]
    type = RankTwoAux
    block = '1'
    rank_two_tensor = asr_expansion
@@ -458,8 +465,8 @@
    index_i = 1
    index_j = 1
    execute_on = 'timestep_end'
- [../]
- [./ASR_strain_zz]
+  [../]
+  [./ASR_strain_zz]
    type = RankTwoAux
    block = '1'
    rank_two_tensor = asr_expansion
@@ -467,9 +474,8 @@
    index_i = 2
    index_j = 2
    execute_on = 'timestep_end'
- [../]
-
- [./ASR_strain_xy]
+  [../]
+  [./ASR_strain_xy]
    type = RankTwoAux
    block = '1'
    rank_two_tensor = asr_expansion
@@ -477,9 +483,8 @@
    index_i = 0
    index_j = 1
    execute_on = 'timestep_end'
- [../]
-
- [./ASR_strain_yz]
+  [../]
+  [./ASR_strain_yz]
    type = RankTwoAux
    block = '1'
    rank_two_tensor = asr_expansion
@@ -487,9 +492,8 @@
    index_i = 1
    index_j = 2
    execute_on = 'timestep_end'
- [../]
-
- [./ASR_strain_zx]
+  [../]
+  [./ASR_strain_zx]
    type = RankTwoAux
    block = '1'
    rank_two_tensor = asr_expansion
@@ -497,8 +501,9 @@
    index_i = 0
    index_j = 2
    execute_on = 'timestep_end'
- [../]
- [./thermal_strain_xx]
+  [../]
+
+  [./thermal_strain_xx]
    type = RankTwoAux
    block = '1'
    rank_two_tensor = thermal_expansion
@@ -506,8 +511,8 @@
    index_i = 0
    index_j = 0
    execute_on = 'timestep_end'
- [../]
- [./thermal_strain_yy]
+  [../]
+  [./thermal_strain_yy]
    type = RankTwoAux
    block = '1'
    rank_two_tensor = thermal_expansion
@@ -515,8 +520,8 @@
    index_i = 1
    index_j = 1
    execute_on = 'timestep_end'
- [../]
- [./thermal_strain_zz]
+  [../]
+  [./thermal_strain_zz]
    type = RankTwoAux
    block = '1'
    rank_two_tensor = thermal_expansion
@@ -524,101 +529,97 @@
    index_i = 2
    index_j = 2
    execute_on = 'timestep_end'
- [../]
-
- [./volumetric_strain]
+  [../]
+  [./volumetric_strain]
    type = RankTwoScalarAux
    scalar_type = VolumetricStrain
    rank_two_tensor = total_strain
    variable = volumetric_strain
    block = '1'
- [../]
-
- [./k]
+  [../]
+  [./k]
    type = MaterialRealAux
    variable = thermal_conductivity
    property = thermal_conductivity
    execute_on = 'timestep_end'
    block = '1'
- [../]
- [./capacity]
+  [../]
+  [./capacity]
    type = MaterialRealAux
    variable = thermal_capacity
    property = thermal_capacity
    execute_on = 'timestep_end'
    block = '1'
- [../]
-
- [./rh_capacity]
+  [../]
+  [./rh_capacity]
    type = MaterialRealAux
    variable = moisture_capacity
    property = moisture_capacity
    execute_on = 'timestep_end'
    block = '1'
- [../]
- [./rh_duff]
+  [../]
+  [./rh_duff]
    type = MaterialRealAux
    variable = humidity_diffusivity
    property = humidity_diffusivity
    execute_on = 'timestep_end'
    block = '1'
- [../]
- [./wc_duff]
+  [../]
+  [./wc_duff]
    type = MaterialRealAux
    variable = water_content
    property = moisture_content
    execute_on = 'timestep_end'
    block = '1'
- [../]
- [./hydrw_duff]
+  [../]
+  [./hydrw_duff]
    type = MaterialRealAux
    variable = water_hydrated
    property = hydrated_water
    execute_on = 'timestep_end'
    block = '1'
- [../]
-
- [damage_index]
+  [../]
+  [damage_index]
    type = MaterialRealAux
    block = '1'
    variable = damage_index
    property = damage_index
    execute_on = timestep_end
- []
- [./area_no3]
+  []
+  [./area_no3]
    type = ConstantAux
    block = '7'
    variable = area_no3
    value = 71e-6
    execute_on = 'initial timestep_begin'
- [../]
- [./area_no4]
+  [../]
+  [./area_no4]
    type = ConstantAux
    block = '8 9 10 11'
    variable = area_no4
    value = 129e-6
    execute_on = 'initial timestep_begin'
- [../]
- [./area_no5]
+  [../]
+  [./area_no5]
    type = ConstantAux
    block = '4 5'
    variable = area_no5
    value = 200e-6
    execute_on = 'initial timestep_begin'
- [../]
- [./area_no6]
+  [../]
+  [./area_no6]
    type = ConstantAux
    block = '3 6'
    variable = area_no6
    value = 284e-6
    execute_on = 'initial timestep_begin'
- [../]
- [./axial_stress]
+  [../]
+  [./axial_stress]
    type = MaterialRealAux
    block = '3 4 5 6 7 8 9 10 11'
    variable = axial_stress
    property = axial_stress
- [../]
+  [../]
 
   [./stress_xx]
     type = RankTwoAux
@@ -682,69 +683,102 @@
     variable = yield_fcn
     block = '12'
   [../]
+
+  [./incslip_x]
+    type = PenetrationAux
+    variable = inc_slip_x
+    quantity = incremental_slip_x
+    boundary = 5
+    paired_boundary = 4
+  [../]
+  [./incslip_y]
+    type = PenetrationAux
+    variable = inc_slip_y
+    quantity = incremental_slip_y
+    boundary = 5
+    paired_boundary = 4
+  [../]
+  [./accum_slip_x]
+    type = AccumulateAux
+    variable = accum_slip_x
+    accumulate_from_variable = inc_slip_x
+    execute_on = timestep_end
+  [../]
+  [./accum_slip_y]
+    type = AccumulateAux
+    variable = accum_slip_y
+    accumulate_from_variable = inc_slip_y
+    execute_on = timestep_end
+  [../]
+  [./penetration]
+    type = PenetrationAux
+    variable = penetration
+    boundary = 5
+    paired_boundary = 4
+  [../]
 []
 
 [Functions]
- [./T_air]
-   type = PiecewiseLinear
-   data_file =  analysis/containment_str/T_air.csv
-   format = columns
- [../]
- [./T_bet_grnd_2in]
-   type = PiecewiseLinear
-   data_file =  analysis/containment_str/T_bet_grnd_2in.csv
-   format = columns
- [../]
- [./T_bet_2in_4in]
-   type = PiecewiseLinear
-   data_file =  analysis/containment_str/T_bet_2in_4in.csv
-   format = columns
- [../]
- [./T_bet_4in_8in]
-   type = PiecewiseLinear
-   data_file =  analysis/containment_str/T_bet_4in_8in.csv
-   format = columns
- [../]
- [./T_bet_8in_20in]
-   type = PiecewiseLinear
-   data_file =  analysis/containment_str/T_bet_8in_20in.csv
-   format = columns
- [../]
- [./T_below_20in]
-   type = PiecewiseLinear
-   data_file =  analysis/containment_str/T_below_20in.csv
-   format = columns
- [../]
- [./rh_air]
-   type = PiecewiseLinear
-   data_file =  analysis/containment_str/rh_air.csv
-   format = columns
- [../]
- [./rh_bet_grnd_2in]
-   type = PiecewiseLinear
-   data_file =  analysis/containment_str/rh_bet_grnd_2in.csv
-   format = columns
- [../]
- [./rh_bet_2in_4in]
-   type = PiecewiseLinear
-   data_file =  analysis/containment_str/rh_bet_2in_4in.csv
-   format = columns
- [../]
- [./rh_bet_4in_8in]
-   type = PiecewiseLinear
-   data_file =  analysis/containment_str/rh_bet_4in_8in.csv
-   format = columns
- [../]
- [./rh_bet_8in_20in]
-   type = PiecewiseLinear
-   data_file =  analysis/containment_str/rh_bet_8in_20in.csv
-   format = columns
- [../]
- [./rh_below_20in]
-   type = PiecewiseLinear
-   data_file =  analysis/containment_str/rh_below_20in.csv
-   format = columns
- [../]
+  [./T_air]
+    type = PiecewiseLinear
+    data_file =  analysis/containment_str/T_air.csv
+    format = columns
+  [../]
+  [./T_bet_grnd_2in]
+    type = PiecewiseLinear
+    data_file =  analysis/containment_str/T_bet_grnd_2in.csv
+    format = columns
+  [../]
+  [./T_bet_2in_4in]
+    type = PiecewiseLinear
+    data_file =  analysis/containment_str/T_bet_2in_4in.csv
+    format = columns
+  [../]
+  [./T_bet_4in_8in]
+    type = PiecewiseLinear
+    data_file =  analysis/containment_str/T_bet_4in_8in.csv
+    format = columns
+  [../]
+  [./T_bet_8in_20in]
+    type = PiecewiseLinear
+    data_file =  analysis/containment_str/T_bet_8in_20in.csv
+    format = columns
+  [../]
+  [./T_below_20in]
+    type = PiecewiseLinear
+    data_file =  analysis/containment_str/T_below_20in.csv
+    format = columns
+  [../]
+  [./rh_air]
+    type = PiecewiseLinear
+    data_file =  analysis/containment_str/rh_air.csv
+    format = columns
+  [../]
+  [./rh_bet_grnd_2in]
+    type = PiecewiseLinear
+    data_file =  analysis/containment_str/rh_bet_grnd_2in.csv
+    format = columns
+  [../]
+  [./rh_bet_2in_4in]
+    type = PiecewiseLinear
+    data_file =  analysis/containment_str/rh_bet_2in_4in.csv
+    format = columns
+  [../]
+  [./rh_bet_4in_8in]
+    type = PiecewiseLinear
+    data_file =  analysis/containment_str/rh_bet_4in_8in.csv
+    format = columns
+  [../]
+  [./rh_bet_8in_20in]
+    type = PiecewiseLinear
+    data_file =  analysis/containment_str/rh_bet_8in_20in.csv
+    format = columns
+  [../]
+  [./rh_below_20in]
+    type = PiecewiseLinear
+    data_file =  analysis/containment_str/rh_below_20in.csv
+    format = columns
+  [../]
 []
 
 [Materials]
@@ -780,7 +814,6 @@
     relative_humidity                    = rh
     temperature                          = T
   [../]
-
   [./creep]
     type                                 = LinearViscoelasticStressUpdate
     block                                = '1'
@@ -803,20 +836,6 @@
     young_modulus                       = 27.8e9 #33.03e9 Lower value from ACI eqn
     block                               = 1
   []
- # [./logcreep]
- #   type                                 = ConcreteLogarithmicCreepModel
- #   block                                = '1'
- #   poissons_ratio                       = 0.2
- #   youngs_modulus                       = 33.1e9
- #   recoverable_youngs_modulus           = 33.1e9
- #   recoverable_viscosity                = 1
- #   long_term_viscosity                  = 1
- #   long_term_characteristic_time        = 1
- #   humidity                             = rh
- #   temperature                          = T
- #   activation_temperature               = 23.0
- # [../]
-
   [ASR_expansion]
     type                                 = ConcreteASREigenstrain
     block                                = '1'
@@ -850,7 +869,6 @@
     absolute_tolerance                   = 1e-10
     output_iteration_info_on_error       = true
   []
-
   [thermal_strain_concrete]
     type                                 = ComputeThermalExpansionEigenstrain
     block                                = '1'
@@ -859,13 +877,11 @@
     stress_free_temperature              = 23.0
     eigenstrain_name                     = thermal_expansion
   []
-
   [ASR_damage_concrete]
     type                                 = ConcreteASRMicrocrackingDamage
     residual_youngs_modulus_fraction     = 0.1
     block                                = '1'
   []
-
   [./stress_concrete]
     type                                 = ComputeMultipleInelasticStress
     block                                = '1'
@@ -938,26 +954,25 @@
     yield_function_tolerance = 1E-5
     internal_constraint_tolerance = 1E-11
   [../]
-
 []
 
 [BCs]
  [./x_disp]
    type = DirichletBC
-   variable = disp_y
-   boundary = '1'
+   variable = disp_x
+   boundary = '2'
    value    = 0.0
  [../]
  [./y_disp]
    type = DirichletBC
-   variable = disp_x
-   boundary = '2'
+   variable = disp_y
+   boundary = '3'
    value    = 0.0
  [../]
  [./z_disp]
    type = DirichletBC
    variable = disp_z
-   boundary = '3'
+   boundary = '1'
    value    = 0.0
  [../]
  [./T_inside]
@@ -967,8 +982,8 @@
    value = 26.6
  [../]
  [./RH_inside_zeroFlux]
-   # type = NeumannBC
-   type = FVNeumannBC
+   type = NeumannBC
+   # type = FVNeumannBC
    variable = rh
    boundary = '10'
    value = 0
@@ -1029,20 +1044,20 @@
  #   repetition_period = 31536000 # 365 days
  #   function = rh_bet_4in_8in
  # [../]
- [./T_bet_8in_20in]
-   type = RepeatingDirichletBC
-   variable = T
-   boundary = '15'
-   repetition_period = 31536000 # 365 days
-   function = T_bet_8in_20in
- [../]
- [./rh_bet_8in_20in]
-   type = RepeatingDirichletBC
-   variable = rh
-   boundary = '15'
-   repetition_period = 31536000 # 365 days
-   function = rh_bet_8in_20in
- [../]
+ # [./T_bet_8in_20in]
+ #   type = RepeatingDirichletBC
+ #   variable = T
+ #   boundary = '15'
+ #   repetition_period = 31536000 # 365 days
+ #   function = T_bet_8in_20in
+ # [../]
+ # [./rh_bet_8in_20in]
+ #   type = RepeatingDirichletBC
+ #   variable = rh
+ #   boundary = '15'
+ #   repetition_period = 31536000 # 365 days
+ #   function = rh_bet_8in_20in
+ # [../]
  [./T_below_20in]
    type = RepeatingDirichletBC
    variable = T
