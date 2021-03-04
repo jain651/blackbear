@@ -4,19 +4,26 @@
 []
 
 [Mesh]
-  file = gold/TwoElementModel.e
-  construct_side_list_from_node_list = true
-  # block 1 add hex 1
-  # block 2 add hex 2
-  #
-  # nodeset 1 add vertex 4 # front left  bottom
-  # nodeset 2 add vertex 7 # back  left  bottom
-  # nodeset 3 add vertex 8 # back  left  top
-  # nodeset 4 add vertex 3 # front left  top
-  # nodeset 5 add vertex 1 # front right bottom
-  # nodeset 6 add vertex 6 # back  right bottom
-  # nodeset 7 add vertex 5 # back  right top
-  # nodeset 8 add vertex 2 # front right top
+  [./gmg]
+    type = GeneratedMeshGenerator
+    dim = 3
+    nx = 2
+    ny = 1
+    nz = 1
+    xmax = 2
+    ymax = 1
+    zmax = 1
+    #uniform_refine = 2
+  []
+
+  [./subdomains]
+    type = SubdomainBoundingBoxGenerator
+    input = gmg
+    bottom_left = '0 1 1'
+    block_id = 1
+    top_right = '1 0 0'
+    location = INSIDE
+  []
 []
 
 [AuxVariables]
@@ -31,14 +38,14 @@
 [Modules/TensorMechanics/Master]
  generate_output = 'stress_xx stress_yy stress_zz stress_xy stress_yz stress_zx vonmises_stress hydrostatic_stress elastic_strain_xx elastic_strain_yy elastic_strain_zz strain_xx strain_yy strain_zz'
  [./concrete]
-   block = '1'
+   block = '0'
    strain = FINITE
    add_variables = true
    # eigenstrain_names = 'asr_expansion thermal_expansion'
    save_in = 'resid_x resid_y resid_z'
  [../]
  [./soil]
-   block = '2'
+   block = '1'
    strain = FINITE
    save_in = 'resid_x resid_y resid_z'
  [../]
@@ -75,13 +82,13 @@
 
   [./elasticity_tensor]
     type = ComputeElasticityTensor
-    block = '2'
+    block = '1'
     fill_method = symmetric_isotropic
     C_ijkl = '0 5E9' # young = 10Gpa, poisson = 0.0
   [../]
   [./mc]
     type = ComputeMultiPlasticityStress
-    block = '2'
+    block = '1'
     ep_plastic_tolerance = 1E-11
     plastic_models = mc
     max_NR_iterations = 1000
@@ -92,29 +99,29 @@
 [UserObjects]
   [./visco_update]
     type = LinearViscoelasticityManager
-    block = '1'
+    block = '0'
     viscoelastic_model = burgers
   [../]
   [./mc_coh]
     type = TensorMechanicsHardeningConstant
-    block = '2'
+    block = '1'
     value = 10E6
   [../]
   [./mc_phi]
     type = TensorMechanicsHardeningConstant
-    block = '2'
+    block = '1'
     value = 40
     convert_to_radians = true
   [../]
   [./mc_psi]
     type = TensorMechanicsHardeningConstant
-    block = '2'
+    block = '1'
     value = 40
     convert_to_radians = true
   [../]
   [./mc]
     type = TensorMechanicsPlasticMohrCoulomb
-    block = '2'
+    block = '1'
     cohesion = mc_coh
     friction_angle = mc_phi
     dilation_angle = mc_psi

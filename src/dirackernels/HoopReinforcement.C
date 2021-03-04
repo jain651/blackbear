@@ -38,7 +38,12 @@ void
 HoopReinforcement::addPoints()
 {
   for (size_t num_pts = 0; num_pts < _point_param.size(); num_pts++)
-    addPoint(_point_param[num_pts]);
+  {
+    if (_point_param[num_pts](0)==0.)
+      continue;
+    else
+      addPoint(_point_param[num_pts]);
+  }
 }
 
 Real
@@ -50,7 +55,6 @@ HoopReinforcement::computeQpResidual()
     force = - fmin(_E*strain, _fy) * _A;
   else
     force = - fmax(_E*strain, _fy) * _A;
-  // out <<" out force " << force << " pt "<< _current_point(0) << " " << _current_point(1) << " " << _current_point(2) << std::endl;
   return -force;
 }
 
