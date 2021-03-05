@@ -44,8 +44,8 @@
 [Constraints/EqualValueEmbeddedConstraint/EqualValueEmbeddedConstraintAction]
   primary_block = '1'
   secondary_block = '2'
-  primary_variable = 'disp_x disp_y T rh'
-  displacements = 'disp_x disp_y T rh'
+  primary_variable = 'disp_x disp_y'
+  displacements = 'disp_x disp_y'
   penalty = 1e12
   formulation = penalty
 []
