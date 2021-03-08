@@ -8,55 +8,9 @@
 []
 
 [Mesh]
-  file = gold/containment_structure/FullContainment2D_XY.e
+  file = gold/containment_structure/FullContainment2D_XY_no_contact.e
   construct_side_list_from_node_list = true
-  # block 1 surface 1 2 8 10      # concrete structure
-  # block 3 curve 1               # #6 mat: bottom grid
-  # block 4 curve 2               # #5 mat: top grid
-  # block 5 curve 3               # #5 mat: top radial bars
-  # block 7 curve 4 to 16         # #3 mat: shear stirrups
-  # block 8 curve 17 to 19 20 21  # #4 cylinear-mat connection bars
-  # block 10 curve 22 23 25 26    # #4 cylinear-dome: meridional bars (layer 2 5)
-  # block 11 curve 24 27          # #4 cylinear-dome: seismic bars (layer 7 8)
-  # block 12 surface 11           # soil
-  #
-  # ## Displacement BC
-  # nodeset 1 add curve 57    # disp_y zero
-  # nodeset 2 add curve 57    # disp_x zero
-  # ## Temperature and RH BC
-  # nodeset 10 add curve 41 48 35 29 61 54 58         # zero flux BC
-  # nodeset 11 add curve 49 33 31 63 56 65            # outer surface for above ground BC
-  # nodeset 11 remove node with z_coord < {grnd_lvl}
-  # nodeset 12 add curve 49 33 31 63 56 65            # outer surface for underground BC first 2" depth (unscaled dimension)
-  # nodeset 12 remove node with z_coord < {grnd_lvl-2*0.0254/6*scale}
-  # nodeset 12 remove node with z_coord < {grnd_lvl-2*0.0254/6*scale}
-  # nodeset 13 add curve 49 33 31 63 56 65            # outer surface for underground BC between 2" and 4" depth (unscaled dimension)
-  # nodeset 13 remove node with z_coord > {grnd_lvl-2*0.0254/6*scale}
-  # nodeset 13 remove node with z_coord < {grnd_lvl-5*0.0254/6*scale}
-  # nodeset 14 add curve 49 33 31 63 56 65            # outer surface for underground BC between 4" and 8" depth (unscaled dimension)
-  # nodeset 14 remove node with z_coord > {grnd_lvl-4*0.0254/6*scale}
-  # nodeset 14 remove node with z_coord < {grnd_lvl-8*0.0254/6*scale}
-  # nodeset 15 add curve 49 33 31 63 56 65            # outer surface for underground BC between 8" and 20" depth (unscaled dimension)
-  # nodeset 15 remove node with z_coord > {grnd_lvl-8*0.0254/6*scale}
-  # nodeset 15 remove node with Z_coord < {grnd_lvl-20*0.0254/6*scale}
-  # nodeset 16 add curve 49 33 31 63 56 65            # outer surface for underground BC between 20" depth and water table (unscaled dimension)
-  # nodeset 16 remove node with z_coord > {grnd_lvl-20*0.0254/6*scale}
-  # nodeset 16 remove node with z_coord < {water_table}
-  # nodeset 17 add curve 49 33 31 63 56 65            # outer surface for underground BC below water table (unscaled dimension)
-  # nodeset 17 remove node with z_coord > {water_table}
-  # ## Soil pressure BC
-  # nodeset 20 add curve 63 65                        # surface for vertical pressure from soil above
-  # nodeset 20 remove node with z_coord > {grnd_lvl}
-  # nodeset 21 add curve 31 56                        # surface for horizontal pressure from soil on the side
-  # nodeset 21 remove node with z_coord > {grnd_lvl}
-  # ## Measurement locations
-  # nodeset 30 add curve 49 33 31 63 56 65            # outer surface for whole structure
-  # nodeset 31 add curve 49                           # dome outer surface
-  # nodeset 32 add curve 33                           # cylinder outer surface
-  # nodeset 33 add curve 31                           # base outer surface
-  # nodeset 34 add curve 56 64                        # base mat outer surface
 []
-
 
 [Modules/TensorMechanics/Master]
   generate_output = 'stress_xx stress_yy stress_zz stress_xy stress_yz stress_zx
@@ -133,55 +87,11 @@
 [Constraints/EqualValueEmbeddedConstraint/EqualValueEmbeddedConstraintAction]
   primary_block = '1'
   secondary_block = '3 4 5 7 8 10 11'
-  primary_variable = 'disp_x disp_y T rh'
-  displacements = 'disp_x disp_y T rh'
+  primary_variable = 'disp_x disp_y'
+  displacements = 'disp_x disp_y'
   penalty = 1e12
   formulation = penalty
 []
-
-# [DiracKernels]
-#   [./no4_bars]
-#     type = HoopReinforcement
-#     variable = disp_x
-#     disp_component = disp_x
-#     yield_strength = 500e6
-#     youngs_modulus = 2.14e11
-#     area = 129e-6
-#     points = '20.3722 3.1472 0.  20.3722 3.8312 0.  20.3722 4.5152 0.  20.3722 5.1992 0.  20.3722 5.8832 0.  20.3722 6.5672 0.  20.3722 7.2512 0.  20.3722 7.9352 0.  20.3722 8.6192 0.  20.3722 9.3032 0.  20.3722 9.9872 0.  20.3722 10.6712 0.  20.3722 11.3552 0.  20.3722 12.0392 0.  20.3722 12.7232 0.  20.3722 13.4072 0.  20.3722 14.0912 0.  20.3722 14.7752 0.  20.3722 15.4592 0.  20.3722 16.1432 0.  20.3722 16.8272 0.  20.3722 17.5112 0.  20.3722 18.1952 0.  20.3722 18.8792 0.  20.3722 19.5632 0.  20.3722 20.2472 0.  20.3722 20.9312 0.  20.3722 21.6152 0.  20.3722 22.2992 0.  20.3722 22.9832 0.  20.3722 23.6672 0.  20.3722 24.3512 0.  20.3722 25.0352 0.  20.3722 25.7192 0.  20.3722 26.4032 0.  20.3722 27.0872 0.  20.3722 27.7712 0.  20.3722 28.4552 0.  20.3722 29.1392 0.  20.3722 29.8232 0.  20.3722 30.5072 0.  20.3722 31.1912 0.  20.3722 31.8752 0.  20.3722 32.5592 0.  20.3722 33.2432 0.  20.3722 33.9272 0.  20.3722 34.6112 0.  20.3722 35.2952 0.  20.3722 35.9792 0.  20.3722 36.6632 0.  20.3722 37.3472 0.  20.3722 38.0312 0.  20.3722 38.7152 0.  20.3722 39.3992 0.  20.3722 40.0832 0.  20.3972 3.1472 0.  20.3972 3.8312 0.  20.3972 4.5152 0.  20.3972 5.1992 0.  20.3972 5.8832 0.  20.3972 6.5672 0.  20.3972 7.2512 0.  20.3972 7.9352 0.  20.3972 8.6192 0.  20.3972 9.3032 0.  20.3972 9.9872 0.  20.3972 10.6712 0.  20.3972 11.3552 0.  20.3972 12.0392 0.  20.3972 12.7232 0.  20.3972 13.4072 0.  20.3972 14.0912 0.  20.3972 14.7752 0.  20.3972 15.4592 0.  20.3972 16.1432 0.  20.3972 16.8272 0.  20.3972 17.5112 0.  20.3972 18.1952 0.  20.3972 18.8792 0.  20.3972 19.5632 0.  20.3972 20.2472 0.  20.3972 20.9312 0.  20.3972 21.6152 0.  20.3972 22.2992 0.  20.3972 22.9832 0.  20.3972 23.6672 0.  20.3972 24.3512 0.  20.3972 25.0352 0.  20.3972 25.7192 0.  20.3972 26.4032 0.  20.3972 27.0872 0.  20.3972 27.7712 0.  20.3972 28.4552 0.  20.3972 29.1392 0.  20.3972 29.8232 0.  20.3972 30.5072 0.  20.3972 31.1912 0.  20.3972 31.8752 0.  20.3972 32.5592 0.  20.3972 33.2432 0.  20.3972 33.9272 0.  20.3972 34.6112 0.  20.3972 35.2952 0.  20.3972 35.9792 0.  20.3972 36.6632 0.  20.3972 37.3472 0.  20.3972 38.0312 0.  20.3972 38.7152 0.  20.3972 39.3992 0.  20.3972 40.0832 0.  21.0728 3.1472 0.  21.0728 3.8312 0.  21.0728 4.5152 0.  21.0728 5.1992 0.  21.0728 5.8832 0.  21.0728 6.5672 0.  21.0728 7.2512 0.  21.0728 7.9352 0.  21.0728 8.6192 0.  21.0728 9.3032 0.  21.0728 9.9872 0.  21.0728 10.6712 0.  21.0728 11.3552 0.  21.0728 12.0392 0.  21.0728 12.7232 0.  21.0728 13.4072 0.  21.0728 14.0912 0.  21.0728 14.7752 0.  21.0728 15.4592 0.  21.0728 16.1432 0.  21.0728 16.8272 0.  21.0728 17.5112 0.  21.0728 18.1952 0.  21.0728 18.8792 0.  21.0728 19.5632 0.  21.0728 20.2472 0.  21.0728 20.9312 0.  21.0728 21.6152 0.  21.0728 22.2992 0.  21.0728 22.9832 0.  21.0728 23.6672 0.  21.0728 24.3512 0.  21.0728 25.0352 0.  21.0728 25.7192 0.  21.0728 26.4032 0.  21.0728 27.0872 0.  21.0728 27.7712 0.  21.0728 28.4552 0.  21.0728 29.1392 0.  21.0728 29.8232 0.  21.0728 30.5072 0.  21.0728 31.1912 0.  21.0728 31.8752 0.  21.0728 32.5592 0.  21.0728 33.2432 0.  21.0728 33.9272 0.  21.0728 34.6112 0.  21.0728 35.2952 0.  21.0728 35.9792 0.  21.0728 36.6632 0.  21.0728 37.3472 0.  21.0728 38.0312 0.  21.0728 38.7152 0.  21.0728 39.3992 0.  21.0728 40.0832 0.  21.1236 3.1472 0.  21.1236 3.8312 0.  21.1236 4.5152 0.  21.1236 5.1992 0.  21.1236 5.8832 0.  21.1236 6.5672 0.  21.1236 7.2512 0.  21.1236 7.9352 0.  21.1236 8.6192 0.  21.1236 9.3032 0.  21.1236 9.9872 0.  21.1236 10.6712 0.  21.1236 11.3552 0.  21.1236 12.0392 0.  21.1236 12.7232 0.  21.1236 13.4072 0.  21.1236 14.0912 0.  21.1236 14.7752 0.  21.1236 15.4592 0.  21.1236 16.1432 0.  21.1236 16.8272 0.  21.1236 17.5112 0.  21.1236 18.1952 0.  21.1236 18.8792 0.  21.1236 19.5632 0.  21.1236 20.2472 0.  21.1236 20.9312 0.  21.1236 21.6152 0.  21.1236 22.2992 0.  21.1236 22.9832 0.  21.1236 23.6672 0.  21.1236 24.3512 0.  21.1236 25.0352 0.  21.1236 25.7192 0.  21.1236 26.4032 0.  21.1236 27.0872 0.  21.1236 27.7712 0.  21.1236 28.4552 0.  21.1236 29.1392 0.  21.1236 29.8232 0.  21.1236 30.5072 0.  21.1236 31.1912 0.  21.1236 31.8752 0.  21.1236 32.5592 0.  21.1236 33.2432 0.  21.1236 33.9272 0.  21.1236 34.6112 0.  21.1236 35.2952 0.  21.1236 35.9792 0.  21.1236 36.6632 0.  21.1236 37.3472 0.  21.1236 38.0312 0.  21.1236 38.7152 0.  21.1236 39.3992 0.  21.1236 40.0832 0.  21.2506 3.1472 0.  21.2506 3.8312 0.  21.2506 4.5152 0.  21.2506 5.1992 0.  21.2506 5.8832 0.  21.2506 6.5672 0.  21.2506 7.2512 0.  21.2506 7.9352 0.  21.2506 8.6192 0.  21.2506 9.3032 0.  21.2506 9.9872 0.  21.2506 10.6712 0.  21.2506 11.3552 0.  21.2506 12.0392 0.  21.2506 12.7232 0.  21.2506 13.4072 0.  21.2506 14.0912 0.  21.2506 14.7752 0.  21.2506 15.4592 0.  21.2506 16.1432 0.  21.2506 16.8272 0.  21.2506 17.5112 0.  21.2506 18.1952 0.  21.2506 18.8792 0.  21.2506 19.5632 0.  21.2506 20.2472 0.  21.2506 20.9312 0.  21.2506 21.6152 0.  21.2506 22.2992 0.  21.2506 22.9832 0.  21.2506 23.6672 0.  21.2506 24.3512 0.  21.2506 25.0352 0.  21.2506 25.7192 0.  21.2506 26.4032 0.  21.2506 27.0872 0.  21.2506 27.7712 0.  21.2506 28.4552 0.  21.2506 29.1392 0.  21.2506 29.8232 0.  21.2506 30.5072 0.  21.2506 31.1912 0.  21.2506 31.8752 0.  21.2506 32.5592 0.  21.2506 33.2432 0.  21.2506 33.9272 0.  21.2506 34.6112 0.  21.2506 35.2952 0.  21.2506 35.9792 0.  21.2506 36.6632 0.  21.2506 37.3472 0.  21.2506 38.0312 0.  21.2506 38.7152 0.  21.2506 39.3992 0.  21.2506 40.0832 0.'
-#   [../]
-#   [./no5_bars]
-#     type = HoopReinforcement
-#     variable = disp_x
-#     disp_component = disp_x
-#     yield_strength = 500e6
-#     youngs_modulus = 2.14e11
-#     area = 200e-6
-#     points = '22.8092 3.1472 0.  21.8972 3.1472 0.  20.9852 3.1472 0.  20.0732 3.1472 0.  19.1612 3.1472 0.  18.2492 3.1472 0.  17.3372 3.1472 0.  16.4252 3.1472 0.  15.5132 3.1472 0.  14.6012 3.1472 0.  13.6892 3.1472 0.  12.7772 3.1472 0.  11.8652 3.1472 0.  10.9532 3.1472 0.  10.0412 3.1472 0.  9.1292 3.1472 0.  8.2172 3.1472 0.  7.3052 3.1472 0.  6.3932 3.1472 0.  5.4812 3.1472 0.  4.5692 3.1472 0.  3.6572 3.1472 0.  2.7452 3.1472 0.  1.8332 3.1472 0.  0.9212 3.1472 0.  22.8092 -2.9488 0.  21.8972 -2.9488 0.  20.9852 -2.9488 0.  20.0732 -2.9488 0.  19.1612 -2.9488 0.  18.2492 -2.9488 0.  17.3372 -2.9488 0.  16.4252 -2.9488 0.  15.5132 -2.9488 0.  14.6012 -2.9488 0.  13.6892 -2.9488 0.  12.7772 -2.9488 0.  11.8652 -2.9488 0.  10.9532 -2.9488 0.  10.0412 -2.9488 0.  9.1292 -2.9488 0.  8.2172 -2.9488 0.  7.3052 -2.9488 0.  6.3932 -2.9488 0.  5.4812 -2.9488 0.  4.5692 -2.9488 0.  3.6572 -2.9488 0.  2.7452 -2.9488 0.  1.8332 -2.9488 0.  0.9212 -2.9488 0.'
-#   [../]
-#   [./no6_bars]
-#     type = HoopReinforcement
-#     variable = disp_x
-#     disp_component = disp_x
-#     yield_strength = 500e6
-#     youngs_modulus = 2.14e11
-#     area = 284e-6
-#     points = '22.8092 3.1472 0.  22.8092 0.15 0.  22.8092 -2.9488 0.  20.0672 3.1472 0.  19.1552 3.1472 0.  18.2432 3.1472 0.  17.3312 3.1472 0.  16.4192 3.1472 0.  15.5072 3.1472 0.  14.5952 3.1472 0.  13.6832 3.1472 0.  12.3092 3.1472 0.  10.9352 3.1472 0.  09.5612 3.1472 0.  08.1872 3.1472 0.'
-#   [../]
-# []
-
-# [Contact]
-#   [./leftright]
-#     primary = '4'
-#     secondary = '5'
-#     model = frictionless
-#     formulation = kinematic
-#     penalty = 1e+12
-#     normalize_penalty = true
-#     normal_smoothing_distance = 0.1
-#     # friction_coefficient = '0.25'
-#   [../]
-# []
-
 
 [Variables]
   [./T]
@@ -329,17 +239,6 @@
     family = MONOMIAL
     block = '12'
   [../]
-
-  # [./penetration]
-  # [../]
-  # [./inc_slip_x]
-  # [../]
-  # [./inc_slip_y]
-  # [../]
-  # [./accum_slip_x]
-  # [../]
-  # [./accum_slip_y]
-  # [../]
 []
 
 [Kernels]
@@ -591,39 +490,6 @@
     variable = yield_fcn
     block = '12'
   [../]
-
-  # [./penetration]
-  #   type = PenetrationAux
-  #   variable = penetration
-  #   boundary = 5
-  #   paired_boundary = 4
-  # [../]
-  # [./incslip_x]
-  #   type = PenetrationAux
-  #   variable = inc_slip_x
-  #   quantity = incremental_slip_x
-  #   boundary = 5
-  #   paired_boundary = 4
-  # [../]
-  # [./incslip_y]
-  #   type = PenetrationAux
-  #   variable = inc_slip_y
-  #   quantity = incremental_slip_y
-  #   boundary = 5
-  #   paired_boundary = 4
-  # [../]
-  # [./accum_slip_x]
-  #   type = AccumulateAux
-  #   variable = accum_slip_x
-  #   accumulate_from_variable = inc_slip_x
-  #   execute_on = timestep_end
-  # [../]
-  # [./accum_slip_y]
-  #   type = AccumulateAux
-  #   variable = accum_slip_y
-  #   accumulate_from_variable = inc_slip_y
-  #   execute_on = timestep_end
-  # [../]
 []
 
 [Functions]
@@ -844,7 +710,6 @@
   [./visco_update]
     type = LinearViscoelasticityManager
     block = '1'
-    # viscoelastic_model = logcreep
     viscoelastic_model = burgers
   [../]
   [./mc_coh]
@@ -886,21 +751,6 @@
     boundary = '2 3'
     value    = 0.0
   [../]
-  # [./pressure_soil_z]
-  #   type = Pressure
-  #   variable = disp_y
-  #   component = '2'
-  #   boundary = '20'
-  #   function = '-2.65*9.81*(21.692-z)' # rho_soil*g*h
-  # [../]
-  # [./pressure_soil_x]
-  #   type = Pressure
-  #   variable = disp_x
-  #   component = '0'
-  #   boundary = '21'
-  #   function = '-0.3*2.65*9.81*(21.692-z)' # alpha*rho_soil*g*h
-  # [../]
-
   [./T_inside]
     type = DirichletBC
     variable = T

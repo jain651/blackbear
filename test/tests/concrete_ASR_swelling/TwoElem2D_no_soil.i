@@ -48,7 +48,7 @@
   [./T]
     order = FIRST
     family = LAGRANGE
-    initial_condition = 0.0
+    initial_condition = 30.0
   [../]
   [./rh]
     order = FIRST
@@ -410,7 +410,7 @@
 
     ref_density_of_concrete              = 2231.0    # in kg/m^3
     ref_specific_heat_of_concrete        = 1100.0    # in J/(Kg.0C)
-    ref_thermal_conductivity_of_concrete = 3         # in W/(m.0C)
+    ref_thermal_conductivity_of_concrete = 3         # in W/(m.0C)s
 
     # setup moisture capacity and humidity diffusivity models
     aggregate_pore_type                  = dense     # options: dense porous
@@ -546,10 +546,10 @@
   line_search = none
   # petsc_options = '-ksp_snes_ew'
   petsc_options = '-snes_converged_reason'
-  petsc_options_iname = '-pc_type'
-  petsc_options_value = 'lu'
-  # petsc_options_iname = '-pc_type -pc_hypre_type -ksp_gmres_restart -snes_ls -pc_hypre_boomeramg_strong_threshold'
-  # petsc_options_value = 'hypre boomeramg 201 cubic 0.7'
+  # petsc_options_iname = '-pc_type'
+  # petsc_options_value = 'lu'
+  petsc_options_iname = '-pc_type -pc_hypre_type -ksp_gmres_restart -snes_ls -pc_hypre_boomeramg_strong_threshold'
+  petsc_options_value = 'hypre boomeramg 201 cubic 0.7'
 []
 
 [Outputs]
