@@ -8,7 +8,7 @@
 []
 
 [Mesh]
-  file = gold/containment_structure/FullContainment2D_XY.e
+  file = gold/containment_structure/FullContainment2D_XY_no_soil_contact.e
   construct_side_list_from_node_list = true
   # block 1 surface 1 2 8 10      # concrete structure
   # block 3 curve 1               # #6 mat: bottom grid
@@ -57,7 +57,6 @@
   # nodeset 34 add curve 56 64                        # base mat outer surface
 []
 
-
 [Modules/TensorMechanics/Master]
   generate_output = 'stress_xx stress_yy stress_zz stress_xy stress_yz stress_zx
                      strain_xx strain_yy strain_zz strain_xy strain_yz strain_zx
@@ -68,12 +67,6 @@
     strain = FINITE
     add_variables = true
     eigenstrain_names = 'asr_expansion thermal_expansion'
-    save_in = 'resid_x resid_y'
-  [../]
-  [./soil]
-    block = '12'
-    strain = FINITE
-    add_variables = true
     save_in = 'resid_x resid_y'
   [../]
 []
@@ -318,16 +311,6 @@
   [./axial_strain]
     order = CONSTANT
     family = MONOMIAL
-  [../]
-  [./mc_int]
-    order = CONSTANT
-    family = MONOMIAL
-    block = '12'
-  [../]
-  [./yield_fcn]
-    order = CONSTANT
-    family = MONOMIAL
-    block = '12'
   [../]
 
   # [./penetration]
@@ -577,20 +560,6 @@
     property = axial_stress
   [../]
 
-  [./mc_int_auxk]
-    type = MaterialStdVectorAux
-    index = 0
-    property = plastic_internal_parameter
-    variable = mc_int
-    block = '12'
-  [../]
-  [./yield_fcn_auxk]
-    type = MaterialStdVectorAux
-    index = 0
-    property = plastic_yield_function
-    variable = yield_fcn
-    block = '12'
-  [../]
 
   # [./penetration]
   #   type = PenetrationAux
@@ -817,27 +786,6 @@
     prop_names                          = density
     prop_values                         = 7850.0 # kg/m3
   [../]
-
-  [elastic_soil]
-    type = ComputeIsotropicElasticityTensor
-    youngs_modulus = 2e11
-    poissons_ratio = 0.3
-    block = '12'
-  []
-  [./mc_soil_stress]
-    type = ComputeMultiPlasticityStress
-    block = '12'
-    ep_plastic_tolerance = 1E-11
-    plastic_models = mc
-    max_NR_iterations = 1000
-    debug_fspb = crash
-  [../]
-  [./density_soil]
-    type                                = GenericFunctionMaterial
-    block                               = '12'
-    prop_names                          = density
-    prop_values                         = 2690.0 # kg/m3
-  [../]
 []
 
 [UserObjects]
@@ -846,30 +794,6 @@
     block = '1'
     # viscoelastic_model = logcreep
     viscoelastic_model = burgers
-  [../]
-  [./mc_coh]
-    type = TensorMechanicsHardeningConstant
-    value = 10E6
-  [../]
-  [./mc_phi]
-    type = TensorMechanicsHardeningConstant
-    value = 40
-    convert_to_radians = true
-  [../]
-  [./mc_psi]
-    type = TensorMechanicsHardeningConstant
-    value = 40
-    convert_to_radians = true
-  [../]
-  [./mc]
-    type = TensorMechanicsPlasticMohrCoulomb
-    cohesion = mc_coh
-    friction_angle = mc_phi
-    dilation_angle = mc_psi
-    mc_tip_smoother = 0.01E6
-    mc_edge_smoother = 29
-    yield_function_tolerance = 1E-5
-    internal_constraint_tolerance = 1E-11
   [../]
 []
 
