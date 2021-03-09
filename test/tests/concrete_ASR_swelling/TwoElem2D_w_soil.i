@@ -3,9 +3,9 @@
   volumetric_locking_correction = true
 []
 
-[Problem]
-  coord_type = RZ
-[]
+# [Problem]
+#   coord_type = RZ
+# []
 
 [Mesh]
   file = gold/TwoElement2D_w_rebar_soil_Model.e
@@ -402,7 +402,7 @@
   [./x_disp]
     type = DirichletBC
     variable = disp_x
-    boundary = '2'
+    boundary = '3'
     value    = 0.0
   [../]
   [./y_disp]
@@ -411,17 +411,17 @@
     boundary = '3'
     value    = 0.0
   [../]
-  [./x_disp_loading]
+  [./y_disp_loading]
     type = FunctionDirichletBC
-    variable = disp_x
-    boundary = '2'
-    function = 1e-1*t
+    variable = disp_y
+    boundary = '1'
+    function = -1e-1*y*t
   [../]
   [./T]
     type = DirichletBC
     variable = T
-    boundary = '4'
-    value    = 23.0
+    boundary = '1'
+    value    = 0.
   [../]
   [./RH]
     type = DirichletBC
@@ -518,6 +518,7 @@
     eigenstrain_name                     = asr_expansion
     absolute_tolerance                   = 1e-10
     output_iteration_info_on_error       = true
+    max_its                              = 100
   []
   [thermal_strain_concrete]
     type                                 = ComputeThermalExpansionEigenstrain
@@ -611,18 +612,20 @@
   automatic_scaling = true
   end_time = 630720000 # 7300 days
 
+  # solve_type = 'NEWTON'
   solve_type = 'PJFNK'
+  petsc_options_iname = '-pc_type'
+  petsc_options_value = 'lu'
+  # petsc_options = '-ksp_snes_ew'
+  petsc_options = '-snes_converged_reason'
+  # petsc_options_iname = '-pc_type -pc_hypre_type -ksp_gmres_restart -snes_ls -pc_hypre_boomeramg_strong_threshold'
+  # petsc_options_value = 'hypre boomeramg 201 cubic 0.7'
+
   nl_max_its = 20
   l_max_its = 100
   nl_abs_tol = 1e-5
   nl_rel_tol = 1e-3
   line_search = none
-  # petsc_options = '-ksp_snes_ew'
-  petsc_options = '-snes_converged_reason'
-  petsc_options_iname = '-pc_type'
-  petsc_options_value = 'lu'
-  # petsc_options_iname = '-pc_type -pc_hypre_type -ksp_gmres_restart -snes_ls -pc_hypre_boomeramg_strong_threshold'
-  # petsc_options_value = 'hypre boomeramg 201 cubic 0.7'
 []
 
 [Outputs]

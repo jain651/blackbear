@@ -64,12 +64,14 @@
   [./T]
     order = FIRST
     family = LAGRANGE
-    initial_condition = 0.0
+    initial_condition = 23.0
+    block = '1'
   [../]
   [./rh]
     order = FIRST
     family = LAGRANGE
     initial_condition = 0.6
+    block = '1'
   [../]
 []
 
@@ -177,72 +179,79 @@
   [./thermal_conductivity]
     order = CONSTANT
     family = Monomial
+    block = '1'
   [../]
   [./thermal_capacity]
     order = CONSTANT
     family = Monomial
+    block = '1'
   [../]
   [./moisture_capacity]
     order = CONSTANT
     family = Monomial
+    block = '1'
   [../]
   [./humidity_diffusivity]
     order = CONSTANT
     family = Monomial
+    block = '1'
   [../]
   [./water_content]
     order = CONSTANT
     family = Monomial
+    block = '1'
   [../]
   [./water_hydrated]
     order = CONSTANT
     family = Monomial
+    block = '1'
   [../]
   [damage_index]
     order = CONSTANT
-    family = MONOMIAL
+    family = Monomial
+    block = '1'
   []
 
-  [./stress_xx_soil]
-    order = CONSTANT
-    family = MONOMIAL
-    block = '2'
-  [../]
-  [./stress_xy_soil]
-    order = CONSTANT
-    family = MONOMIAL
-    block = '2'
-  [../]
-  [./stress_xz_soil]
-    order = CONSTANT
-    family = MONOMIAL
-    block = '2'
-  [../]
-  [./stress_yy_soil]
-    order = CONSTANT
-    family = MONOMIAL
-    block = '2'
-  [../]
-  [./stress_yz_soil]
-    order = CONSTANT
-    family = MONOMIAL
-    block = '2'
-  [../]
-  [./stress_zz_soil]
-    order = CONSTANT
-    family = MONOMIAL
-    block = '2'
-  [../]
-  [./mc_int]
-    order = CONSTANT
-    family = MONOMIAL
-    block = '2'
-  [../]
-  [./yield_fcn]
-    order = CONSTANT
-    family = MONOMIAL
-    block = '2'
-  [../]
+  # [./stress_xx_soil]
+  #   order = CONSTANT
+  #   family = MONOMIAL
+  #   block = '2'
+  # [../]
+  # [./stress_xy_soil]
+  #   order = CONSTANT
+  #   family = MONOMIAL
+  #   block = '2'
+  # [../]
+  # [./stress_xz_soil]
+  #   order = CONSTANT
+  #   family = MONOMIAL
+  #   block = '2'
+  # [../]
+  # [./stress_yy_soil]
+  #   order = CONSTANT
+  #   family = MONOMIAL
+  #   block = '2'
+  # [../]
+  # [./stress_yz_soil]
+  #   order = CONSTANT
+  #   family = MONOMIAL
+  #   block = '2'
+  # [../]
+  # [./stress_zz_soil]
+  #   order = CONSTANT
+  #   family = MONOMIAL
+  #   block = '2'
+  # [../]
+  # [./mc_int]
+  #   order = CONSTANT
+  #   family = MONOMIAL
+  #   block = '2'
+  # [../]
+  # [./yield_fcn]
+  #   order = CONSTANT
+  #   family = MONOMIAL
+  #   block = '2'
+  # [../]
 []
 
 [AuxKernels]
@@ -398,99 +407,99 @@
     execute_on = timestep_end
   []
 
-  [./stress_xx]
-    type = RankTwoAux
-    rank_two_tensor = stress
-    variable = stress_xx_soil
-    block = '2'
-    index_i = 0
-    index_j = 0
-  [../]
-  [./stress_xy]
-    type = RankTwoAux
-    rank_two_tensor = stress
-    variable = stress_xy_soil
-    block = '2'
-    index_i = 0
-    index_j = 1
-  [../]
-  [./stress_xz]
-    type = RankTwoAux
-    rank_two_tensor = stress
-    variable = stress_xz_soil
-    block = '2'
-    index_i = 0
-    index_j = 2
-  [../]
-  [./stress_yy]
-    type = RankTwoAux
-    rank_two_tensor = stress
-    variable = stress_yy_soil
-    block = '2'
-    index_i = 1
-    index_j = 1
-  [../]
-  [./stress_yz]
-    type = RankTwoAux
-    rank_two_tensor = stress
-    variable = stress_yz_soil
-    block = '2'
-    index_i = 1
-    index_j = 2
-  [../]
-  [./stress_zz]
-    type = RankTwoAux
-    rank_two_tensor = stress
-    variable = stress_zz_soil
-    block = '2'
-    index_i = 2
-    index_j = 2
-  [../]
-  [./mc_int_auxk]
-    type = MaterialStdVectorAux
-    index = 0
-    property = plastic_internal_parameter
-    variable = mc_int
-    block = '2'
-  [../]
-  [./yield_fcn_auxk]
-    type = MaterialStdVectorAux
-    index = 0
-    property = plastic_yield_function
-    variable = yield_fcn
-    block = '2'
-  [../]
+  # [./stress_xx]
+  #   type = RankTwoAux
+  #   rank_two_tensor = stress
+  #   variable = stress_xx_soil
+  #   block = '2'
+  #   index_i = 0
+  #   index_j = 0
+  # [../]
+  # [./stress_xy]
+  #   type = RankTwoAux
+  #   rank_two_tensor = stress
+  #   variable = stress_xy_soil
+  #   block = '2'
+  #   index_i = 0
+  #   index_j = 1
+  # [../]
+  # [./stress_xz]
+  #   type = RankTwoAux
+  #   rank_two_tensor = stress
+  #   variable = stress_xz_soil
+  #   block = '2'
+  #   index_i = 0
+  #   index_j = 2
+  # [../]
+  # [./stress_yy]
+  #   type = RankTwoAux
+  #   rank_two_tensor = stress
+  #   variable = stress_yy_soil
+  #   block = '2'
+  #   index_i = 1
+  #   index_j = 1
+  # [../]
+  # [./stress_yz]
+  #   type = RankTwoAux
+  #   rank_two_tensor = stress
+  #   variable = stress_yz_soil
+  #   block = '2'
+  #   index_i = 1
+  #   index_j = 2
+  # [../]
+  # [./stress_zz]
+  #   type = RankTwoAux
+  #   rank_two_tensor = stress
+  #   variable = stress_zz_soil
+  #   block = '2'
+  #   index_i = 2
+  #   index_j = 2
+  # [../]
+  # [./mc_int_auxk]
+  #   type = MaterialStdVectorAux
+  #   index = 0
+  #   property = plastic_internal_parameter
+  #   variable = mc_int
+  #   block = '2'
+  # [../]
+  # [./yield_fcn_auxk]
+  #   type = MaterialStdVectorAux
+  #   index = 0
+  #   property = plastic_yield_function
+  #   variable = yield_fcn
+  #   block = '2'
+  # [../]
 []
 
 [BCs]
   [./x_disp]
     type = DirichletBC
     variable = disp_x
-    boundary = '6'
+    boundary = '1'
     value    = 0.0
   [../]
   [./y_disp]
     type = DirichletBC
     variable = disp_y
-    boundary = '7'
+    boundary = '2'
     value    = 0.0
   [../]
-  [./y_disp_loading]
+  [./x_disp_loading]
     type = FunctionDirichletBC
-    variable = disp_y
-    boundary = '5'
-    function = -1e-1*y*t
+    variable = disp_x
+    boundary = '3'
+    function = -1e-3*x*t
   [../]
   [./T_disp]
     type = DirichletBC
     variable = T
-    boundary = '1'
-    value    = 23.0
+    boundary = '3'
+    value    = 30.0
   [../]
   [./RH_disp]
     type = DirichletBC
     variable = rh
-    boundary = '1'
+    boundary = '3'
     value    = 0.6
   [../]
 []
@@ -582,6 +591,7 @@
     eigenstrain_name                     = asr_expansion
     absolute_tolerance                   = 1e-10
     output_iteration_info_on_error       = true
+    max_its                              = 100
   []
   [thermal_strain_concrete]
     type                                 = ComputeThermalExpansionEigenstrain
@@ -636,6 +646,11 @@
 []
 
 [UserObjects]
+  [./visco_update]
+    type = LinearViscoelasticityManager
+    block = '1'
+    viscoelastic_model = burgers
+  [../]
   [./mc_coh]
     type = TensorMechanicsHardeningConstant
     value = 10E6
@@ -677,6 +692,8 @@
   end_time = 630720000 # 7300 days
 
   solve_type = 'PJFNK'
+  petsc_options_iname = '-pc_type'
+  petsc_options_value = 'lu'
   nl_max_its = 20
   l_max_its = 100
   nl_abs_tol = 1e-5
@@ -684,8 +701,6 @@
   line_search = none
   # petsc_options = '-ksp_snes_ew'
   petsc_options = '-snes_converged_reason'
-  petsc_options_iname = '-pc_type'
-  petsc_options_value = 'lu'
   # petsc_options_iname = '-pc_type -pc_hypre_type -ksp_gmres_restart -snes_ls -pc_hypre_boomeramg_strong_threshold'
   # petsc_options_value = 'hypre boomeramg 201 cubic 0.7'
 []
@@ -700,7 +715,7 @@
     type = Exodus
     elemental_as_nodal = true
   [../]
-  dofmap = true
+  # dofmap = true
 []
 
 [Debug]

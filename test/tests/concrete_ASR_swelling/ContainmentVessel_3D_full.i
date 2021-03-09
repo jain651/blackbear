@@ -7,6 +7,8 @@
 
 [Mesh]
   file = gold/containment_structure/FullScaleContainmentVessel.e
+  # file = gold/containment_structure/FullScaleContainmentVessel_wo_soil.e
+  construct_side_list_from_node_list = true
 []
 
 [Modules/TensorMechanics/Master]
@@ -18,21 +20,77 @@
     eigenstrain_names = 'asr_expansion thermal_expansion'
     save_in = 'resid_x resid_y resid_z'
   [../]
-  # [./soil]
-  #   block = '12'
-  #   strain = FINITE
-  #   # add_variables = true
-  #   # base_name = 'soil'
-  #   # generate_output = 'stress_xx stress_yy stress_zz stress_xy stress_yz stress_zx vonmises_stress hydrostatic_stress elastic_strain_xx elastic_strain_yy elastic_strain_zz strain_xx strain_yy strain_zz'
-  #   save_in = 'resid_x resid_y resid_z'
-  # [../]
+  [./soil]
+    block = '12'
+    strain = FINITE
+    # add_variables = true
+    # base_name = 'soil'
+    # generate_output = 'stress_xx stress_yy stress_zz stress_xy stress_yz stress_zx vonmises_stress hydrostatic_stress elastic_strain_xx elastic_strain_yy elastic_strain_zz strain_xx strain_yy strain_zz'
+    save_in = 'resid_x resid_y resid_z'
+  [../]
 []
 
 [Modules/TensorMechanics/LineElementMaster]
-  [./Reinforcement_block]
-    block = '3 4 5 6 7 8 9 10 11'
+  [./btm_grid]
+    block = '3'
     truss = true
-    area = area
+    area = area_no6
+    displacements = 'disp_x disp_y disp_z'
+    save_in = 'resid_x resid_y resid_z'
+  [../]
+  [./top_grid]
+    block = '4'
+    truss = true
+    area = area_no5
+    displacements = 'disp_x disp_y disp_z'
+    save_in = 'resid_x resid_y resid_z'
+  [../]
+  [./top_radial]
+    block = '5'
+    truss = true
+    area = area_no5
+    displacements = 'disp_x disp_y disp_z'
+    save_in = 'resid_x resid_y resid_z'
+  [../]
+  [./top_circum]
+    block = '6'
+    truss = true
+    area = area_no6
+    displacements = 'disp_x disp_y disp_z'
+    save_in = 'resid_x resid_y resid_z'
+  [../]
+  [./shear_stirrups]
+    block = '7'
+    truss = true
+    area = area_no3
+    displacements = 'disp_x disp_y disp_z'
+    save_in = 'resid_x resid_y resid_z'
+  [../]
+  [./cyl_mat_connection]
+    block = '8'
+    truss = true
+    area = area_no4
+    displacements = 'disp_x disp_y disp_z'
+    save_in = 'resid_x resid_y resid_z'
+  [../]
+  [./cyl_long]
+    block = '9'
+    truss = true
+    area = area_no4
+    displacements = 'disp_x disp_y disp_z'
+    save_in = 'resid_x resid_y resid_z'
+  [../]
+  [./cyl_dome_meridional]
+    block = '10'
+    truss = true
+    area = area_no4
+    displacements = 'disp_x disp_y disp_z'
+    save_in = 'resid_x resid_y resid_z'
+  [../]
+  [./cyl_mat_seismic]
+    block = '11'
+    truss = true
+    area = area_no4
     displacements = 'disp_x disp_y disp_z'
     save_in = 'resid_x resid_y resid_z'
   [../]
@@ -205,7 +263,19 @@
     order = CONSTANT
     family = MONOMIAL
   []
-  [./area]
+  [./area_no3]
+    order = CONSTANT
+    family = MONOMIAL
+  [../]
+  [./area_no4]
+    order = CONSTANT
+    family = MONOMIAL
+  [../]
+  [./area_no5]
+    order = CONSTANT
+    family = MONOMIAL
+  [../]
+  [./area_no6]
     order = CONSTANT
     family = MONOMIAL
   [../]
@@ -217,7 +287,6 @@
     order = CONSTANT
     family = MONOMIAL
   [../]
-
   # [./stress_xx_soil]
   #   order = CONSTANT
   #   family = MONOMIAL
@@ -420,11 +489,32 @@
     property = damage_index
     execute_on = timestep_end
   []
-  [./area]
+  [./area_no3]
     type = ConstantAux
-    block = '3 4 5 6 7 8 9 10 11'
-    variable = area
-    value = 1.33e-4
+    block = '7'
+    variable = area_no3
+    value = 71e-6
+    execute_on = 'initial timestep_begin'
+  [../]
+  [./area_no4]
+    type = ConstantAux
+    block = '8 9 10 11'
+    variable = area_no4
+    value = 129e-6
+    execute_on = 'initial timestep_begin'
+  [../]
+  [./area_no5]
+    type = ConstantAux
+    block = '4 5'
+    variable = area_no5
+    value = 200e-6
+    execute_on = 'initial timestep_begin'
+  [../]
+  [./area_no6]
+    type = ConstantAux
+    block = '3 6'
+    variable = area_no6
+    value = 284e-6
     execute_on = 'initial timestep_begin'
   [../]
   [./axial_stress]
@@ -499,21 +589,69 @@
 []
 
 [Functions]
-  [./ramp_temp]
-    type = PiecewiseLinear
-    data_file = analysis/containment_str/T_air.csv
-    format = columns
-  [../]
-
-  [./ramp_humidity]
-    type = PiecewiseLinear
-    data_file = analysis/containment_str/RH_air.csv
-    format = columns
-  [../]
+ [./T_air]
+   type = PiecewiseLinear
+   data_file =  analysis/containment_str/T_air.csv
+   format = columns
+ [../]
+ [./T_bet_grnd_2in]
+   type = PiecewiseLinear
+   data_file =  analysis/containment_str/T_bet_grnd_2in.csv
+   format = columns
+ [../]
+ [./T_bet_2in_4in]
+   type = PiecewiseLinear
+   data_file =  analysis/containment_str/T_bet_2in_4in.csv
+   format = columns
+ [../]
+ [./T_bet_4in_8in]
+   type = PiecewiseLinear
+   data_file =  analysis/containment_str/T_bet_4in_8in.csv
+   format = columns
+ [../]
+ [./T_bet_8in_20in]
+   type = PiecewiseLinear
+   data_file =  analysis/containment_str/T_bet_8in_20in.csv
+   format = columns
+ [../]
+ [./T_below_20in]
+   type = PiecewiseLinear
+   data_file =  analysis/containment_str/T_below_20in.csv
+   format = columns
+ [../]
+ [./rh_air]
+   type = PiecewiseLinear
+   data_file =  analysis/containment_str/rh_air.csv
+   format = columns
+ [../]
+ [./rh_bet_grnd_2in]
+   type = PiecewiseLinear
+   data_file =  analysis/containment_str/rh_bet_grnd_2in.csv
+   format = columns
+ [../]
+ [./rh_bet_2in_4in]
+   type = PiecewiseLinear
+   data_file =  analysis/containment_str/rh_bet_2in_4in.csv
+   format = columns
+ [../]
+ [./rh_bet_4in_8in]
+   type = PiecewiseLinear
+   data_file =  analysis/containment_str/rh_bet_4in_8in.csv
+   format = columns
+ [../]
+ [./rh_bet_8in_20in]
+   type = PiecewiseLinear
+   data_file =  analysis/containment_str/rh_bet_8in_20in.csv
+   format = columns
+ [../]
+ [./rh_below_20in]
+   type = PiecewiseLinear
+   data_file =  analysis/containment_str/rh_below_20in.csv
+   format = columns
+ [../]
 []
 
 [Materials]
-
   [./concrete]
     type = PorousMediaBase
     block = '1'
@@ -547,7 +685,6 @@
     relative_humidity = rh
     temperature = T
   [../]
-
   [./creep]
     type = LinearViscoelasticStressUpdate
     block = 1
@@ -565,8 +702,6 @@
     temperature = T
     activation_temperature = 23.0
   [../]
-
-
   [ASR_expansion]
     type = ConcreteASREigenstrain
     block = 1
@@ -599,8 +734,9 @@
     eigenstrain_name = asr_expansion
     absolute_tolerance = 1e-10
     output_iteration_info_on_error = true
-  []
 
+    max_its = 100
+  []
   [thermal_strain_concrete]
     type = ComputeThermalExpansionEigenstrain
     block = 1
@@ -609,7 +745,6 @@
     stress_free_temperature = 10.6
     eigenstrain_name = thermal_expansion
   []
-
   [ASR_damage_concrete]
     type = ConcreteASRMicrocrackingDamage
     residual_youngs_modulus_fraction = 0.1
@@ -631,16 +766,16 @@
     temperature_ref = 10.6
   []
 
-  # [./elastic_stress]
-  #   type = ComputeFiniteStrainElasticStress
-  #   block = '12'
-  # [../]
-  # [./elasticity_tensor]
-  #   type = ComputeIsotropicElasticityTensor
-  #   poissons_ratio = 0.3
-  #   youngs_modulus = 1e6
-  #   block = '12'
-  # [../]
+  [./elastic_stress]
+    type = ComputeFiniteStrainElasticStress
+    block = '12'
+  [../]
+  [./elasticity_tensor]
+    type = ComputeIsotropicElasticityTensor
+    poissons_ratio = 0.3
+    youngs_modulus = 1e6
+    block = '12'
+  [../]
 
   # [elastic_soil]
   #   type = ComputeElasticityTensor
@@ -706,22 +841,111 @@
   [./z]
     type = DirichletBC
     variable = disp_z
-    boundary = '3'
+    boundary = '3 4'
     value = 0.0
   [../]
-  [./T]
-    type = FunctionDirichletBC
-    variable = T
-    boundary = '30'
-    function = ramp_temp
-  [../]
-  [./rh]
-    type = FunctionDirichletBC
-    variable = rh
-    boundary = '30'
-    function = ramp_humidity
-  [../]
-[]
+ [./T_inside]
+   type = DirichletBC
+   variable = T
+   boundary = '10'
+   value = 26.6
+ [../]
+ [./RH_inside_zeroFlux]
+   type = NeumannBC
+   variable = rh
+   boundary = '10'
+   value = 0
+ [../]
+ [./T_air]
+   type = RepeatingDirichletBC
+   variable = T
+   boundary = '11'
+   repetition_period = 31536000 # 365 days
+   function = T_air
+ [../]
+ [./rh_air]
+   type = RepeatingDirichletBC
+   variable = rh
+   boundary = '11'
+   repetition_period = 31536000 # 365 days
+   function = rh_air
+ [../]
+ # [./T_bet_grnd_2in]
+ #   type = RepeatingDirichletBC
+ #   variable = T
+ #   boundary = '12'
+ #   repetition_period = 31536000 # 365 days
+ #   function = T_bet_grnd_2in
+ # [../]
+ # [./rh_bet_grnd_2in]
+ #   type = RepeatingDirichletBC
+ #   variable = rh
+ #   boundary = '12'
+ #   repetition_period = 31536000 # 365 days
+ #   function = rh_bet_grnd_2in
+ # [../]
+ # [./T_bet_2in_4in]
+ #   type = RepeatingDirichletBC
+ #   variable = T
+ #   boundary = '13'
+ #   repetition_period = 31536000 # 365 days
+ #   function = T_bet_2in_4in
+ # [../]
+ # [./rh_bet_2in_4in]
+ #   type = RepeatingDirichletBC
+ #   variable = rh
+ #   boundary = '13'
+ #   repetition_period = 31536000 # 365 days
+ #   function = rh_bet_2in_4in
+ # [../]
+ # [./T_bet_4in_8in]
+ #   type = RepeatingDirichletBC
+ #   variable = T
+ #   boundary = '14'
+ #   repetition_period = 31536000 # 365 days
+ #   function = T_bet_4in_8in
+ # [../]
+ # [./rh_bet_4in_8in]
+ #   type = RepeatingDirichletBC
+ #   variable = rh
+ #   boundary = '14'
+ #   repetition_period = 31536000 # 365 days
+ #   function = rh_bet_4in_8in
+ # [../]
+ # [./T_bet_8in_20in]
+ #   type = RepeatingDirichletBC
+ #   variable = T
+ #   boundary = '15'
+ #   repetition_period = 31536000 # 365 days
+ #   function = T_bet_8in_20in
+ # [../]
+ # [./rh_bet_8in_20in]
+ #   type = RepeatingDirichletBC
+ #   variable = rh
+ #   boundary = '15'
+ #   repetition_period = 31536000 # 365 days
+ #   function = rh_bet_8in_20in
+ # [../]
+ [./T_below_20in]
+   type = RepeatingDirichletBC
+   variable = T
+   boundary = '16 17'
+   repetition_period = 31536000 # 365 days
+   function = T_below_20in
+ [../]
+ [./rh_below_20in]
+   type = RepeatingDirichletBC
+   variable = rh
+   boundary = '16'
+   repetition_period = 31536000 # 365 days
+   function = rh_below_20in
+ [../]
+ [./rh_below_water_table]
+   type = FunctionDirichletBC
+   variable = rh
+   boundary = '17'
+   function = '1.0'
+ [../][]
 
 # [Postprocessors]
 #   [./nelem]
@@ -1100,6 +1324,13 @@
 #   [../]
 # []
 
+[Preconditioning]
+  [./SMP]
+    type = SMP
+    full = true
+  [../]
+[]
+
 [Executioner]
   type       = Transient
   solve_type = 'PJFNK'
@@ -1111,21 +1342,23 @@
   # petsc_options_iname = '-pc_type -pc_hypre_type -ksp_gmres_restart -snes_ls -pc_hypre_boomeramg_strong_threshold'
   # petsc_options_value = 'hypre boomeramg 201 cubic 0.7'
   line_search = none
+
+  l_max_its  = 50
+  l_tol      = 1e-4
+  nl_max_its = 20
+  nl_rel_tol = 1e-8
+  nl_abs_tol = 1e-6
+
   start_time = 2419200
   dt = 1000000
   automatic_scaling = true
   end_time = 38880000
-  l_max_its  = 50
-  l_tol      = 1e-4
-  nl_max_its = 10
-  nl_rel_tol = 1e-8
-  nl_abs_tol = 1e-10
 []
 
 [Outputs]
   perf_graph = true
   csv = true
-  #exodus = true #Turned off to save space
+  exodus = true #Turned off to save space
 []
 
 [Debug]
