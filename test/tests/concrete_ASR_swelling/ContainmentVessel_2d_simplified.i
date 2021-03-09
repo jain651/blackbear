@@ -3,21 +3,33 @@
   volumetric_locking_correction = true
 []
 
-[Problem]
-  coord_type = RZ
-[]
+# [Problem]
+#   coord_type = RZ
+# []
 
 [Mesh]
-  file = gold/TwoElement2D_w_rebar_Model.e
+  # file = gold/TwoElement2DModel.e
+  file = gold/containment_structure/ContainmentVessel_2d_simplified.e
+  # file = gold/containment_structure/ContainmentVessel_2d_remove_geometery.e
+  construct_side_list_from_node_list = true
 []
 
 [Modules/TensorMechanics/Master]
-  generate_output = 'stress_xx stress_yy stress_zz stress_xy stress_yz stress_zx strain_xx strain_yy strain_zz strain_xy strain_yz strain_zx vonmises_stress hydrostatic_stress elastic_strain_xx elastic_strain_yy elastic_strain_zz'
+  generate_output = 'stress_xx stress_yy stress_zz stress_xy stress_yz stress_zx
+                     strain_xx strain_yy strain_zz strain_xy strain_yz strain_zx
+                     vonmises_stress hydrostatic_stress
+                     elastic_strain_xx elastic_strain_yy elastic_strain_zz'
   [./concrete]
     strain = FINITE
     block = '1'
     add_variables = true
     eigenstrain_names = 'asr_expansion thermal_expansion'
+    save_in = 'resid_x resid_y'
+  [../]
+  [./soil]
+    strain = FINITE
+    block = '3'
+    add_variables = true
     save_in = 'resid_x resid_y'
   [../]
 []
@@ -45,7 +57,8 @@
   [./T]
     order = FIRST
     family = LAGRANGE
-    initial_condition = 30.0
+    initial_condition = 23.0
+    block = '1 2'
   [../]
   [./rh]
     order = FIRST
@@ -170,35 +183,84 @@
   [./thermal_conductivity]
     order = CONSTANT
     family = Monomial
+    block = '1'
   [../]
   [./thermal_capacity]
     order = CONSTANT
     family = Monomial
+    block = '1'
   [../]
   [./moisture_capacity]
     order = CONSTANT
     family = Monomial
+    block = '1'
   [../]
   [./humidity_diffusivity]
     order = CONSTANT
     family = Monomial
+    block = '1'
   [../]
   [./water_content]
     order = CONSTANT
     family = Monomial
+    block = '1'
   [../]
   [./water_hydrated]
     order = CONSTANT
     family = Monomial
+    block = '1'
   [../]
   [damage_index]
     order = CONSTANT
-    family = MONOMIAL
+    family = Monomial
+    block = '1'
   []
+
   [./area_no6]
     order = CONSTANT
     family = MONOMIAL
   [../]
+
+  # [./stress_xx_soil]
+  #   order = CONSTANT
+  #   family = MONOMIAL
+  #   block = '3'
+  # [../]
+  # [./stress_xy_soil]
+  #   order = CONSTANT
+  #   family = MONOMIAL
+  #   block = '3'
+  # [../]
+  # [./stress_xz_soil]
+  #   order = CONSTANT
+  #   family = MONOMIAL
+  #   block = '3'
+  # [../]
+  # [./stress_yy_soil]
+  #   order = CONSTANT
+  #   family = MONOMIAL
+  #   block = '3'
+  # [../]
+  # [./stress_yz_soil]
+  #   order = CONSTANT
+  #   family = MONOMIAL
+  #   block = '3'
+  # [../]
+  # [./stress_zz_soil]
+  #   order = CONSTANT
+  #   family = MONOMIAL
+  #   block = '3'
+  # [../]
+  # [./mc_int]
+  #   order = CONSTANT
+  #   family = MONOMIAL
+  #   block = '3'
+  # [../]
+  # [./yield_fcn]
+  #   order = CONSTANT
+  #   family = MONOMIAL
+  #   block = '3'
+  # [../]
 []
 
 [AuxKernels]
@@ -353,6 +415,7 @@
     property = damage_index
     execute_on = timestep_end
   []
+
   [./area_no6]
     type = ConstantAux
     block = '2'
@@ -360,38 +423,105 @@
     value = 284e-6
     execute_on = 'initial timestep_begin'
   [../]
+
+  # [./stress_xx]
+  #   type = RankTwoAux
+  #   rank_two_tensor = stress
+  #   variable = stress_xx_soil
+  #   block = '3'
+  #   index_i = 0
+  #   index_j = 0
+  # [../]
+  # [./stress_xy]
+  #   type = RankTwoAux
+  #   rank_two_tensor = stress
+  #   variable = stress_xy_soil
+  #   block = '3'
+  #   index_i = 0
+  #   index_j = 1
+  # [../]
+  # [./stress_xz]
+  #   type = RankTwoAux
+  #   rank_two_tensor = stress
+  #   variable = stress_xz_soil
+  #   block = '3'
+  #   index_i = 0
+  #   index_j = 2
+  # [../]
+  # [./stress_yy]
+  #   type = RankTwoAux
+  #   rank_two_tensor = stress
+  #   variable = stress_yy_soil
+  #   block = '3'
+  #   index_i = 1
+  #   index_j = 1
+  # [../]
+  # [./stress_yz]
+  #   type = RankTwoAux
+  #   rank_two_tensor = stress
+  #   variable = stress_yz_soil
+  #   block = '3'
+  #   index_i = 1
+  #   index_j = 2
+  # [../]
+  # [./stress_zz]
+  #   type = RankTwoAux
+  #   rank_two_tensor = stress
+  #   variable = stress_zz_soil
+  #   block = '3'
+  #   index_i = 2
+  #   index_j = 2
+  # [../]
+  # [./mc_int_auxk]
+  #   type = MaterialStdVectorAux
+  #   index = 0
+  #   property = plastic_internal_parameter
+  #   variable = mc_int
+  #   block = '3'
+  # [../]
+  # [./yield_fcn_auxk]
+  #   type = MaterialStdVectorAux
+  #   index = 0
+  #   property = plastic_yield_function
+  #   variable = yield_fcn
+  #   block = '3'
+  # [../]
 []
 
 [BCs]
   [./x_disp]
     type = DirichletBC
     variable = disp_x
-    boundary = '2'
+    boundary = '1'
     value    = 0.0
   [../]
   [./y_disp]
     type = DirichletBC
     variable = disp_y
-    boundary = '3'
+    boundary = '2'
+    # boundary = '2 3'
     value    = 0.0
   [../]
-  # [./y_disp_loading]
-  #   type = FunctionDirichletBC
-  #   variable = disp_y
-  #   boundary = '1'
-  #   function = -1e-1*y*t
-  # [../]
-  [./T]
+  [./x_disp_loading]
+    type = FunctionDirichletBC
+    variable = disp_x
+    boundary = '3'
+    # boundary = '11'
+    function = -1e-3*x*t
+  [../]
+  [./T_disp]
     type = DirichletBC
     variable = T
-    boundary = '1'
-    value    = 0.
+    boundary = '3'
+    # boundary = '11'
+    value    = 30.0
   [../]
-  [./RH]
+  [./RH_disp]
     type = DirichletBC
     variable = rh
-    boundary = '4'
-    value    = 0.7
+    boundary = '3'
+    # boundary = '11'
+    value    = 0.6
   [../]
 []
 
@@ -403,13 +533,11 @@
     # options available: CONSTANT ASCE-1992 KODUR-2004 EUROCODE-2004 KIM-2003
     thermal_conductivity_model           = KODUR-2004
     thermal_capacity_model               = KODUR-2004
-    # thermal_conductivity_model           = KODUR-2004
-    # thermal_capacity_model               = KODUR-2004
     aggregate_type                       = Siliceous # options: Siliceous Carbonate
 
     ref_density_of_concrete              = 2231.0    # in kg/m^3
     ref_specific_heat_of_concrete        = 1100.0    # in J/(Kg.0C)
-    ref_thermal_conductivity_of_concrete = 3         # in W/(m.0C)s
+    ref_thermal_conductivity_of_concrete = 3         # in W/(m.0C)
 
     # setup moisture capacity and humidity diffusivity models
     aggregate_pore_type                  = dense     # options: dense porous
@@ -514,13 +642,68 @@
     thermal_expansion_coeff              = 11.3e-6
     temperature_ref                      = 23.0
   []
+
+  # [./elastic_stress]
+  #   type = ComputeFiniteStrainElasticStress
+  #   block = '1 2'
+  # [../]
+  # [./elasticity_tensor]
+  #   type = ComputeIsotropicElasticityTensor
+  #   poissons_ratio = 0.3
+  #   youngs_modulus = 1e6
+  #   block = '1 2'
+  # [../]
+  [elastic_soil]
+    type = ComputeElasticityTensor
+    fill_method = symmetric_isotropic
+    C_ijkl = '0 1E7'
+    block = '3'
+  []
+  # [elastic_soil]
+  #   type = ComputeIsotropicElasticityTensor
+  #   youngs_modulus = 2e11
+  #   poissons_ratio = 0.3
+  #   block = '3'
+  # []
+  [./mc_soil_stress]
+    type = ComputeMultiPlasticityStress
+    block = '3'
+    ep_plastic_tolerance = 1E-11
+    plastic_models = mc
+    max_NR_iterations = 1000
+    debug_fspb = crash
+  [../]
 []
 
 [UserObjects]
   [./visco_update]
     type = LinearViscoelasticityManager
-    viscoelastic_model = burgers
     block = '1'
+    viscoelastic_model = burgers
+  [../]
+  [./mc_coh]
+    type = TensorMechanicsHardeningConstant
+    value = 10E6
+  [../]
+  [./mc_phi]
+    type = TensorMechanicsHardeningConstant
+    value = 40
+    convert_to_radians = true
+  [../]
+  [./mc_psi]
+    type = TensorMechanicsHardeningConstant
+    value = 40
+    convert_to_radians = true
+  [../]
+  [./mc]
+    type = TensorMechanicsPlasticMohrCoulomb
+    cohesion = mc_coh
+    friction_angle = mc_phi
+    dilation_angle = mc_psi
+    mc_tip_smoother = 0.01E6
+    mc_edge_smoother = 29
+    yield_function_tolerance = 1E-5
+    internal_constraint_tolerance = 1E-11
   [../]
 []
 
@@ -562,7 +745,7 @@
     type = Exodus
     elemental_as_nodal = true
   [../]
-  dofmap = true
+  # dofmap = true
 []
 
 [Debug]
