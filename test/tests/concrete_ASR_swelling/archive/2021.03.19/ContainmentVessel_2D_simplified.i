@@ -3,9 +3,9 @@
   volumetric_locking_correction = true
 []
 
-# [Problem]
-#   coord_type = RZ
-# []
+[Problem]
+  coord_type = RZ
+[]
 
 [Mesh]
   # file = gold/TwoElement2DModel.e
@@ -220,47 +220,6 @@
     order = CONSTANT
     family = MONOMIAL
   [../]
-
-  # [./stress_xx_soil]
-  #   order = CONSTANT
-  #   family = MONOMIAL
-  #   block = '3'
-  # [../]
-  # [./stress_xy_soil]
-  #   order = CONSTANT
-  #   family = MONOMIAL
-  #   block = '3'
-  # [../]
-  # [./stress_xz_soil]
-  #   order = CONSTANT
-  #   family = MONOMIAL
-  #   block = '3'
-  # [../]
-  # [./stress_yy_soil]
-  #   order = CONSTANT
-  #   family = MONOMIAL
-  #   block = '3'
-  # [../]
-  # [./stress_yz_soil]
-  #   order = CONSTANT
-  #   family = MONOMIAL
-  #   block = '3'
-  # [../]
-  # [./stress_zz_soil]
-  #   order = CONSTANT
-  #   family = MONOMIAL
-  #   block = '3'
-  # [../]
-  # [./mc_int]
-  #   order = CONSTANT
-  #   family = MONOMIAL
-  #   block = '3'
-  # [../]
-  # [./yield_fcn]
-  #   order = CONSTANT
-  #   family = MONOMIAL
-  #   block = '3'
-  # [../]
 []
 
 [AuxKernels]
@@ -423,69 +382,6 @@
     value = 284e-6
     execute_on = 'initial timestep_begin'
   [../]
-
-  # [./stress_xx]
-  #   type = RankTwoAux
-  #   rank_two_tensor = stress
-  #   variable = stress_xx_soil
-  #   block = '3'
-  #   index_i = 0
-  #   index_j = 0
-  # [../]
-  # [./stress_xy]
-  #   type = RankTwoAux
-  #   rank_two_tensor = stress
-  #   variable = stress_xy_soil
-  #   block = '3'
-  #   index_i = 0
-  #   index_j = 1
-  # [../]
-  # [./stress_xz]
-  #   type = RankTwoAux
-  #   rank_two_tensor = stress
-  #   variable = stress_xz_soil
-  #   block = '3'
-  #   index_i = 0
-  #   index_j = 2
-  # [../]
-  # [./stress_yy]
-  #   type = RankTwoAux
-  #   rank_two_tensor = stress
-  #   variable = stress_yy_soil
-  #   block = '3'
-  #   index_i = 1
-  #   index_j = 1
-  # [../]
-  # [./stress_yz]
-  #   type = RankTwoAux
-  #   rank_two_tensor = stress
-  #   variable = stress_yz_soil
-  #   block = '3'
-  #   index_i = 1
-  #   index_j = 2
-  # [../]
-  # [./stress_zz]
-  #   type = RankTwoAux
-  #   rank_two_tensor = stress
-  #   variable = stress_zz_soil
-  #   block = '3'
-  #   index_i = 2
-  #   index_j = 2
-  # [../]
-  # [./mc_int_auxk]
-  #   type = MaterialStdVectorAux
-  #   index = 0
-  #   property = plastic_internal_parameter
-  #   variable = mc_int
-  #   block = '3'
-  # [../]
-  # [./yield_fcn_auxk]
-  #   type = MaterialStdVectorAux
-  #   index = 0
-  #   property = plastic_yield_function
-  #   variable = yield_fcn
-  #   block = '3'
-  # [../]
 []
 
 [BCs]

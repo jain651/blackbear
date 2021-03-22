@@ -841,111 +841,112 @@
   [./z]
     type = DirichletBC
     variable = disp_z
-    boundary = '3 4'
+    boundary = '3'
     value = 0.0
   [../]
- [./T_inside]
-   type = DirichletBC
-   variable = T
-   boundary = '10'
-   value = 26.6
- [../]
- [./RH_inside_zeroFlux]
-   type = NeumannBC
-   variable = rh
-   boundary = '10'
-   value = 0
- [../]
- [./T_air]
-   type = RepeatingDirichletBC
-   variable = T
-   boundary = '11'
-   repetition_period = 31536000 # 365 days
-   function = T_air
- [../]
- [./rh_air]
-   type = RepeatingDirichletBC
-   variable = rh
-   boundary = '11'
-   repetition_period = 31536000 # 365 days
-   function = rh_air
- [../]
- # [./T_bet_grnd_2in]
- #   type = RepeatingDirichletBC
- #   variable = T
- #   boundary = '12'
- #   repetition_period = 31536000 # 365 days
- #   function = T_bet_grnd_2in
- # [../]
- # [./rh_bet_grnd_2in]
- #   type = RepeatingDirichletBC
- #   variable = rh
- #   boundary = '12'
- #   repetition_period = 31536000 # 365 days
- #   function = rh_bet_grnd_2in
- # [../]
- # [./T_bet_2in_4in]
- #   type = RepeatingDirichletBC
- #   variable = T
- #   boundary = '13'
- #   repetition_period = 31536000 # 365 days
- #   function = T_bet_2in_4in
- # [../]
- # [./rh_bet_2in_4in]
- #   type = RepeatingDirichletBC
- #   variable = rh
- #   boundary = '13'
- #   repetition_period = 31536000 # 365 days
- #   function = rh_bet_2in_4in
- # [../]
- # [./T_bet_4in_8in]
- #   type = RepeatingDirichletBC
- #   variable = T
- #   boundary = '14'
- #   repetition_period = 31536000 # 365 days
- #   function = T_bet_4in_8in
- # [../]
- # [./rh_bet_4in_8in]
- #   type = RepeatingDirichletBC
- #   variable = rh
- #   boundary = '14'
- #   repetition_period = 31536000 # 365 days
- #   function = rh_bet_4in_8in
- # [../]
- # [./T_bet_8in_20in]
- #   type = RepeatingDirichletBC
- #   variable = T
- #   boundary = '15'
- #   repetition_period = 31536000 # 365 days
- #   function = T_bet_8in_20in
- # [../]
- # [./rh_bet_8in_20in]
- #   type = RepeatingDirichletBC
- #   variable = rh
- #   boundary = '15'
- #   repetition_period = 31536000 # 365 days
- #   function = rh_bet_8in_20in
- # [../]
- [./T_below_20in]
-   type = RepeatingDirichletBC
-   variable = T
-   boundary = '16 17'
-   repetition_period = 31536000 # 365 days
-   function = T_below_20in
- [../]
- [./rh_below_20in]
-   type = RepeatingDirichletBC
-   variable = rh
-   boundary = '16'
-   repetition_period = 31536000 # 365 days
-   function = rh_below_20in
- [../]
- [./rh_below_water_table]
-   type = FunctionDirichletBC
-   variable = rh
-   boundary = '17'
-   function = '1.0'
- [../][]
+  [./T_inside]
+    type = DirichletBC
+    variable = T
+    boundary = '10'
+    value = 26.6
+  [../]
+  [./RH_inside_zeroFlux]
+    type = NeumannBC
+    variable = rh
+    boundary = '10'
+    value = 0
+  [../]
+  [./T_air]
+    type = RepeatingDirichletBC
+    variable = T
+    boundary = '11'
+    repetition_period = 31536000 # 365 days
+    function = T_air
+  [../]
+  [./rh_air]
+    type = RepeatingDirichletBC
+    variable = rh
+    boundary = '11'
+    repetition_period = 31536000 # 365 days
+    function = rh_air
+  [../]
+  # [./T_bet_grnd_2in]
+  #   type = RepeatingDirichletBC
+  #   variable = T
+  #   boundary = '12'
+  #   repetition_period = 31536000 # 365 days
+  #   function = T_bet_grnd_2in
+  # [../]
+  # [./rh_bet_grnd_2in]
+  #   type = RepeatingDirichletBC
+  #   variable = rh
+  #   boundary = '12'
+  #   repetition_period = 31536000 # 365 days
+  #   function = rh_bet_grnd_2in
+  # [../]
+  # [./T_bet_2in_4in]
+  #   type = RepeatingDirichletBC
+  #   variable = T
+  #   boundary = '13'
+  #   repetition_period = 31536000 # 365 days
+  #   function = T_bet_2in_4in
+  # [../]
+  # [./rh_bet_2in_4in]
+  #   type = RepeatingDirichletBC
+  #   variable = rh
+  #   boundary = '13'
+  #   repetition_period = 31536000 # 365 days
+  #   function = rh_bet_2in_4in
+  # [../]
+  # [./T_bet_4in_8in]
+  #   type = RepeatingDirichletBC
+  #   variable = T
+  #   boundary = '14'
+  #   repetition_period = 31536000 # 365 days
+  #   function = T_bet_4in_8in
+  # [../]
+  # [./rh_bet_4in_8in]
+  #   type = RepeatingDirichletBC
+  #   variable = rh
+  #   boundary = '14'
+  #   repetition_period = 31536000 # 365 days
+  #   function = rh_bet_4in_8in
+  # [../]
+  # [./T_bet_8in_20in]
+  #   type = RepeatingDirichletBC
+  #   variable = T
+  #   boundary = '15'
+  #   repetition_period = 31536000 # 365 days
+  #   function = T_bet_8in_20in
+  # [../]
+  # [./rh_bet_8in_20in]
+  #   type = RepeatingDirichletBC
+  #   variable = rh
+  #   boundary = '15'
+  #   repetition_period = 31536000 # 365 days
+  #   function = rh_bet_8in_20in
+  # [../]
+  [./T_below_20in]
+    type = RepeatingDirichletBC
+    variable = T
+    boundary = '16 17'
+    repetition_period = 31536000 # 365 days
+    function = T_below_20in
+  [../]
+  [./rh_below_20in]
+    type = RepeatingDirichletBC
+    variable = rh
+    boundary = '16'
+    repetition_period = 31536000 # 365 days
+    function = rh_below_20in
+  [../]
+  [./rh_below_water_table]
+    type = FunctionDirichletBC
+    variable = rh
+    boundary = '17'
+    function = '1.0'
+  [../]
+[]
 
 # [Postprocessors]
 #   [./nelem]
