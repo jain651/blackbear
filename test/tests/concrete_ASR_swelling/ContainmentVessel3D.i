@@ -126,11 +126,14 @@
     # block = '2'
     block = '3 4 5 6 7 8 9 10 11'
   [../]
+<<<<<<< HEAD
   [./gravity]
     type = Gravity
     variable = disp_z
     value = 9.81
   [../]
+=======
+>>>>>>> 3d model running with soil
 []
 
 [AuxVariables]
@@ -519,13 +522,21 @@
   [./y_disp]
     type = DirichletBC
     variable = disp_y
+<<<<<<< HEAD
     boundary = '2'
+=======
+    boundary = '3'
+>>>>>>> 3d model running with soil
     value    = 0.0
   [../]
   [./z_disp]
     type = DirichletBC
     variable = disp_z
+<<<<<<< HEAD
     boundary = '3'
+=======
+    boundary = '2'
+>>>>>>> 3d model running with soil
     value    = 0.0
   [../]
   [./T_disp]
@@ -650,12 +661,15 @@
     inelastic_models                     = 'creep'
     damage_model                         = ASR_damage_concrete
   [../]
+<<<<<<< HEAD
   [./density_conc]
    type                                 = GenericFunctionMaterial
    block                                = '1'
    prop_names                           = density
    prop_values                          = 2231.0 # kg/m3
   [../]
+=======
+>>>>>>> 3d model running with soil
 
   [truss]
     type                                 = LinearElasticTruss
@@ -666,6 +680,7 @@
     thermal_expansion_coeff              = 11.3e-6
     temperature_ref                      = 23.0
   []
+<<<<<<< HEAD
   [./density_steel]
     type                                = GenericFunctionMaterial
     # block = '2'
@@ -673,6 +688,8 @@
     prop_names                          = density
     prop_values                         = 7850.0 # kg/m3
   [../]
+=======
+>>>>>>> 3d model running with soil
 
   # [./elastic_stress]
   #   type = ComputeFiniteStrainElasticStress
@@ -704,12 +721,15 @@
     max_NR_iterations = 1000
     debug_fspb = crash
   [../]
+<<<<<<< HEAD
   [./density_soil]
     type                                = GenericFunctionMaterial
     block                               = '12'
     prop_names                          = density
     prop_values                         = 2650.0 # kg/m3
   [../]
+=======
+>>>>>>> 3d model running with soil
 []
 
 [UserObjects]
@@ -762,9 +782,15 @@
   petsc_options_iname = '-pc_type'
   petsc_options_value = 'lu'
   nl_max_its = 20
+<<<<<<< HEAD
   l_max_its = 30
   nl_abs_tol = 5e-3
   nl_rel_tol = 1e-5
+=======
+  l_max_its = 50
+  nl_abs_tol = 1e-5
+  nl_rel_tol = 1e-3
+>>>>>>> 3d model running with soil
   line_search = none
   # petsc_options = '-ksp_snes_ew'
   petsc_options = '-snes_converged_reason'

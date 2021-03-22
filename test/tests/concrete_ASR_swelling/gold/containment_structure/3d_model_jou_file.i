@@ -33,7 +33,11 @@ cd "/Users/amitjain/projects/blackbear/test/tests/concrete_ASR_swelling/gold/con
 # {hoop1_r 	=	mrdnl2_r-dia_num4}
 # {hoop3_r 	=	mrdnl2_r+dia_num4}
 # {hoop4_r 	=	mrdnl5_r-dia_num4}
+<<<<<<< HEAD
 # {hoop6_r 	=	mrdnl5_r+dia_num4}
+=======
+# {hoop6_r 	=	mrdnl5_r-dia_num4}
+>>>>>>> 3d model running with soil
 # {hoop_s 	=	0.114*scale}
 # {seismic_ro 	=	mrdnl5_r+0.0254*scale}
 # {seismic_ri 	=	seismic_ro-dia_num4}
@@ -55,7 +59,11 @@ cd "/Users/amitjain/projects/blackbear/test/tests/concrete_ASR_swelling/gold/con
 
 # basemat rebars: bottom #6 rectangular grid
 create vertex {-base_r+tol} {s_bot_grid/2} {base_top_z-base_h+c} 		# vertex 1
+<<<<<<< HEAD
 create vertex {-tol} 	  {s_bot_grid/2} {base_top_z-base_h+c} 		# vertex 2
+=======
+create vertex {0-tol} 	  {s_bot_grid/2} {base_top_z-base_h+c} 		# vertex 2
+>>>>>>> 3d model running with soil
 create curve vertex 1 2 							# curve 1
 curve 1 copy move y {-s_bot_grid} repeat {37}
 create curve arc radius {base_r-c-tol} center location {0} {0} {base_top_z-base_h+c} normal 0 0 1 start angle 0 stop angle 360
@@ -103,7 +111,11 @@ curve 40 to 115 rotate 180 about Z
 
 # basemat rebars: top #5 rectangular grid
 create vertex {-base_r+tol} {s_top_grid/2} {base_top_z-c} 		# vertex 230
+<<<<<<< HEAD
 create vertex {-tol} 	  {s_top_grid/2} {base_top_z-c} 		# vertex 231
+=======
+create vertex {0-tol} 	  {s_top_grid/2} {base_top_z-c} 		# vertex 231
+>>>>>>> 3d model running with soil
 create curve vertex 230 231 						# curve 116
 curve 116 copy move y {-s_top_grid} repeat 25
 curve 39 copy move z {base_h-2*c}					# curve 142
@@ -139,7 +151,11 @@ curve 143 to 194 rotate 180 about Z
 
 # basemat rebars: top #5 radial bars
 create vertex {base_r-c-tol} {0} {base_top_z-c} 			# vertex 387
+<<<<<<< HEAD
 create vertex {0}    {0} {base_top_z-c} 				# vertex 388
+=======
+create vertex {0+tol}    {0} {base_top_z-c} 				# vertex 388
+>>>>>>> 3d model running with soil
 create curve vertex 387 388						# curve 195
 curve 195 copy rotate {s_top_rad_s/s_top_rad_r*180/3.14} about Z repeat 48
 
@@ -169,12 +185,21 @@ curve 266 copy move x {-top_cir_s2} repeat 4
 curve 259 copy move x {-mid_ri+2*c}
 
 # cylinder-basemat connection rebars: #4 shear tie bars
+<<<<<<< HEAD
 create vertex {mid_ro-2*c}  		 {0} {base_top_z+conc_coarse+h_shear_tie} 	# vertex 541
 create vertex {mid_ro-2*c} 		 {0} {base_top_z+conc_coarse} 		# vertex 542
 create vertex {mid_ri-c-5*top_cir_s1} {0} {base_top_z-c-(base_h-2*c)} 		# vertex 543
 create vertex {mid_ri-c-7*top_cir_s1} {0} {base_top_z-c-(base_h-2*c)} 		# vertex 544
 create curve polyline vertex 541 to 544						# curve 272 273 274
 create vertex {base_r-c} {0} {base_top_z-c} 						# vertex 547
+=======
+create vertex {dome_ro-c}  		 {0} {base_top_z+conc_coarse+h_shear_tie} 	# vertex 541
+create vertex {dome_ro-c} 		 {0} {base_top_z+conc_coarse} 		# vertex 542
+create vertex {mid_ri-c-5*top_cir_s1} {0} {base_top_z-c-(base_h-2*c)} 		# vertex 543
+create vertex {mid_ri-c-7*top_cir_s1} {0} {base_top_z-c-(base_h-2*c)} 		# vertex 544
+create curve polyline vertex 541 to 544						# curve 272 273 274
+create vertex {mid_ro+c} {0} {base_top_z-c} 						# vertex 547
+>>>>>>> 3d model running with soil
 create vertex {mid_ri-c} {0} {base_top_z-c}	 					# vertex 548
 create curve vertex 547 548								# curve 275
 curve 275 copy move z {-2*c}								# curve 276
@@ -187,8 +212,13 @@ create curve arc radius {hoop6_r} center location {0} {0} {base_top_z} normal 0 
 curve 277 to 280 copy move z {hoop_s} repeat 59
 
 # cylinder long rebars: meridional bars #4
+<<<<<<< HEAD
 create vertex {mrdnl2_r} {tol} {base_top_z-base_h+c} 			# vertex 1031
 create vertex {mrdnl2_r-seismic_dr} {tol} {mid_top_z-c} 		# vertex 1032
+=======
+create vertex {mrdnl2_r} 		{tol} {base_top_z-base_h+c} 	# vertex 1031
+create vertex {mrdnl2_r-seismic_dr+tol} 	{tol} {mid_top_z-c} 		# vertex 1032
+>>>>>>> 3d model running with soil
 create curve vertex 1031 1032						# curve 517
 curve 517 copy move x {mrdnl5_r-mrdnl2_r}
 
@@ -241,8 +271,11 @@ curve 524 rotate {seismic_th/2*180/3.14-1.043565} about z
 curve 523 copy rotate {-seismic_s/(0.5*(seismic_ro+seismic_ri))*180/3.14} about Z repeat 49
 curve 524 copy rotate {seismic_s/(0.5*(seismic_ro+seismic_ri))*180/3.14} about Z repeat 49
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 3d model running with soil
 # concrete base
 create Cylinder height {base_h} radius {base_r}
 move Volume 1 z {base_z} include_merged
@@ -304,6 +337,7 @@ mesh volume all
 mesh curve all
 
 block 1 add volume 12 8 9 10
+<<<<<<< HEAD
 block 2 add curve 41 to 115 144 to 518 521 to 522 525 to 1335 1341 to 1434 1603 to 1696
 # block 3 curve 41 to 115 					# #6 mat: bottom grid
 # block 4 curve 144 to 194					# #5 mat: top grid
@@ -314,6 +348,18 @@ block 2 add curve 41 to 115 144 to 518 521 to 522 525 to 1335 1341 to 1434 1603 
 # block 9 curve 277 to 516 					# #4 cylinear: long bars (layer 1 3 4 6)
 # block 10 curve 517 518 1342 to 1434 1603 to 1696		# #4 cylinear-dome: meridional bars (layer 2 5)
 # block 11 curve 1712 to 1782 1996 to 2460			# #4 cylinear-dome: seismic bars (layer 7 8)
+=======
+#block 2 add curve 41 to 115 144 to 518 521 to 522 525 to 1335 1341 to 1434 1603 to 1696 1712 to 1782 1996 to 2460
+block 3 curve 40 to 115 					# #6 mat: bottom grid
+block 4 curve 143 to 194					# #5 mat: top grid
+block 5 curve 195 to 243 					# #5 mat: top radial bars
+block 6 curve 244 to 258 					# #6 mat: top circumfrential bars
+block 7 curve 259 to 271 525 to 1100				# #3 mat: shear stirrups
+block 8 curve 272 to 276 1101 to 1340			# #4 cylinear-mat connection bars
+block 9 curve 277 to 516 					# #4 cylinear: long bars (layer 1 3 4 6)
+block 10 curve 517 to 522 1341 to 1436 1603 to 1698		# #4 cylinear-dome: meridional bars (layer 2 5)
+block 11 curve 1712 to 1782 1966 to 2430			# #4 cylinear-dome: seismic bars (layer 7 8)
+>>>>>>> 3d model running with soil
 block 12 add volume 19	 					# soil
 
 sideset 1 add surface 132 111 71 81 91
@@ -325,6 +371,7 @@ sideset 4 add surface 112 113 72 144 83 93
 sideset 5 add surface 113
 sideset 6 add surface 75
 
+<<<<<<< HEAD
 ## Temperature and RH BC
 sideset 10 add surface 142 85 95 			# inner surfaces (no flux BC)
 nodeset 11 add surface 112 113 72 144 83 93 	# outer surface for above ground BC
@@ -388,3 +435,8 @@ export mesh 'ContainmentVessel3D.e' overwrite
 #
 # export mesh 'ContainmentVessel3D.e' overwrite
 # #
+=======
+rotate Curve all angle -90  about X include_merged
+
+export mesh 'ContainmentVessel3D.e' overwrite
+>>>>>>> 3d model running with soil
