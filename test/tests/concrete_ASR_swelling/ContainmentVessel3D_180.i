@@ -4,7 +4,7 @@
 []
 
 [Mesh]
-  file = gold/containment_structure/ContainmentVessel3D.e
+  file = gold/containment_structure/ContainmentVessel3D_180.e
   # file = gold/TwoElement3D.e
   construct_side_list_from_node_list = true
   patch_update_strategy=iteration
@@ -32,8 +32,8 @@
 
 [Modules/TensorMechanics/LineElementMaster]
   [./btm_grid]
-    # block = '2'
-    block = '3 4 5 6 7 8 9 10 11'
+    block = '2'
+    # block = '3 4 5 6 7 8 9 10 11'
     truss = true
     area = area_no6
     displacements = 'disp_x disp_y disp_z'
@@ -41,35 +41,65 @@
   [../]
 []
 
-[Constraints/EqualValueEmbeddedConstraint/EqualValueEmbeddedConstraintAction]
-  primary_block = '1'
-  # secondary_block = '2'
-  secondary_block = '3 4 5 6 7 8 9 10 11'
-  primary_variable = 'disp_x disp_y disp_z'
-  displacements = 'disp_x disp_y disp_z'
-  penalty = 1e12
-  formulation = penalty
-[]
+# [Constraints/EqualValueEmbeddedConstraint/EqualValueEmbeddedConstraintAction]
+#   primary_block = '1'
+#   secondary_block = '2'
+#   # secondary_block = '3 4 5 6 7 8 9 10 11'
+#   primary_variable = 'disp_x disp_y disp_z'
+#   displacements = 'disp_x disp_y disp_z'
+#   penalty = 1e12
+#   formulation = penalty
+# []
 
-[Contact]
-  [./leftright]
-    primary = '5'
-    secondary = '6'
-    model = frictionless
-    formulation = kinematic
-    penalty = 1e+12
-    normalize_penalty = true
-    normal_smoothing_distance = 0.1
+[Constraints]
+  [./rebar_x2]
+    type = EqualValueEmbeddedConstraint
+    secondary = 2
+    primary = 1
+    variable = 'disp_x'
+    primary_variable = 'disp_x'
+    penalty = 1e12
+    formulation = penalty
+  [../]
+  [./rebar_y2]
+    type = EqualValueEmbeddedConstraint
+    secondary = 2
+    primary = 1
+    variable = 'disp_y'
+    primary_variable = 'disp_y'
+    penalty = 1e12
+    formulation = penalty
+  [../]
+  [./rebar_z2]
+    type = EqualValueEmbeddedConstraint
+    secondary = 2
+    primary = 1
+    variable = 'disp_z'
+    primary_variable = 'disp_z'
+    penalty = 1e12
+    formulation = penalty
   [../]
 []
+
+# [Contact]
+#   [./leftright]
+#     primary = '5'
+#     secondary = '6'
+#     model = frictionless
+#     formulation = kinematic
+#     penalty = 1e+12
+#     normalize_penalty = true
+#     normal_smoothing_distance = 0.1
+#   [../]
+# []
 
 [Variables]
   [./T]
     order = FIRST
     family = LAGRANGE
-    initial_condition = 23.0
-    # block = '1 2'
-    block = '1 3 4 5 6 7 8 9 10 11'
+    initial_condition = 5.0
+    block = '1 2'
+    # block = '1 3 4 5 6 7 8 9 10 11'
   [../]
   [./rh]
     order = FIRST
@@ -116,15 +146,15 @@
   [./heat_dt]
     type = TimeDerivative
     variable = T
-    # block = '2'
-    block = '3 4 5 6 7 8 9 10 11'
+    block = '2'
+    # block = '3 4 5 6 7 8 9 10 11'
   [../]
   [./heat_conduction]
     type = HeatConduction
     variable = T
     diffusion_coefficient = 53.0
-    # block = '2'
-    block = '3 4 5 6 7 8 9 10 11'
+    block = '2'
+    # block = '3 4 5 6 7 8 9 10 11'
   [../]
   [./gravity]
     type = Gravity
@@ -438,8 +468,8 @@
 
   [./area_no6]
     type = ConstantAux
-    # block = '2'
-    block = '3 4 5 6 7 8 9 10 11'
+    block = '2'
+    # block = '3 4 5 6 7 8 9 10 11'
     variable = area_no6
     value = 284e-6
     execute_on = 'initial timestep_begin'
@@ -509,6 +539,69 @@
   # [../]
 []
 
+[Functions]
+#  [./T_air]
+#    type = PiecewiseLinear
+#    data_file =  analysis/containment_str/T_air.csv
+#    format = columns
+#  [../]
+#  [./T_bet_grnd_2in]
+#    type = PiecewiseLinear
+#    data_file =  analysis/containment_str/T_bet_grnd_2in.csv
+#    format = columns
+#  [../]
+#  [./T_bet_2in_4in]
+#    type = PiecewiseLinear
+#    data_file =  analysis/containment_str/T_bet_2in_4in.csv
+#    format = columns
+#  [../]
+#  [./T_bet_4in_8in]
+#    type = PiecewiseLinear
+#    data_file =  analysis/containment_str/T_bet_4in_8in.csv
+#    format = columns
+#  [../]
+#  [./T_bet_8in_20in]
+#    type = PiecewiseLinear
+#    data_file =  analysis/containment_str/T_bet_8in_20in.csv
+#    format = columns
+#  [../]
+#  [./T_below_20in]
+#    type = PiecewiseLinear
+#    data_file =  analysis/containment_str/T_below_20in.csv
+#    format = columns
+#  [../]
+ [./rh_air]
+   type = PiecewiseLinear
+   data_file =  analysis/containment_str/rh_air.csv
+   format = columns
+ [../]
+#  [./rh_bet_grnd_2in]
+#    type = PiecewiseLinear
+#    data_file =  analysis/containment_str/rh_bet_grnd_2in.csv
+#    format = columns
+#  [../]
+#  [./rh_bet_2in_4in]
+#    type = PiecewiseLinear
+#    data_file =  analysis/containment_str/rh_bet_2in_4in.csv
+#    format = columns
+#  [../]
+#  [./rh_bet_4in_8in]
+#    type = PiecewiseLinear
+#    data_file =  analysis/containment_str/rh_bet_4in_8in.csv
+#    format = columns
+#  [../]
+#  [./rh_bet_8in_20in]
+#    type = PiecewiseLinear
+#    data_file =  analysis/containment_str/rh_bet_8in_20in.csv
+#    format = columns
+#  [../]
+#  [./rh_below_20in]
+#    type = PiecewiseLinear
+#    data_file =  analysis/containment_str/rh_below_20in.csv
+#    format = columns
+#  [../]
+[]
+
 [BCs]
   [./x_disp]
     type = DirichletBC
@@ -531,15 +624,105 @@
   [./T_disp]
     type = DirichletBC
     variable = T
-    boundary = '4'
-    value    = 30.0
+    boundary = '11'
+    value    = 18.0
   [../]
   [./RH_disp]
     type = DirichletBC
     variable = rh
-    boundary = '4'
+    boundary = '11'
     value    = 0.6
   [../]
+  # [./T_air]
+  #   type = RepeatingDirichletBC
+  #   variable = T
+  #   boundary = '11'
+  #   repetition_period = 31536000 # 365 days
+  #   function = T_air
+  # [../]
+  # [./rh_air]
+  #   type = RepeatingDirichletBC
+  #   variable = rh
+  #   boundary = '11'
+  #   repetition_period = 31536000 # 365 days
+  #   function = rh_air
+  # [../]
+  # [./T_bet_grnd_2in]
+  #   type = RepeatingDirichletBC
+  #   variable = T
+  #   boundary = '12'
+  #   repetition_period = 31536000 # 365 days
+  #   function = T_bet_grnd_2in
+  # [../]
+  # [./rh_bet_grnd_2in]
+  #   type = RepeatingDirichletBC
+  #   variable = rh
+  #   boundary = '12'
+  #   repetition_period = 31536000 # 365 days
+  #   function = rh_bet_grnd_2in
+  # [../]
+  # [./T_bet_2in_4in]
+  #   type = RepeatingDirichletBC
+  #   variable = T
+  #   boundary = '13'
+  #   repetition_period = 31536000 # 365 days
+  #   function = T_bet_2in_4in
+  # [../]
+  # [./rh_bet_2in_4in]
+  #   type = RepeatingDirichletBC
+  #   variable = rh
+  #   boundary = '13'
+  #   repetition_period = 31536000 # 365 days
+  #   function = rh_bet_2in_4in
+  # [../]
+  # [./T_bet_4in_8in]
+  #   type = RepeatingDirichletBC
+  #   variable = T
+  #   boundary = '14'
+  #   repetition_period = 31536000 # 365 days
+  #   function = T_bet_4in_8in
+  # [../]
+  # [./rh_bet_4in_8in]
+  #   type = RepeatingDirichletBC
+  #   variable = rh
+  #   boundary = '14'
+  #   repetition_period = 31536000 # 365 days
+  #   function = rh_bet_4in_8in
+  # [../]
+  # [./T_bet_8in_20in]
+  #   type = RepeatingDirichletBC
+  #   variable = T
+  #   boundary = '15'
+  #   repetition_period = 31536000 # 365 days
+  #   function = T_bet_8in_20in
+  # [../]
+  # [./rh_bet_8in_20in]
+  #   type = RepeatingDirichletBC
+  #   variable = rh
+  #   boundary = '15'
+  #   repetition_period = 31536000 # 365 days
+  #   function = rh_bet_8in_20in
+  # [../]
+  # [./T_below_20in]
+  #   type = RepeatingDirichletBC
+  #   variable = T
+  #   boundary = '16 17'
+  #   repetition_period = 31536000 # 365 days
+  #   function = T_below_20in
+  # [../]
+  # [./rh_below_20in]
+  #   type = RepeatingDirichletBC
+  #   variable = rh
+  #   boundary = '16'
+  #   repetition_period = 31536000 # 365 days
+  #   function = rh_below_20in
+  # [../]
+  # [./rh_below_water_table]
+  #   type = FunctionDirichletBC
+  #   variable = rh
+  #   boundary = '17'
+  #   function = '1.0'
+  # [../]
 []
 
 [Materials]
@@ -659,8 +842,8 @@
 
   [truss]
     type                                 = LinearElasticTruss
-    # block = '2'
-    block = '3 4 5 6 7 8 9 10 11'
+    block = '2'
+    # block = '3 4 5 6 7 8 9 10 11'
     youngs_modulus                       = 2.14e11
     temperature                          = T
     thermal_expansion_coeff              = 11.3e-6
@@ -668,8 +851,8 @@
   []
   [./density_steel]
     type                                = GenericFunctionMaterial
-    # block = '2'
-    block = '3 4 5 6 7 8 9 10 11'
+    block = '2'
+    # block = '3 4 5 6 7 8 9 10 11'
     prop_names                          = density
     prop_values                         = 7850.0 # kg/m3
   [../]
@@ -756,7 +939,7 @@
   start_time = 1209600 # 28 days
   dt = 604800 # 259200 # 3 day
   automatic_scaling = true
-  end_time = 630720000 # 7300 days
+  end_time = 6307200000 # 7300 days
 
   solve_type = 'PJFNK'
   petsc_options_iname = '-pc_type'
@@ -771,6 +954,193 @@
 #   solve_type = 'NEWTON'
 #   petsc_options_iname = '-pc_type -pc_hypre_type -ksp_gmres_restart -snes_ls -pc_hypre_boomeramg_strong_threshold'
 #   petsc_options_value = 'hypre boomeramg 201 cubic 0.7'
+[]
+
+[Postprocessors]
+ [./ASR_strain]
+   type = ElementAverageValue
+   variable = ASR_vstrain
+   block = '1'
+ [../]
+ [./ASR_strain_xx]
+   type = ElementAverageValue
+   variable = ASR_strain_xx
+   block = '1'
+ [../]
+ [./ASR_strain_yy]
+   type = ElementAverageValue
+   variable = ASR_strain_yy
+   block = '1'
+ [../]
+ [./ASR_strain_zz]
+   type = ElementAverageValue
+   variable = ASR_strain_zz
+   block = '1'
+ [../]
+ [ASR_ext]
+   type = ElementAverageValue
+   variable = ASR_ex
+   block = '1'
+ []
+
+ [./vonmises]
+   type = ElementAverageValue
+   variable = vonmises_stress
+   block = '1'
+ [../]
+
+ [./vstrain]
+   type = ElementAverageValue
+   variable = volumetric_strain
+   block = '1'
+ [../]
+
+ [./strain_xx]
+   type = ElementAverageValue
+   variable = strain_xx
+   block = '1'
+ [../]
+ [./strain_yy]
+   type = ElementAverageValue
+   variable = strain_yy
+   block = '1'
+ [../]
+ [./strain_zz]
+   type = ElementAverageValue
+   variable = strain_zz
+   block = '1'
+ [../]
+
+ [./temp]
+   type = ElementAverageValue
+   variable = T
+   block = '1'
+ [../]
+ [./humidity]
+   type = ElementAverageValue
+   variable = rh
+   block = '1'
+ [../]
+
+ [./thermal_strain_xx]
+   type = ElementAverageValue
+   variable = thermal_strain_xx
+   block = '1'
+ [../]
+ [./thermal_strain_yy]
+   type = ElementAverageValue
+   variable = thermal_strain_yy
+   block = '1'
+ [../]
+ [./thermal_strain_zz]
+   type = ElementAverageValue
+   variable = thermal_strain_zz
+   block = '1'
+ [../]
+
+ [./surfaceAvg_base_x]
+   type = SideAverageValue
+   variable = disp_x
+   boundary = '33'
+ [../]
+ [./surfaceAvg_base_y]
+   type = SideAverageValue
+   variable = disp_y
+   boundary = '33'
+ [../]
+ [./surfaceAvg_base_z]
+   type = SideAverageValue
+   variable = disp_z
+   boundary = '33'
+ [../]
+ [./surfaceAvg_cyl_x]
+   type = SideAverageValue
+   variable = disp_x
+   boundary = '32'
+ [../]
+ [./surfaceAvg_cyl_y]
+   type = SideAverageValue
+   variable = disp_y
+   boundary = '32'
+ [../]
+ [./surfaceAvg_cyl_z]
+   type = SideAverageValue
+   variable = disp_z
+   boundary = '32'
+ [../]
+ [./surfaceAvg_dome_x]
+   type = SideAverageValue
+   variable = disp_x
+   boundary = '31'
+ [../]
+ [./surfaceAvg_dome_y]
+   type = SideAverageValue
+   variable = disp_y
+   boundary = '31'
+ [../]
+ [./surfaceAvg_dome_z]
+   type = SideAverageValue
+   variable = disp_z
+   boundary = '31'
+ [../]
+
+ [./cyl_z] # 500 mm gauge length
+  type = AveragePointSeparation
+  displacements = 'disp_z'
+  first_point = '2.438776     2.597033     4.252161'
+  last_point = '2.435685     2.593741     4.689710'
+ [../]
+ [./cyl_tang_x] # 500 mm gauge length (not the arc length)
+  type = AveragePointSeparation
+  displacements = 'disp_x'
+  first_point = '2.59     2.43     4.470935'
+  last_point = '2.26     2.743     4.470935'
+ [../]
+ [./cyl_tang_y] # 500 mm gauge length (not the arc length)
+  type = AveragePointSeparation
+  displacements = 'disp_y'
+  first_point = '2.59     2.43     4.470935'
+  last_point = '2.26     2.743     4.470935'
+ [../]
+ [./dome_z_arc]# 500 mm gauge length (not the arc length)
+  type = AveragePointSeparation
+  displacements = 'disp_z'
+  first_point = '2.149293     2.303640     8.909285'
+  last_point = '1.876000     2.020725     9.520732'
+ [../]
+ [./dome_tang_x]# 500 mm gauge length (not the arc length)
+  type = AveragePointSeparation
+  displacements = 'disp_x'
+  first_point = '2.374 1.924 9.0805'# basesd on hand calculation
+  last_point = '1.924 2.374 9.0805'
+ [../]
+ [./dome_tang_y]# 500 mm gauge length (not the arc length)
+  type = AveragePointSeparation
+  displacements = 'disp_y'
+  first_point = '2.374 1.924 9.0805'# basesd on hand calculation
+  last_point = '1.924 2.374 9.0805'
+ [../]
+
+ [./disp_base_mat_x]# 500 mm gauge length (not the arc length)
+  type = SideAverageValue
+  variable = disp_x
+  boundary = '35'
+ [../]
+ [./disp_base_mat_y]# 500 mm gauge length (not the arc length)
+  type = SideAverageValue
+  variable = disp_y
+  boundary = '35'
+ [../]
+ [./disp_soil_x]# 500 mm gauge length (not the arc length)
+  type = SideAverageValue
+  variable = disp_x
+  boundary = '36'
+ [../]
+ [./disp_soil_y]# 500 mm gauge length (not the arc length)
+  type = SideAverageValue
+  variable = disp_y
+  boundary = '36'
+ [../]
 []
 
 [Outputs]

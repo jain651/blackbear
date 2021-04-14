@@ -33,7 +33,7 @@ cd "/Users/amitjain/projects/blackbear/test/tests/concrete_ASR_swelling/gold/con
 # {hoop1_r 	=	mrdnl2_r-dia_num4}
 # {hoop3_r 	=	mrdnl2_r+dia_num4}
 # {hoop4_r 	=	mrdnl5_r-dia_num4}
-# {hoop6_r 	=	mrdnl5_r+dia_num4}
+# {hoop6_r 	=	mrdnl5_r-dia_num4}
 # {hoop_s 	=	0.114*scale}
 # {seismic_ro 	=	mrdnl5_r+0.0254*scale}
 # {seismic_ri 	=	seismic_ro-dia_num4}
@@ -49,13 +49,13 @@ cd "/Users/amitjain/projects/blackbear/test/tests/concrete_ASR_swelling/gold/con
 # {elem_sz	=	0.100*scale}
 # {grnd_lvl	=	(mid_top_z + dome_ro)/3}
 # {water_table	=	grnd_lvl-3}
-# {soil_h	=	10}
-# {soil_r	=	60}
+# {soil_h	=	10/6*scale}
+# {soil_r	=	10*scale}
 # {tol 		= 	0.1}
 
 # basemat rebars: bottom #6 rectangular grid
 create vertex {-base_r+tol} {s_bot_grid/2} {base_top_z-base_h+c} 		# vertex 1
-create vertex {-tol} 	  {s_bot_grid/2} {base_top_z-base_h+c} 		# vertex 2
+create vertex {0-tol} 	  {s_bot_grid/2} {base_top_z-base_h+c} 		# vertex 2
 create curve vertex 1 2 							# curve 1
 curve 1 copy move y {-s_bot_grid} repeat {37}
 create curve arc radius {base_r-c-tol} center location {0} {0} {base_top_z-base_h+c} normal 0 0 1 start angle 0 stop angle 360
@@ -102,8 +102,8 @@ curve 78 to 115 reflect x
 curve 40 to 115 rotate 180 about Z
 
 # basemat rebars: top #5 rectangular grid
-create vertex {-base_r+tol} {s_top_grid/2} {base_top_z-c} 		# vertex 230
-create vertex {-tol} 	  {s_top_grid/2} {base_top_z-c} 		# vertex 231
+create vertex {-base_r} {s_top_grid/2} {base_top_z-c} 		# vertex 230
+create vertex {0} 	  {s_top_grid/2} {base_top_z-c} 		# vertex 231
 create curve vertex 230 231 						# curve 116
 curve 116 copy move y {-s_top_grid} repeat 25
 curve 39 copy move z {base_h-2*c}					# curve 142
@@ -139,7 +139,7 @@ curve 143 to 194 rotate 180 about Z
 
 # basemat rebars: top #5 radial bars
 create vertex {base_r-c-tol} {0} {base_top_z-c} 			# vertex 387
-create vertex {0}    {0} {base_top_z-c} 				# vertex 388
+create vertex {0} 	     {0} {base_top_z-c} 			# vertex 388
 create curve vertex 387 388						# curve 195
 curve 195 copy rotate {s_top_rad_s/s_top_rad_r*180/3.14} about Z repeat 48
 
@@ -161,21 +161,24 @@ create curve arc radius {base_r-c-tol} center location {0} {0} {base_top_z-c-(ba
 create curve arc radius {base_r-c-tol} center location {0} {0} {base_top_z-c-(base_h-2*c)} normal 0 0 1 start angle 0 stop angle 90
 
 # basemat rebars: #3 shear tie bars
-create vertex {mid_ri-c-0*top_cir_s1} {tol} {base_top_z-c} 				# vertex 515
-create vertex {mid_ri-c-0*top_cir_s1} {tol} {base_top_z-c-(base_h-2*c)} 		# vertex 516
+create vertex {mid_ri-c-0*top_cir_s1} {0} {base_top_z-c} 				# vertex 515
+create vertex {mid_ri-c-0*top_cir_s1} {0} {base_top_z-c-(base_h-2*c)} 		# vertex 516
 create curve vertex 515 516								# curve 259
 curve 259 copy move x {-top_cir_s1} repeat 7
 curve 266 copy move x {-top_cir_s2} repeat 4
 curve 259 copy move x {-mid_ri+2*c}
 
 # cylinder-basemat connection rebars: #4 shear tie bars
-create vertex {mid_ro-2*c}  		 {0} {base_top_z+conc_coarse+h_shear_tie} 	# vertex 541
-create vertex {mid_ro-2*c} 		 {0} {base_top_z+conc_coarse} 		# vertex 542
-create vertex {mid_ri-c-5*top_cir_s1} {0} {base_top_z-c-(base_h-2*c)} 		# vertex 543
-create vertex {mid_ri-c-7*top_cir_s1} {0} {base_top_z-c-(base_h-2*c)} 		# vertex 544
-create curve polyline vertex 541 to 544						# curve 272 273 274
-create vertex {base_r-c} {0} {base_top_z-c} 						# vertex 547
-create vertex {mid_ri-c} {0} {base_top_z-c}	 					# vertex 548
+create vertex {mid_ri+2*c}  		 {0} {base_top_z+conc_coarse+h_shear_tie} 	# vertex 541
+create vertex {mid_ri+2*c} 		 {0} {base_top_z+conc_coarse} 		# vertex 542
+create vertex {mid_ri-c-5*top_cir_s1} {0} {base_top_z-base_h+c+tol)} 		# vertex 543
+create vertex {mid_ri-c-7*top_cir_s1} {0} {base_top_z-base_h+c+tol)} 		# vertex 544
+create curve vertex 541 542
+create curve vertex 542 543
+create curve vertex 543 544
+# create curve polyline vertex 541 to 544						# curve 272 273 274
+create vertex {base_r-2*c} {0} {base_top_z-c-tol}					# vertex 547
+create vertex {mid_ri-c} {0} {base_top_z-c-tol}					# vertex 548
 create curve vertex 547 548								# curve 275
 curve 275 copy move z {-2*c}								# curve 276
 
@@ -193,13 +196,22 @@ create curve vertex 1031 1032						# curve 517
 curve 517 copy move x {mrdnl5_r-mrdnl2_r}
 
 # cylinder long rebars: Seismic bars #4
-create vertex {seismic_ro*cos(seismic_th/2)} 	{-seismic_ro*sin(seismic_th/2)} 	{base_top_z-base_h+c}			# vertex 1035
-create vertex {seismic_ro-0.5*seismic_dr} 	   	{0} 					{0.5*(mid_top_z+base_top_z-base_h)}	# vertex 1036
-create vertex {(seismic_ro-seismic_dr)*cos(seismic_th/2)} 	{(seismic_ro-seismic_dr)*sin(seismic_th/2)} 	{mid_top_z-c}		# vertex 1037
+#create vertex {(seismic_ro-3*tol)*cos(seismic_th/2)} 	{-(seismic_ro-3*tol)*sin(seismic_th/2)} 	{base_top_z-base_h+c+tol}		# vertex 1035
+#create vertex {(seismic_ro-3*tol)} 	   			{0} 					{0.5*(mid_top_z+base_top_z-base_h)}	# vertex 1036
+#create vertex {(seismic_ro-seismic_dr-3*tol)*cos(seismic_th/2)} 	{(seismic_ro-seismic_dr-3*tol)*sin(seismic_th/2)} 	{mid_top_z-c-tol}			# vertex 1037
+create vertex {seismic_ro*cos(seismic_th/2)}		 		{-seismic_ro*sin(seismic_th/2)} 			{base_top_z-base_h+c}								# vertex 1035
+#create vertex {(seismic_ro-0.25*seismic_dr)*cos(seismic_th/4)} 	{(seismic_ro-0.25*seismic_dr)*sin(seismic_th/4)} 	{base_top_z-base_h+c+0.25*(mid_top_z+base_top_z-base_h)}	# vertex 1035
+create vertex {(seismic_ro-0.50*seismic_dr)*cos(0)} 		{0.}						 	{base_top_z-base_h+c+0.50*(mid_top_z+base_top_z-base_h)}	# vertex 1036
+#create vertex {(seismic_ro-0.75*seismic_dr)*cos(-seismic_th/4)} 	{(seismic_ro-0.75*seismic_dr)*sin(-seismic_th/4)} 	{base_top_z-base_h+c+0.75*(mid_top_z+base_top_z-base_h)}	# vertex 1037
+create vertex {(seismic_ro-seismic_dr)*cos(seismic_th/2)} 		{(seismic_ro-seismic_dr)*sin(seismic_th/2)} 		{base_top_z-base_h+c+1.00*(mid_top_z+base_top_z-base_h)}	# vertex 1038
 create curve arc three vertex 1035 1036 1037 											# curve 519
-create vertex {seismic_ri*cos(seismic_th/2)} 	{seismic_ri*sin(seismic_th/2)}	{base_top_z-base_h+c}			# vertex 1038
-create vertex {seismic_ri} 			   	{0} 				 	{0.5*(mid_top_z+base_top_z-base_h)}	# vertex 1039
-create vertex {(seismic_ri-seismic_dr)*cos(seismic_th/2)} 	{-(seismic_ri-seismic_dr)*sin(seismic_th/2)}	{mid_top_z-c}		# vertex 1040
+#create curve arc three vertex 1037 1038 1037 											# curve 519
+#create vertex {(seismic_ri-3*tol)*cos(seismic_th/2)} 		{(seismic_ri-3*tol)*sin(seismic_th/2)}		{base_top_z-base_h+c+tol}			# vertex 1038
+#create vertex {(seismic_ri-3*tol)} 			   		{0} 				 			{0.5*(mid_top_z+base_top_z-base_h)}	# vertex 1039
+#create vertex {(seismic_ri-seismic_dr-3*tol)*cos(seismic_th/2)} 	{-(seismic_ri-seismic_dr-3*tol)*sin(seismic_th/2)}	{mid_top_z-c-tol}			# vertex 1040
+create vertex {seismic_ri*cos(seismic_th/2)} 		{seismic_ri*sin(seismic_th/2)}			{base_top_z-base_h+c}			# vertex 1038
+create vertex {seismic_ri} 			   		{0} 				 			{0.5*(mid_top_z+base_top_z-base_h)}	# vertex 1039
+create vertex {(seismic_ri-seismic_dr)*cos(seismic_th/2)} 	{-(seismic_ri-seismic_dr)*sin(seismic_th/2)}		{mid_top_z-c}		# vertex 1040
 create curve arc three vertex 1038 1039 1040												# curve 520
 
 # dome rebars: continuation of meridional bars
@@ -212,9 +224,13 @@ create vertex {((dome_ri+mrdnl5_r-mid_ri-seismic_dr)^2-(mrdnl_h-mid_top_z)^2)^0.
 create curve arc three vertex 1034 1045 1046 												# curve 542
 
 # dome rebars: continuation of seismic bars
+#create vertex 	{(((dome_ri+seismic_ri-mid_ri-seismic_dr)^2-(seismic_h-mid_top_z)^2)^0.5-tol*3)*cos(sismc_dm_th+seismic_th/2)} 			{(((dome_ri+seismic_ri-mid_ri-seismic_dr)^2-(seismic_h-mid_top_z)^2)^0.5-tol*3)*sin(sismc_dm_th+seismic_th/2)} 		{seismic_h}					# vertex 1048
+#create vertex 	{(((dome_ri+seismic_ri-mid_ri-seismic_dr)^2-(0.5*(seismic_h-mid_top_z))^2)^0.5-tol*3)*cos(sismc_dm_th/2+seismic_th/2)} 	{(((dome_ri+seismic_ri-mid_ri-seismic_dr)^2-(0.5*(seismic_h-mid_top_z))^2)^0.5-tol*3)*sin(sismc_dm_th/2+seismic_th/2)} {mid_top_z+0.5*(seismic_h-mid_top_z)}	# vertex 1049
 create vertex 	{(((dome_ri+seismic_ri-mid_ri-seismic_dr)^2-(seismic_h-mid_top_z)^2)^0.5)*cos(sismc_dm_th+seismic_th/2)} 		{(((dome_ri+seismic_ri-mid_ri-seismic_dr)^2-(seismic_h-mid_top_z)^2)^0.5)*sin(sismc_dm_th+seismic_th/2)} 		{seismic_h}					# vertex 1048
 create vertex 	{(((dome_ri+seismic_ri-mid_ri-seismic_dr)^2-(0.5*(seismic_h-mid_top_z))^2)^0.5)*cos(sismc_dm_th/2+seismic_th/2)} 	{(((dome_ri+seismic_ri-mid_ri-seismic_dr)^2-(0.5*(seismic_h-mid_top_z))^2)^0.5)*sin(sismc_dm_th/2+seismic_th/2)} 	{mid_top_z+0.5*(seismic_h-mid_top_z)}	# vertex 1049
 create curve arc three vertex 1037 1049 1048 																																		# curve 523
+#create vertex 	{(((dome_ri+seismic_ri-mid_ri-seismic_dr)^2-(seismic_h-mid_top_z)^2)^0.5-tol*3)*cos(-(sismc_dm_th+seismic_th/2))} 		{(((dome_ri+seismic_ri-mid_ri-seismic_dr)^2-(seismic_h-mid_top_z)^2)^0.5-tol*3)*sin(-(sismc_dm_th+seismic_th/2))} 		{seismic_h}					# vertex 1051
+#create vertex 	{(((dome_ri+seismic_ri-mid_ri-seismic_dr)^2-(0.5*(seismic_h-mid_top_z))^2)^0.5-tol*3)*cos(-(sismc_dm_th/2+seismic_th/2))} 	{(((dome_ri+seismic_ri-mid_ri-seismic_dr)^2-(0.5*(seismic_h-mid_top_z))^2)^0.5-tol*3)*sin(-(sismc_dm_th/2+seismic_th/2))}	{mid_top_z+0.5*(seismic_h-mid_top_z)}	# vertex 1052
 create vertex 	{(((dome_ri+seismic_ri-mid_ri-seismic_dr)^2-(seismic_h-mid_top_z)^2)^0.5)*cos(-(sismc_dm_th+seismic_th/2))} 		{(((dome_ri+seismic_ri-mid_ri-seismic_dr)^2-(seismic_h-mid_top_z)^2)^0.5)*sin(-(sismc_dm_th+seismic_th/2))} 		{seismic_h}					# vertex 1051
 create vertex 	{(((dome_ri+seismic_ri-mid_ri-seismic_dr)^2-(0.5*(seismic_h-mid_top_z))^2)^0.5)*cos(-(sismc_dm_th/2+seismic_th/2))} 	{(((dome_ri+seismic_ri-mid_ri-seismic_dr)^2-(0.5*(seismic_h-mid_top_z))^2)^0.5)*sin(-(sismc_dm_th/2+seismic_th/2))}	{mid_top_z+0.5*(seismic_h-mid_top_z)}	# vertex 1052
 create curve arc three vertex 1040 1052 1051 																																		# curve 524
@@ -241,150 +257,117 @@ curve 524 rotate {seismic_th/2*180/3.14-1.043565} about z
 curve 523 copy rotate {-seismic_s/(0.5*(seismic_ro+seismic_ri))*180/3.14} about Z repeat 49
 curve 524 copy rotate {seismic_s/(0.5*(seismic_ro+seismic_ri))*180/3.14} about Z repeat 49
 
+# Dummy surfaces
+create surface rectangle width 50 height 200 yplane
+create surface rectangle width 200 height 50 xplane
+move surface 1 x 25
+move surface 2 y 25 x {tol}
+split curve 519 520 1437 to 1484 1520 to 1567 524 1734 to 1746 1748 to 1760 crossing surface 1
+split curve 	     1554 to 1602 1471 to 1519 523 1699 to 1711 1783 to 1795 crossing surface 2
+delete curve with x_coord < 0
+delete curve with y_coord < 0
+split curve 1880 to 1904 1973 to 1999 crossing surface 2
+delete curve with x_coord < 0
+delete surface 1 2
+Curve all copy reflect Y
 
+color curve 41 to 115 2303 to 2376 grey 					# #6 mat: bottom grid
+color curve 144 to 194 2377 to 2426 grey					# #5 mat: top grid
+color curve 195 to 242 2427 to 2474 red					# #5 mat: top radial bars
+color curve 244 to 258 2475 to 2489 blue					# #6 mat: top circumfrential bars
+color curve 259 to 271 525 to 1088 2490 to 2502 2750 to 3313 green		# #3 mat: shear stirrups
+color curve 272 to 276 1101 to 1335 2503 to 2507 3314 to 3548 yellow	# #4 cylinear-mat connection bars
+color curve 277 to 516 2508 to 2747 red					# #4 cylinear: long bars (layer 1 3 4 6)
+color curve 517 518 1341 to 1434 1603 to 1696 2748 2749 3549 to 3736 green	# #4 cylinear-dome: meridional bars (layer 2 5)
+color curve 1712 to 1782 1810 to 2302 3737 to 3998 pink			# #4 cylinear-dome: seismic bars (layer 7 8)
+
+# All curve  41 to 115 2303 to 2376 144 to 194 2377 to 2426 195 to 242 2427 to 2474 244 to 258 2475 to 2489 259 to 271 525 to 1088 2490 to 2502 2750 to 3313 272 to 276 1101 to 1335 2503 to 2507 3314 to 3548 277 to 516 2508 to 2747 517 518 1341 to 1434 1603 to 1696 2748 2749 3549 to 3736 1712 to 1782 1810 to 2302 3737 to 3998
+# Good curve 41 to 115 2303 to 2376 144 to 194 2377 to 2426 195 to 242 2427 to 2474 244 to 258 2475 to 2489 259 to 271	525 to 1088 2490 to 2502 2750 to 3313 272 to 276 1101 to 1335 2503 to 2507 3314 to 3548 277 to 516 2508 to 2747 517 518 1341 to 1434 1603 to 1696 2748 2749 3549 to 3736 1712 to 1782
+# Bad curve  1810 to 2302 3737 to 3998
+delete curve 1810 to 2302 3737 to 3998
+block 2 add curve 41 to 115 2303 to 2376 144 to 194 2377 to 2426 195 to 242 2427 to 2474 244 to 258 2475 to 2489 259 to 271 525 to 1088 2490 to 2502 2750 to 3313 272 to 276 1101 to 1335 2503 to 2507 3314 to 3548 277 to 516 2508 to 2747 517 518 1341 to 1434 1603 to 1696 2748 2749 3549 to 3736 1712 to 1782 1810 to 2302 3737 to 3998
+
+# block 3 curve 41 to 115 2303 to 2376 					# #6 mat: bottom grid
+# block 4 curve 144 to 194 2377 to 2426					# #5 mat: top grid
+# block 5 curve 195 to 242 2427 to 2474 					# #5 mat: top radial bars
+# block 6 curve 244 to 258 2475 to 2489 					# #6 mat: top circumfrential bars
+# block 7 curve 259 to 271 525 to 1088 2490 to 2502 2750 to 3313		# #3 mat: shear stirrups
+# block 8 curve 272 to 276 1101 to 1335 2503 to 2507 3314 to 3548		# #4 cylinear-mat connection bars
+# block 9 curve 277 to 516 2508 to 2747 					# #4 cylinear: long bars (layer 1 3 4 6)
+# block 10 curve 517 518 1341 to 1434 1603 to 1696 2748 2749 3549 to 3736	# #4 cylinear-dome: meridional bars (layer 2 5)
+# block 11 curve 1712 to 1782 1810 to 2302 3737 to 3998			# #4 cylinear-dome: seismic bars (layer 7 8)
 
 # concrete base
 create Cylinder height {base_h} radius {base_r}
-move Volume 1 z {base_z} include_merged
+move Volume 3 z {base_z} include_merged
 # concrete cylinder
 create frustum height {mid_h} radius {mid_ro} top {dome_ro}
 create Cylinder height {mid_h} radius {mid_ri}
-subtract Volume 3 from volume 2
-move Volume 2 z {base_top_z+mid_h/2}
+subtract Volume 5 from volume 4
+move Volume 4 z {base_top_z+mid_h/2}
 # concrete sphere
 create Sphere radius {dome_ro} inner radius {dome_ri}
-webcut Volume 4 with plane zplane offset 0 noimprint nomerge
-delete Volume 5
-move Volume 4 z {mid_top_z} include_merged
+webcut Volume 6 with plane zplane offset 0 noimprint nomerge
+delete Volume 7
+move Volume 6 z {mid_top_z} include_merged
 # concrete coarse on base
 create Cylinder height {conc_coarse} radius {mid_ri}
-move Volume 6 z {base_top_z+conc_coarse/2} include_merged
+move Volume 8 z {base_top_z+conc_coarse/2} include_merged
 # concrete mat below base
 create Cylinder height {mat_thk} radius {mat_r}
-move Volume 7 z {base_top_z-base_h-mat_thk/2} include_merged
-webcut Volume 1 2 4 6 7 with plane yplane offset 0 noimprint nomerge
-webcut Volume 8 to 12 with plane xplane offset 0 noimprint nomerge
-delete volume 1 2 4 6 7 13 to 17
+move Volume 9 z {base_top_z-base_h-mat_thk/2} include_merged
 # cylinder representing soil
 create Cylinder height {soil_h} radius {soil_r}
-webcut Volume 18 with plane yplane offset 0 noimprint nomerge
-webcut Volume 19 with plane xplane offset 0 noimprint nomerge
-delete volume 18 20
-move Volume 19 z {base_top_z-base_h-mat_thk-soil_h/2} include_merged
+move Volume 10 z {base_top_z-base_h-mat_thk-soil_h/2} include_merged
+webcut Volume 3 4 6 8 9 10 with plane xplane offset 0 noimprint nomerge
+delete volume 11 to 16
 
-delete volume 11
-delete curve 39 525 1341
+delete volume 8
+imprint volume 3 4 6 9
+merge volume 3 4 6 9
 
-split curve 1437 to 1470 1520 to 1553 crossing surface 74 42 94
-split curve 1471 to 1484 1554 to 1567 crossing surface 71 81 91 74 42 94
-split curve 1485 to 1519 1568 to 1602 crossing surface 71 81 91
-split curve 1733 to 1760 crossing surface 94
-split curve 1699 to 1711 1782 to 1795 crossing surface 91
-delete curve with x_coord < 0
-delete curve with y_coord < 0
-
-color curve 41 to 115 grey 					# #6 mat: bottom grid
-color curve 144 to 194 grey					# #5 mat: top grid
-color curve 195 to 242 red					# #5 mat: top radial bars
-color curve 244 to 258 blue					# #6 mat: top circumfrential bars
-color curve 259 to 271 526 to 1100 green			# #3 mat: shear stirrups
-color curve 272 to 276 1101 to 1335 yellow			# #4 cylinear-mat connection bars
-color curve 277 to 516 red					# #4 cylinear: long bars (layer 1 3 4 6)
-color curve 517 518 1342 to 1434 1603 to 1696 green		# #4 cylinear-dome: meridional bars (layer 2 5)
-color curve 1712 to 1782 1996 to 2460 pink			# #4 cylinear-dome: seismic bars (layer 7 8)
-
-imprint volume 8 9 10
-merge volume 8 9 10
-
-imprint volume 12 19
-merge volume 12 19
+block 1 add volume 3 4 6 8 9
+block 12 add volume 10
 
 # volume all size auto factor 3 # 0.25
 mesh volume all
 mesh curve all
 
-block 1 add volume 12 8 9 10
-block 2 add curve 41 to 115 144 to 518 521 to 522 525 to 1335 1341 to 1434 1603 to 1696
-# block 3 curve 41 to 115 					# #6 mat: bottom grid
-# block 4 curve 144 to 194					# #5 mat: top grid
-# block 5 curve 195 to 242 					# #5 mat: top radial bars
-# block 6 curve 244 to 258 					# #6 mat: top circumfrential bars
-# block 7 curve 259 to 271 526 to 1100				# #3 mat: shear stirrups
-# block 8 curve 272 to 276 1101 to 1335			# #4 cylinear-mat connection bars
-# block 9 curve 277 to 516 					# #4 cylinear: long bars (layer 1 3 4 6)
-# block 10 curve 517 518 1342 to 1434 1603 to 1696		# #4 cylinear-dome: meridional bars (layer 2 5)
-# block 11 curve 1712 to 1782 1996 to 2460			# #4 cylinear-dome: seismic bars (layer 7 8)
-block 12 add volume 19	 					# soil
-
-sideset 1 add surface 132 111 71 81 91
-sideset 2 add surface 135 114 74 42 94
-sideset 3 add surface 136 	75
-sideset 4 add surface 112 113 72 144 83 93
-
-## Contact BC
-sideset 5 add surface 113
-sideset 6 add surface 75
+sideset 1 add surface 76 68 32 40 41 52
+sideset 2 add surface 76 68 32 40 41 52
+sideset 3 add surface 79 71
+sideset 4 add surface 70 87 34 84 44 55
+sideset 5 add surface 71
+sideset 6 add surface 77
 
 ## Temperature and RH BC
-sideset 10 add surface 142 85 95 			# inner surfaces (no flux BC)
-nodeset 11 add surface 112 113 72 144 83 93 	# outer surface for above ground BC
+sideset 10 add surface 86 43 53			# inner surfaces (no flux BC)
+nodeset 11 add surface 70 87 34 84 44 55		# outer surface for above ground BC
 nodeset 11 remove node with z_coord < {grnd_lvl}
-nodeset 12 add surface 112 113 72 144 83 93		# outer surface for underground BC first 2" depth (unscaled dimension)
+nodeset 12 add surface 70 87 34 84 44 55		# outer surface for underground BC first 2" depth (unscaled dimension)
 nodeset 12 remove node with z_coord > {grnd_lvl}
 nodeset 12 remove node with z_coord < {grnd_lvl-2*0.0254/6*scale}
-nodeset 13 add surface 112 113 72 144 83 93		# outer surface for underground BC between 2" and 4" depth (unscaled dimension)
+nodeset 13 add surface 70 87 34 84 44 55		# outer surface for underground BC between 2" and 4" depth (unscaled dimension)
 nodeset 13 remove node with z_coord > {grnd_lvl-2*0.0254/6*scale}
 nodeset 13 remove node with z_coord < {grnd_lvl-5*0.0254/6*scale}
-nodeset 14 add surface 112 113 72 144 83 93		# outer surface for underground BC between 4" and 8" depth (unscaled dimension)
+nodeset 14 add surface 70 87 34 84 44 55		# outer surface for underground BC between 4" and 8" depth (unscaled dimension)
 nodeset 14 remove node with z_coord > {grnd_lvl-4*0.0254/6*scale}
 nodeset 14 remove node with z_coord < {grnd_lvl-8*0.0254/6*scale}
-nodeset 15 add surface 112 113 72 144 83 93		# outer surface for underground BC between 8" and 20" depth (unscaled dimension)
+nodeset 15 add surface 70 87 34 84 44 55		# outer surface for underground BC between 8" and 20" depth (unscaled dimension)
 nodeset 15 remove node with z_coord > {grnd_lvl-8*0.0254/6*scale}
 nodeset 15 remove node with z_coord < {grnd_lvl-20*0.0254/6*scale}
-nodeset 16 add surface 112 113 72 144 83 93		# outer surface for underground BC between 20" depth and water table (unscaled dimension)
+nodeset 16 add surface 70 87 34 84 44 55		# outer surface for underground BC between 20" depth and water table (unscaled dimension)
 nodeset 16 remove node with z_coord > {grnd_lvl-20*0.0254/6*scale}
 nodeset 16 remove node with z_coord < {water_table}
-nodeset 17 add surface 112 113 72 144 83 93		# outer surface for underground BC below water table (unscaled dimension)
+nodeset 17 add surface 70 87 34 84 44 55		# outer surface for underground BC below water table (unscaled dimension)
 nodeset 17 remove node with z_coord > {water_table}
-
 ## Measurement locations
-sideset 30 add surface 112 113 72 144 83 93		# outer surface for whole structure
-sideset 31 add surface 93				# dome outer surface
-sideset 32 add surface 83				# cylinder outer surface
-sideset 33 add surface 72 144				# base outer surface
-sideset 34 add surface 112 113			# base mat outer surface
+nodeset 30 add surface 70 87 34 84 44 55		# outer surface for whole structure
+sideset 31 add surface 55				# dome outer surface
+sideset 32 add surface 44				# cylinder outer surface
+sideset 33 add surface 34 84				# base outer surface
+sideset 34 add surface 70 87				# base mat outer surface
+sideset 35 add surface 71		 		# surface on base mat to calcualte slip
+sideset 36 add surface 77		 		# surface on soil to calcualte slip
 
-# rotate curve all angle -90  about X include_merged
-
-export mesh 'ContainmentVessel3D.e' overwrite
-
-# #
-# imprint volume 12 8 9 10
-# merge volume 12 8 9 10
-#
-# # volume all size auto factor 3 # 0.25
-# mesh volume all
-# mesh curve all
-#
-# block 1 add volume 12 8 9 10
-# # block 2 add curve 41 to 115 144 to 518 521 to 522 525 to 1335 1341 to 1434 1603 to 1696
-# block 3 curve 41 to 115 					# #6 mat: bottom grid
-# block 4 curve 144 to 194					# #5 mat: top grid
-# block 5 curve 195 to 242 					# #5 mat: top radial bars
-# block 6 curve 244 to 258 					# #6 mat: top circumfrential bars
-# block 7 curve 259 to 271 526 to 1100				# #3 mat: shear stirrups
-# block 8 curve 272 to 276 1101 to 1335			# #4 cylinear-mat connection bars
-# block 9 curve 277 to 516 					# #4 cylinear: long bars (layer 1 3 4 6)
-# block 10 curve 517 518 1342 to 1434 1603 to 1696		# #4 cylinear-dome: meridional bars (layer 2 5)
-# block 11 curve 1712 to 1782 1996 to 2460			# #4 cylinear-dome: seismic bars (layer 7 8)
-# block 12 add volume 19	 					# soil
-#
-# sideset 1 add surface 111 132 71 81 91
-# sideset 2 add surface 114 135 72 42 94
-# sideset 3 add surface 115 136
-# sideset 4 add surface 112 133 74 83 93
-# sideset 5 add surface 115
-# sideset 6 add surface 134
-#
-# export mesh 'ContainmentVessel3D.e' overwrite
-# #
+export mesh 'ContainmentVessel3D_180.e' overwrite

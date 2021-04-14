@@ -9,7 +9,7 @@
 
 #include "RepeatingDirichletBC.h"
 #include "Function.h"
-
+#include <cmath>
 registerMooseObject("BlackBearApp", RepeatingDirichletBC);
 
 defineLegacyParams(RepeatingDirichletBC);
@@ -39,6 +39,6 @@ RepeatingDirichletBC::RepeatingDirichletBC(const InputParameters & parameters)
 Real
 RepeatingDirichletBC::computeQpValue()
 {
-  const Real time_of_the_period = (_t/_repetition_period - (int) (_t/_repetition_period)) * _repetition_period + 1.;
-  return _scaling_function.value(time_of_the_period, *_current_node) * _func.value(time_of_the_period, *_current_node);
+  const Real time_in_the_period = (_t/_repetition_period - (int) (_t/_repetition_period)) * _repetition_period + 1.;
+  return _scaling_function.value(time_in_the_period, *_current_node) * _func.value(time_of_the_period, *_current_node);
 }
