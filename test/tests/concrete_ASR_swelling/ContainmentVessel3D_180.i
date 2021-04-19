@@ -41,57 +41,57 @@
   [../]
 []
 
-# [Constraints/EqualValueEmbeddedConstraint/EqualValueEmbeddedConstraintAction]
-#   primary_block = '1'
-#   secondary_block = '2'
-#   # secondary_block = '3 4 5 6 7 8 9 10 11'
-#   primary_variable = 'disp_x disp_y disp_z'
-#   displacements = 'disp_x disp_y disp_z'
-#   penalty = 1e12
-#   formulation = penalty
-# []
-
-[Constraints]
-  [./rebar_x2]
-    type = EqualValueEmbeddedConstraint
-    secondary = 2
-    primary = 1
-    variable = 'disp_x'
-    primary_variable = 'disp_x'
-    penalty = 1e12
-    formulation = penalty
-  [../]
-  [./rebar_y2]
-    type = EqualValueEmbeddedConstraint
-    secondary = 2
-    primary = 1
-    variable = 'disp_y'
-    primary_variable = 'disp_y'
-    penalty = 1e12
-    formulation = penalty
-  [../]
-  [./rebar_z2]
-    type = EqualValueEmbeddedConstraint
-    secondary = 2
-    primary = 1
-    variable = 'disp_z'
-    primary_variable = 'disp_z'
-    penalty = 1e12
-    formulation = penalty
-  [../]
+[Constraints/EqualValueEmbeddedConstraint/EqualValueEmbeddedConstraintAction]
+  primary_block = '1'
+  secondary_block = '2'
+  # secondary_block = '3 4 5 6 7 8 9 10 11'
+  primary_variable = 'disp_x disp_y disp_z'
+  displacements = 'disp_x disp_y disp_z'
+  penalty = 1e12
+  formulation = penalty
 []
 
-# [Contact]
-#   [./leftright]
-#     primary = '5'
-#     secondary = '6'
-#     model = frictionless
-#     formulation = kinematic
-#     penalty = 1e+12
-#     normalize_penalty = true
-#     normal_smoothing_distance = 0.1
+# [Constraints]
+#   [./rebar_x2]
+#     type = EqualValueEmbeddedConstraint
+#     secondary = 2
+#     primary = 1
+#     variable = 'disp_x'
+#     primary_variable = 'disp_x'
+#     penalty = 1e12
+#     formulation = penalty
+#   [../]
+#   [./rebar_y2]
+#     type = EqualValueEmbeddedConstraint
+#     secondary = 2
+#     primary = 1
+#     variable = 'disp_y'
+#     primary_variable = 'disp_y'
+#     penalty = 1e12
+#     formulation = penalty
+#   [../]
+#   [./rebar_z2]
+#     type = EqualValueEmbeddedConstraint
+#     secondary = 2
+#     primary = 1
+#     variable = 'disp_z'
+#     primary_variable = 'disp_z'
+#     penalty = 1e12
+#     formulation = penalty
 #   [../]
 # []
+
+[Contact]
+  [./leftright]
+    primary = '5'
+    secondary = '6'
+    model = frictionless
+    formulation = kinematic
+    penalty = 1e+12
+    normalize_penalty = true
+    normal_smoothing_distance = 0.1
+  [../]
+[]
 
 [Variables]
   [./T]
