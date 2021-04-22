@@ -46,13 +46,15 @@ RepeatingAngularTemperatureBC::computeQpValue()
   // return _scaling_function.value(time_of_the_period, *_current_node) * _T_air.value(time_of_the_period, *_current_node);
   Real value =  _scaling_function.value(time_of_the_period, *_current_node) * _T_air.value(time_of_the_period, *_current_node);
 
-  Real angle = 180/3.14;
-  // Real angle = atan(_q_point[_qp](0)/_q_point[_qp](1))*180/3.14;
+  const Point & p = *_current_node;
+  Real angle = atan(p(1)/p(0))*180/3.14;
   Real factor;
-  if (angle >= 90 && angle <= 270)
+  if (angle >= 30)
+    factor = 1/6;
+  else if (angle >= -30)
     factor = 1/3.;
   else
-    factor = 1/6.;
+    factor = 1/2.;
 
   return value + factor * _dT_sun_shade;
 }
