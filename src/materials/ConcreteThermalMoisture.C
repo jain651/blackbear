@@ -42,7 +42,7 @@ ConcreteThermalMoisture::validParams()
   params.addParam<std::vector<Real>>("mineral_density", "The density of minerals, g/cm^3");
 
   // parameters for thermal properties calculations
-  MooseEnum thermal_conductivity_model("CONSTANT ASCE-1992 KODUR-2004 EUROCODE-2004 KIM-2003",
+  MooseEnum thermal_conductivity_model("CONSTANT ASCE-1992 KODUR-2004 EUROCODE-2004",
                                        "CONSTANT");
   MooseEnum thermal_capacity_model("CONSTANT ASCE-1992 KODUR-2004 EUROCODE-2004", "CONSTANT");
   MooseEnum aggregate_type("Siliceous Carbonate", "Siliceous");
@@ -95,6 +95,7 @@ ConcreteThermalMoisture::validParams()
   params.addCoupledVar("relative_humidity", "nonlinear variable name for rel. humidity");
   params.addCoupledVar("temperature",
                        "nonlinear variable name for temperature in unit of Celscius");
+  params.addClassDescription("Material parameters for thermal and moisture transport in concrete.");
 
   return params;
 }
@@ -113,7 +114,7 @@ ConcreteThermalMoisture::ConcreteThermalMoisture(const InputParameters & paramet
     _input_initial_porosity(getParam<Real>("initial_porosity")),
     _input_initial_permeability(getParam<Real>("initial_permeability")),
     _input_initial_storativity(getParam<Real>("initial_storativity")),
-    _input_bulk_density(getParam<Real>("ref_density_of_concrete")),
+//    _input_bulk_density(getParam<Real>("ref_density_of_concrete")),
 
     _mineral_molecular_weight(getParam<std::vector<Real>>("mineral_molecular_weight")),
     _mineral_density(getParam<std::vector<Real>>("mineral_density")),
@@ -445,10 +446,6 @@ ConcreteThermalMoisture::computeProperties()
         else if (T > 1200.0)
           mooseError(
               "Temperature outside of the range for the selected thermal conductivity model");
-        break;
-
-      case 4: // KIM-2004
-        mooseError("KIM thermal conductivity model not implemented yet");
         break;
 
       default:

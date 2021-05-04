@@ -39,7 +39,7 @@ private:
   Real _input_initial_porosity;
   Real _input_initial_permeability;
   Real _input_initial_storativity;
-  Real _input_bulk_density;
+//  Real _input_bulk_density;
 
   ///@{ minerals in matrix with potential dissolution/precipitation reactions
   std::vector<Real> _mineral_molecular_weight;
