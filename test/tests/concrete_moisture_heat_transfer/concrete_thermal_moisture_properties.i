@@ -13,10 +13,12 @@
   [temperature]
     order = CONSTANT
     family = MONOMIAL
+    initial_condition = 20
   []
   [rh]
     order = CONSTANT
     family = MONOMIAL
+    initial_condition = 1
   []
   [thermal_conductivity]
     order = CONSTANT
