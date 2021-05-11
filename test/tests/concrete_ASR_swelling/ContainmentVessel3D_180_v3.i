@@ -6,7 +6,6 @@
 
 [Mesh]
   file = gold/containment_structure/ContainmentVessel3D_180_v3.e
-  # file = gold/TwoElement3D.e
   construct_side_list_from_node_list = true
   patch_update_strategy=iteration
 []
@@ -80,19 +79,6 @@
     penalty = 1e12
     formulation = penalty
   [../]
-[]
-
-[Dampers]
-  [limitx]
-    type = MaxIncrement
-    max_increment = .05
-    variable = disp_x
-  []
-  [limity]
-    type = MaxIncrement
-    max_increment = .05
-    variable = disp_y
-  []
 []
 
 [Contact]
@@ -879,28 +865,12 @@
     prop_values                         = 7850.0 # kg/m3
   [../]
 
-  # [./elastic_stress]
-  #   type = ComputeFiniteStrainElasticStress
-  #   block = '1 2'
-  # [../]
-  # [./elasticity_tensor]
-  #   type = ComputeIsotropicElasticityTensor
-  #   poissons_ratio = 0.3
-  #   youngs_modulus = 1e6
-  #   block = '1 2'
-  # [../]
   [elastic_soil]
     type = ComputeElasticityTensor
     fill_method = symmetric_isotropic
     C_ijkl = '0 1E7'
     block = '12'
   []
-  # [elastic_soil]
-  #   type = ComputeIsotropicElasticityTensor
-  #   youngs_modulus = 2e11
-  #   poissons_ratio = 0.3
-  #   block = '12'
-  # []
   [./mc_soil_stress]
     type = ComputeMultiPlasticityStress
     block = '12'
@@ -971,11 +941,7 @@
   nl_abs_tol = 5e-3
   nl_rel_tol = 1e-5
   line_search = none
-  # petsc_options = '-ksp_snes_ew'
   petsc_options = '-snes_converged_reason'
-#   solve_type = 'NEWTON'
-#   petsc_options_iname = '-pc_type -pc_hypre_type -ksp_gmres_restart -snes_ls -pc_hypre_boomeramg_strong_threshold'
-#   petsc_options_value = 'hypre boomeramg 201 cubic 0.7'
 []
 
 [Postprocessors]
@@ -1143,22 +1109,22 @@
   last_point = '1.924 2.374 9.0805'
  [../]
 
- [./disp_base_mat_x]# 500 mm gauge length (not the arc length)
+ [./disp_base_x]
   type = SideAverageValue
   variable = disp_x
   boundary = '35'
  [../]
- [./disp_base_mat_y]# 500 mm gauge length (not the arc length)
+ [./disp_base_y]
   type = SideAverageValue
   variable = disp_y
   boundary = '35'
  [../]
- [./disp_soil_x]# 500 mm gauge length (not the arc length)
+ [./disp_base_mat_x]
   type = SideAverageValue
   variable = disp_x
   boundary = '36'
  [../]
- [./disp_soil_y]# 500 mm gauge length (not the arc length)
+ [./disp_base_mat_y]
   type = SideAverageValue
   variable = disp_y
   boundary = '36'
