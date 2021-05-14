@@ -48,6 +48,7 @@ RepeatingAngularTemperatureBC::computeQpValue()
 
   const Point & p = *_current_node;
   Real angle = atan(p(1)/p(0))*180/3.14;
+  // Real factor = (angle+90.)/180.;
   Real factor;
   if (angle >= 30)
     factor = 1/6;
@@ -55,6 +56,10 @@ RepeatingAngularTemperatureBC::computeQpValue()
     factor = 1/3.;
   else
     factor = 1/2.;
+  out << " angle factor2 " << angle << " "<< factor <<std::endl;
+
+  factor = (angle+90.)/180.;
+  out << " angle factor1 "<< angle <<" " << factor <<std::endl;
 
   return value + factor * _dT_sun_shade;
 }

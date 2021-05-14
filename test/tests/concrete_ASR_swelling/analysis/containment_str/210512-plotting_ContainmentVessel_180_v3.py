@@ -12,17 +12,123 @@ out_file_loc = './test/tests/concrete_ASR_swelling/outputs/containment_str/'
 out_file_name = out_file_loc+'ContainmentVessel3D_180_v3_out.csv'
 out = pd.read_csv(out_file_name)
 
-def fcyl_hz_exp(fp, lp, dx, dy, th_old):
-    th_new = math.atan((lp[1]+0.5*dy)/(lp[0]-0.5*dx)) - math.atan((fp[1]-0.5*dy)/(fp[0]+0.5*dx))
-    # print(th_new)
-    return th_new/th_old*100
+# time	ASR_ext	ASR_strain	ASR_strain_xx	ASR_strain_yy	ASR_strain_zz	base_45_rx	base_45_ry	base_45_th0	base_45_th1	base_45_z	base_btm_45_disp_x	base_btm_45_disp_y	base_btm_45_disp_z	base_btm_neg45_disp_x	base_btm_neg45_disp_y	base_btm_neg45_disp_z	base_neg_45_rx	base_neg_45_ry	base_neg_45_th0	base_neg_45_th1	base_neg_45_z	basemat_top_45_disp_x	basemat_top_45_disp_y	basemat_top_45_disp_z	basemat_top_neg45_disp_x	basemat_top_neg45_disp_y	basemat_top_neg45_disp_z	cyl_abv_gnd_45_rx	cyl_abv_gnd_45_ry	cyl_abv_gnd_45_thx	cyl_abv_gnd_45_thy	cyl_abv_gnd_45_z	cyl_abv_gnd_neg45_rx	cyl_abv_gnd_neg45_ry	cyl_abv_gnd_neg45_thx	cyl_abv_gnd_neg45_thy	cyl_abv_gnd_neg45_z	cyl_blw_gnd_45_rx	cyl_blw_gnd_45_ry	cyl_blw_gnd_45_thx	cyl_blw_gnd_45_thy	cyl_blw_gnd_45_z	cyl_blw_gnd_neg45_rx	cyl_blw_gnd_neg45_ry	cyl_blw_gnd_neg45_thx	cyl_blw_gnd_neg45_thy	cyl_blw_gnd_neg45_z	cyl_tang_x	cyl_tang_y	cyl_z	disp_base_mat_x	disp_base_mat_y	disp_base_x	disp_base_y	dome_45_phix	dome_45_phiy	dome_45_phiz	dome_45_rx	dome_45_ry	dome_45_thx	dome_45_thy	dome_tang_x	dome_tang_y	dome_z_arc	humidity	strain_xx	strain_yy	strain_zz	surfaceAvg_base_x	surfaceAvg_base_y	surfaceAvg_base_z	surfaceAvg_cyl_sunshade_x	surfaceAvg_cyl_sunshade_y	surfaceAvg_cyl_sunshade_z	surfaceAvg_cyl_sunshine_x	surfaceAvg_cyl_sunshine_y	surfaceAvg_cyl_sunshine_z	surfaceAvg_cyl_x	surfaceAvg_cyl_y	surfaceAvg_cyl_z	surfaceAvg_dome_sunshade_x	surfaceAvg_dome_sunshade_y	surfaceAvg_dome_sunshade_z	surfaceAvg_dome_sunshine_x	surfaceAvg_dome_sunshine_y	surfaceAvg_dome_sunshine_z	surfaceAvg_dome_x	surfaceAvg_dome_y	surfaceAvg_dome_z	temp	thermal_strain_xx	thermal_strain_yy	thermal_strain_zz	vonmises	vstrain
 
-def fdome_vt_exp(fp, lp, dz, th_old):
-    th_new = math.atan((lp_vt_dome[2]+0.5*dz)/pow((lp_vt_dome[0]**2+lp_vt_dome[1]**2),0.5)) - math.atan((fp_vt_dome[2]-0.5*dz)/pow((fp_vt_dome[0]**2+fp_vt_dome[1]**2),0.5))
-    return th_new/th_old*100
+base_45_r_loc0 = [16.158, 16.158, 0.15]
+base_45_r_loc1 = [15.804, 15.804, 0.15]
+base_45_th_loc0 = [14.366, 17.122, 0.15]
+base_45_th_loc1 = [17.122, 14.366, 0.15]
+base_45_z_loc0 = [14.694, 17.511, -2.0]
+base_45_z_loc1 = [14.694, 17.511,  3.0]
 
-def tangential_expansion(expansion_x, expansion_y):
-    return pow((expansion_x**2 + expansion_y**2),0.5)
+base_neg_45_r_loc0 = [16.158, -16.158, 0.15]
+base_neg_45_r_loc1 = [15.804, -15.804, 0.15]
+base_neg45_th_loc0 = [14.366, -17.122, 0.15]
+base_neg45_th_loc1 = [17.122, -14.366, 0.15]
+base_neg45_z_loc0 =  [14.694, -17.511, -2.0]
+base_neg45_z_loc1 =  [14.694, -17.511,  3.0]
+
+cyl_abv_gnd_45_r_loc0 =  [15.067, 15.067, 32.792]
+cyl_abv_gnd_45_r_loc1 =  [14.713, 14.713, 32.792]
+cyl_abv_gnd_45_th_loc0 = [16.321, 13.698, 32.792]
+cyl_abv_gnd_45_th_loc1 = [13.698, 16.321, 32.792]
+cyl_abv_gnd_45_z_loc0 =  [15.067, 15.067, 32.542]
+cyl_abv_gnd_45_z_loc1 =  [15.067, 15.067, 33.042]
+
+cyl_abv_gnd_neg45_r_loc0 =  [15.067, -15.067, 32.792]
+cyl_abv_gnd_neg45_r_loc1 =  [14.713, -14.713, 32.792]
+cyl_abv_gnd_neg45_th_loc0 = [16.321, -13.698, 32.792]
+cyl_abv_gnd_neg45_th_loc1 = [13.698, -16.321, 32.792]
+cyl_abv_gnd_neg45_z_loc0 =  [15.067, -15.067, 32.542]
+cyl_abv_gnd_neg45_z_loc1 =  [15.067, -15.067, 33.042]
+
+cyl_blw_gnd_45_r_loc0 =  [15.067, 15.067, 10.596]
+cyl_blw_gnd_45_r_loc1 =  [14.713, 14.713, 10.596]
+cyl_blw_gnd_45_th_loc0 = [16.321, 13.698, 10.596]
+cyl_blw_gnd_45_th_loc1 = [13.698, 16.321, 10.596]
+cyl_blw_gnd_45_z_loc0 =  [15.067, 15.067, 32.542]
+cyl_blw_gnd_45_z_loc1 =  [15.067, 15.067, 33.042]
+
+cyl_blw_gnd_neg45_r_loc0 =  [15.067, -15.067, 10.596]
+cyl_blw_gnd_neg45_r_loc1 =  [14.713, -14.713, 10.596]
+cyl_blw_gnd_neg45_th_loc0 = [16.321, -13.698, 10.596]
+cyl_blw_gnd_neg45_th_loc1 = [13.698, -16.321, 10.596]
+cyl_blw_gnd_neg45_z_loc0 =  [15.067, -15.067, 32.542]
+cyl_blw_gnd_neg45_z_loc1 =  [15.067, -15.067, 33.042]
+
+dome_45_r_loc0 =   [10.595, 10.595, 58.857]
+dome_45_r_loc1 =   [10.345, 10.345, 58.503]
+dome_45_th_loc0 =  [11.477,  9.633, 58.857]
+dome_45_th_loc1 =  [9.633,  11.477, 58.857]
+dome_45_phi_loc0 = [11.477, 11.477, 60.104]
+dome_45_phi_loc1 = [9.633,   9.633, 57.495]
+
+dome_neg45_r_loc0 =   [10.595, -10.595, 58.857]
+dome_neg45_r_loc1 =   [10.345, -10.345, 58.503]
+dome_neg45_th_loc0 =  [11.477,  -9.633, 58.857]
+dome_neg45_th_loc1 =  [9.633,  -11.477, 58.857]
+dome_neg45_phi_loc0 = [11.477, -11.477, 60.104]
+dome_neg45_phi_loc1 = [9.633,   -9.633, 57.495]
+
+def dr(dx,dy,theta):
+    return dx*math.cos(theta) + dy*math.sin(theta)
+
+def dtheta(loc,dx,dy,r):
+    return (loc[0]*dy-dx*loc[1])/r**2
+
+def drho(dx,dy,dz,rho,loc):
+    return (loc[0]*dx + loc[1]*dy + loc[2]*dz)/rho
+
+def dphi(dx,dy,dz,rho,loc,r):
+    return (dz-drho(dx,dy,dz,rho,loc)) / (rho*r)
+
+def rad_exp(dx0,dy0,theta0,dx1,dy1,theta1,gauge):
+    return (dr(dx0,dy0,theta0)-dr(dx1,dy1,theta1))/gauge
+
+def th_exp(loc0,loc1,dx0,dx1,dy0,dy1,gauge_th):
+    return (dtheta(loc0,dx0,dy0,r0)-dtheta(loc1,dx1,dy1,r1))/gauge_th
+
+def rho_exp(dx0,dy0,dz0,rho0,loc0,dx1,dy1,dz1,rho1,loc1,gauge_rho):
+    return (drho(dx0,dy0,dz0,rho0,loc0)-drho(dx1,dy1,dz1,rho1,loc1))/gauge_rho
+
+def phi_exp(dx0,dy0,dz0,rho0,loc0,r0,dx1,dy1,dz1,rho1,loc1,r1,gauge_phi):
+    return (dphi(dx0,dy0,dz0,rho0,loc0,r0)-dphi(dx1,dy1,dz1,rho1,loc1,r1))/gauge_phi
+
+t = out['time']/86400/365
+num_row = len(t)
+base_r_exp = [0]*(num_row)
+for i in range(num_row):
+    # print(cyl_hz_exp)
+    base_r_exp[i]  = rad_exp (out['base_45_rx'][i],
+                              out['base_45_ry'][i],
+                              math.atan(base_45_r_loc0[1]/base_45_r_loc0[0]),
+                              dx1,dy1,theta1,gauge)
+    base_r_exp[i]  = rad_exp (fp_hz_cyl,  lp_hz_cyl,  out['cyl_tang_x'][i],
+
+
+
+
+cyl_abv_gnd_45_loc = [13.691727, 16.317164, 32.792182]
+cyl_abv_gnd_neg45_loc = [13.691727, -16.317164, 32.792182]
+cyl_blw_gnd_45_loc = [13.838983, 16.492658, 10.596545]
+cyl_blw_gnd_neg45_loc = [13.838983, -16.492658, 10.596545]
+dome_45_loc = [11.10, 14.20, 55.005559]
+dome_neg45_loc = [11.10, -14.20, 55.005559]
+
+base_theta = math.atan(base_45_loc[1]/base_45_loc[0])
+cyl_abv_gnd_theta = math.atan(cyl_abv_gnd_45_loc[1]/cyl_abv_gnd_45_loc[0])
+cyl_blw_gnd_theta = math.atan(cyl_blw_gnd_45_loc[1]/cyl_blw_gnd_45_loc[0])
+dome_theta = math.atan(dome_45_loc[1]/dome_45_loc[0])
+
+base_r = (base_45_loc[0]**2 + base_45_loc[1]**2)**0.5
+cyl_abv_gnd_r = (cyl_abv_gnd_45_loc[0]**2 + cyl_abv_gnd_45_loc[1]**2)**0.5
+dome_rho = (dome_45_loc[0]**2 + dome_45_loc[1]**2 + dome_45_loc[2]**2)**0.5
+dome_r = (dome_45_loc[0]**2 + dome_45_loc[1]**2)**0.5
+
+
+
+
+
 
 def sliding(disp_conc, disp_soil, gauge_conc, gauge_soil):
     return disp_conc - (disp_soil/gauge_soil*gauge_conc)

@@ -5,7 +5,8 @@
 []
 
 [Mesh]
-  file = gold/containment_structure/ContainmentVessel3D_180_v3.e
+  file = gold/containment_structure/ContainmentVessel3D_180_v3_no_rebar.e
+  # file = gold/TwoElement3D.e
   construct_side_list_from_node_list = true
   patch_update_strategy=iteration
 []
@@ -30,56 +31,84 @@
   [../]
 []
 
-[Modules/TensorMechanics/LineElementMaster]
-  [./btm_grid]
-    # block = '2'
-    block = '3 4 5 6 7 8 9 10 11'
-    truss = true
-    area = area_no6
-    displacements = 'disp_x disp_y disp_z'
-    save_in = 'resid_x resid_y resid_z'
-  [../]
-[]
+# [Modules/TensorMechanics/LineElementMaster]
+#   [./btm_grid]
+#     # block = '2'
+#     block = '3 4 5 6 7 8 9 10 11'
+#     truss = true
+#     area = area_no6
+#     displacements = 'disp_x disp_y disp_z'
+#     save_in = 'resid_x resid_y resid_z'
+#   [../]
+# []
 
-[Constraints/EqualValueEmbeddedConstraint/EqualValueEmbeddedConstraintAction]
-  primary_block = '1'
-  # secondary_block = '2'
-  secondary_block = '3 4 5 6 7 8 9 10 11'
-  primary_variable = 'disp_x disp_y disp_z'
-  displacements = 'disp_x disp_y disp_z'
-  penalty = 1e12
-  formulation = penalty
-[]
+# [Constraints/EqualValueEmbeddedConstraint/EqualValueEmbeddedConstraintAction]
+#   primary_block = '1'
+#   # secondary_block = '2'
+#   secondary_block = '3 4 5 6 7 8 9 10 11'
+#   primary_variable = 'disp_x disp_y disp_z'
+#   displacements = 'disp_x disp_y disp_z'
+#   penalty = 1e12
+#   formulation = penalty
+# []
+#
+# [Constraints]
+#   [./rebar_x2]
+#     type = EqualValueEmbeddedConstraint
+#     secondary = 2
+#     primary = 1
+#     variable = 'disp_x'
+#     primary_variable = 'disp_x'
+#     penalty = 1e12
+#     formulation = penalty
+#   [../]
+#   [./rebar_y2]
+#     type = EqualValueEmbeddedConstraint
+#     secondary = 2
+#     primary = 1
+#     variable = 'disp_y'
+#     primary_variable = 'disp_y'
+#     penalty = 1e12
+#     formulation = penalty
+#   [../]
+#   [./rebar_z2]
+#     type = EqualValueEmbeddedConstraint
+#     secondary = 2
+#     primary = 1
+#     variable = 'disp_z'
+#     primary_variable = 'disp_z'
+#     penalty = 1e12
+#     formulation = penalty
+#   [../]
+# []
 
-[Constraints]
-  [./rebar_x2]
-    type = EqualValueEmbeddedConstraint
-    secondary = 2
-    primary = 1
-    variable = 'disp_x'
-    primary_variable = 'disp_x'
-    penalty = 1e12
-    formulation = penalty
-  [../]
-  [./rebar_y2]
-    type = EqualValueEmbeddedConstraint
-    secondary = 2
-    primary = 1
-    variable = 'disp_y'
-    primary_variable = 'disp_y'
-    penalty = 1e12
-    formulation = penalty
-  [../]
-  [./rebar_z2]
-    type = EqualValueEmbeddedConstraint
-    secondary = 2
-    primary = 1
-    variable = 'disp_z'
-    primary_variable = 'disp_z'
-    penalty = 1e12
-    formulation = penalty
-  [../]
-[]
+# [Dampers]
+#   # [limitx]
+#   #   type = MaxIncrement
+#   #   max_increment = .05
+#   #   variable = disp_x
+#   # []
+#   # [limity]
+#   #   type = MaxIncrement
+#   #   max_increment = .05
+#   #   variable = disp_y
+#   # []
+#   [limitz]
+#     type = MaxIncrement
+#     max_increment = .05
+#     variable = disp_z
+#   []
+#   # [limitT]
+#   #   type = MaxIncrement
+#   #   max_increment = .5
+#   #   variable = T
+#   # []
+#   # [limitRH]
+#   #   type = MaxIncrement
+#   #   max_increment = .5
+#   #   variable = rh
+#   # []
+# []
 
 [Contact]
   [./leftright]
@@ -98,8 +127,8 @@
     order = FIRST
     family = LAGRANGE
     initial_condition = 5.0
-    # block = '1 2'
-    block = '1 3 4 5 6 7 8 9 10 11'
+    block = '1'
+    # block = '1 3 4 5 6 7 8 9 10 11'
   [../]
   [./rh]
     order = FIRST
@@ -143,19 +172,19 @@
     temperature = T
     block = '1'
   [../]
-  [./heat_dt]
-    type = TimeDerivative
-    variable = T
-    # block = '2'
-    block = '3 4 5 6 7 8 9 10 11'
-  [../]
-  [./heat_conduction]
-    type = HeatConduction
-    variable = T
-    diffusion_coefficient = 53.0
-    # block = '2'
-    block = '3 4 5 6 7 8 9 10 11'
-  [../]
+  # [./heat_dt]
+  #   type = TimeDerivative
+  #   variable = T
+  #   # block = '2'
+  #   block = '3 4 5 6 7 8 9 10 11'
+  # [../]
+  # [./heat_conduction]
+  #   type = HeatConduction
+  #   variable = T
+  #   diffusion_coefficient = 53.0
+  #   # block = '2'
+  #   block = '3 4 5 6 7 8 9 10 11'
+  # [../]
   [./gravity]
     type = Gravity
     variable = disp_z
@@ -466,14 +495,14 @@
     execute_on = timestep_end
   []
 
-  [./area_no6]
-    type = ConstantAux
-    # block = '2'
-    block = '3 4 5 6 7 8 9 10 11'
-    variable = area_no6
-    value = 284e-6
-    execute_on = 'initial timestep_begin'
-  [../]
+  # [./area_no6]
+  #   type = ConstantAux
+  #   # block = '2'
+  #   block = '3 4 5 6 7 8 9 10 11'
+  #   variable = area_no6
+  #   value = 284e-6
+  #   execute_on = 'initial timestep_begin'
+  # [../]
 
   # [./stress_xx]
   #   type = RankTwoAux
@@ -848,29 +877,45 @@
    prop_values                          = 2231.0 # kg/m3
   [../]
 
-  [truss]
-    type                                 = LinearElasticTruss
-    # block = '2'
-    block = '3 4 5 6 7 8 9 10 11'
-    youngs_modulus                       = 2.14e11
-    temperature                          = T
-    thermal_expansion_coeff              = 11.3e-6
-    temperature_ref                      = 23.0
-  []
-  [./density_steel]
-    type                                = GenericFunctionMaterial
-    # block = '2'
-    block = '3 4 5 6 7 8 9 10 11'
-    prop_names                          = density
-    prop_values                         = 7850.0 # kg/m3
-  [../]
+  # [truss]
+  #   type                                 = LinearElasticTruss
+  #   # block = '2'
+  #   block = '3 4 5 6 7 8 9 10 11'
+  #   youngs_modulus                       = 2.14e11
+  #   temperature                          = T
+  #   thermal_expansion_coeff              = 11.3e-6
+  #   temperature_ref                      = 23.0
+  # []
+  # [./density_steel]
+  #   type                                = GenericFunctionMaterial
+  #   # block = '2'
+  #   block = '3 4 5 6 7 8 9 10 11'
+  #   prop_names                          = density
+  #   prop_values                         = 7850.0 # kg/m3
+  # [../]
 
+  # [./elastic_stress]
+  #   type = ComputeFiniteStrainElasticStress
+  #   block = '1 2'
+  # [../]
+  # [./elasticity_tensor]
+  #   type = ComputeIsotropicElasticityTensor
+  #   poissons_ratio = 0.3
+  #   youngs_modulus = 1e6
+  #   block = '1 2'
+  # [../]
   [elastic_soil]
     type = ComputeElasticityTensor
     fill_method = symmetric_isotropic
     C_ijkl = '0 1E7'
     block = '12'
   []
+  # [elastic_soil]
+  #   type = ComputeIsotropicElasticityTensor
+  #   youngs_modulus = 2e11
+  #   poissons_ratio = 0.3
+  #   block = '12'
+  # []
   [./mc_soil_stress]
     type = ComputeMultiPlasticityStress
     block = '12'
@@ -941,582 +986,198 @@
   nl_abs_tol = 5e-3
   nl_rel_tol = 1e-5
   line_search = none
+  # petsc_options = '-ksp_snes_ew'
   petsc_options = '-snes_converged_reason'
+#   solve_type = 'NEWTON'
+#   petsc_options_iname = '-pc_type -pc_hypre_type -ksp_gmres_restart -snes_ls -pc_hypre_boomeramg_strong_threshold'
+#   petsc_options_value = 'hypre boomeramg 201 cubic 0.7'
 []
 
 [Postprocessors]
-  [./ASR_strain]
-    type = ElementAverageValue
-    variable = ASR_vstrain
-    block = '1'
-  [../]
-  [./ASR_strain_xx]
-    type = ElementAverageValue
-    variable = ASR_strain_xx
-    block = '1'
-  [../]
-  [./ASR_strain_yy]
-    type = ElementAverageValue
-    variable = ASR_strain_yy
-    block = '1'
-  [../]
-  [./ASR_strain_zz]
-    type = ElementAverageValue
-    variable = ASR_strain_zz
-    block = '1'
-  [../]
-  [ASR_ext]
-    type = ElementAverageValue
-    variable = ASR_ex
-    block = '1'
-  []
+ [./ASR_strain]
+   type = ElementAverageValue
+   variable = ASR_vstrain
+   block = '1'
+ [../]
+ [./ASR_strain_xx]
+   type = ElementAverageValue
+   variable = ASR_strain_xx
+   block = '1'
+ [../]
+ [./ASR_strain_yy]
+   type = ElementAverageValue
+   variable = ASR_strain_yy
+   block = '1'
+ [../]
+ [./ASR_strain_zz]
+   type = ElementAverageValue
+   variable = ASR_strain_zz
+   block = '1'
+ [../]
+ [ASR_ext]
+   type = ElementAverageValue
+   variable = ASR_ex
+   block = '1'
+ []
 
-  [./vonmises]
-    type = ElementAverageValue
-    variable = vonmises_stress
-    block = '1'
-  [../]
+ [./vonmises]
+   type = ElementAverageValue
+   variable = vonmises_stress
+   block = '1'
+ [../]
 
-  [./vstrain]
-    type = ElementAverageValue
-    variable = volumetric_strain
-    block = '1'
-  [../]
+ [./vstrain]
+   type = ElementAverageValue
+   variable = volumetric_strain
+   block = '1'
+ [../]
 
-  [./strain_xx]
-    type = ElementAverageValue
-    variable = strain_xx
-    block = '1'
-  [../]
-  [./strain_yy]
-    type = ElementAverageValue
-    variable = strain_yy
-    block = '1'
-  [../]
-  [./strain_zz]
-    type = ElementAverageValue
-    variable = strain_zz
-    block = '1'
-  [../]
+ [./strain_xx]
+   type = ElementAverageValue
+   variable = strain_xx
+   block = '1'
+ [../]
+ [./strain_yy]
+   type = ElementAverageValue
+   variable = strain_yy
+   block = '1'
+ [../]
+ [./strain_zz]
+   type = ElementAverageValue
+   variable = strain_zz
+   block = '1'
+ [../]
 
-  [./temp]
-    type = ElementAverageValue
-    variable = T
-    block = '1'
-  [../]
-  [./humidity]
-    type = ElementAverageValue
-    variable = rh
-    block = '1'
-  [../]
+ [./temp]
+   type = ElementAverageValue
+   variable = T
+   block = '1'
+ [../]
+ [./humidity]
+   type = ElementAverageValue
+   variable = rh
+   block = '1'
+ [../]
 
-  [./thermal_strain_xx]
-    type = ElementAverageValue
-    variable = thermal_strain_xx
-    block = '1'
-  [../]
-  [./thermal_strain_yy]
-    type = ElementAverageValue
-    variable = thermal_strain_yy
-    block = '1'
-  [../]
-  [./thermal_strain_zz]
-    type = ElementAverageValue
-    variable = thermal_strain_zz
-    block = '1'
-  [../]
+ [./thermal_strain_xx]
+   type = ElementAverageValue
+   variable = thermal_strain_xx
+   block = '1'
+ [../]
+ [./thermal_strain_yy]
+   type = ElementAverageValue
+   variable = thermal_strain_yy
+   block = '1'
+ [../]
+ [./thermal_strain_zz]
+   type = ElementAverageValue
+   variable = thermal_strain_zz
+   block = '1'
+ [../]
 
-  [./base_45_rx]
-    type = AveragePointSeparation
-    displacements = 'disp_x'
-    first_point = '16.158 16.158 0.15'# (22.86 45)
-    last_point =  '15.804 15.804 0.15'# (22.36 45)
-  [../]
-  [./base_45_ry]
-    type = AveragePointSeparation
-    displacements = 'disp_y'
-    first_point = '16.158 16.158 0.15'# (22.86 45)
-    last_point =  '15.804 15.804 0.15'# (22.36 45)
-  [../]
-  [./base_45_thx]
-    type = AveragePointSeparation
-    displacements = 'disp_x'
-    first_point = '14.366 17.122 0.15' # (22.86 40)
-    last_point =  '17.122 14.366 0.15' # (22.86 50)
-  [../]
-  [./base_45_thy]
-    type = AveragePointSeparation
-    displacements = 'disp_y'
-    first_point = '14.366 17.122 0.15' # (22.86 40)
-    last_point =  '17.122 14.366 0.15' # (22.86 50)
-  [../]
-  [./base_45_z]
-    type = AveragePointSeparation
-    displacements = 'disp_z'
-    first_point = '14.694125 17.511776 -2.0'
-    last_point =  '14.694125 17.511776 3.0'
-  [../]
+ [./surfaceAvg_base_x]
+   type = SideAverageValue
+   variable = disp_x
+   boundary = '33'
+ [../]
+ [./surfaceAvg_base_y]
+   type = SideAverageValue
+   variable = disp_y
+   boundary = '33'
+ [../]
+ [./surfaceAvg_base_z]
+   type = SideAverageValue
+   variable = disp_z
+   boundary = '33'
+ [../]
+ [./surfaceAvg_cyl_x]
+   type = SideAverageValue
+   variable = disp_x
+   boundary = '32'
+ [../]
+ [./surfaceAvg_cyl_y]
+   type = SideAverageValue
+   variable = disp_y
+   boundary = '32'
+ [../]
+ [./surfaceAvg_cyl_z]
+   type = SideAverageValue
+   variable = disp_z
+   boundary = '32'
+ [../]
+ [./surfaceAvg_dome_x]
+   type = SideAverageValue
+   variable = disp_x
+   boundary = '31'
+ [../]
+ [./surfaceAvg_dome_y]
+   type = SideAverageValue
+   variable = disp_y
+   boundary = '31'
+ [../]
+ [./surfaceAvg_dome_z]
+   type = SideAverageValue
+   variable = disp_z
+   boundary = '31'
+ [../]
 
-  [./base_neg_45_rx]
-    type = AveragePointSeparation
-    displacements = 'disp_x'
-    first_point = '16.158 -16.158 0.15'# (22.86 45)
-    last_point =  '15.804 -15.804 0.15'# (22.36 45)
-  [../]
-  [./base_neg_45_ry]
-    type = AveragePointSeparation
-    displacements = 'disp_y'
-    first_point = '16.158 -16.158 0.15'# (22.86 45)
-    last_point =  '15.804 -15.804 0.15'# (22.36 45)
-  [../]
-  [./base_neg_45_thx]
-    type = AveragePointSeparation
-    displacements = 'disp_x'
-    first_point = '14.366 -17.122 0.15' # (22.86 40)
-    last_point =  '17.122 -14.366 0.15' # (22.86 50)
-  [../]
-  [./base_neg_45_thy]
-    type = AveragePointSeparation
-    displacements = 'disp_y'
-    first_point = '14.366 -17.122 0.15' # (22.86 40)
-    last_point =  '17.122 -14.366 0.15' # (22.86 50)
-  [../]
-  [./base_neg_45_z]
-    type = AveragePointSeparation
-    displacements = 'disp_z'
-    first_point = '14.694125 -17.511776 -2.0'
-    last_point =  '14.694125 -17.511776 3.0'
-  [../]
+ [./cyl_z] # 500 mm gauge length
+  type = AveragePointSeparation
+  displacements = 'disp_z'
+  first_point = '2.438776     2.597033     4.252161'
+  last_point = '2.435685     2.593741     4.689710'
+ [../]
+ [./cyl_tang_x] # 500 mm gauge length (not the arc length)
+  type = AveragePointSeparation
+  displacements = 'disp_x'
+  first_point = '2.59     2.43     4.470935'
+  last_point = '2.26     2.743     4.470935'
+ [../]
+ [./cyl_tang_y] # 500 mm gauge length (not the arc length)
+  type = AveragePointSeparation
+  displacements = 'disp_y'
+  first_point = '2.59     2.43     4.470935'
+  last_point = '2.26     2.743     4.470935'
+ [../]
+ [./dome_z_arc]# 500 mm gauge length (not the arc length)
+  type = AveragePointSeparation
+  displacements = 'disp_z'
+  first_point = '2.149293     2.303640     8.909285'
+  last_point = '1.876000     2.020725     9.520732'
+ [../]
+ [./dome_tang_x]# 500 mm gauge length (not the arc length)
+  type = AveragePointSeparation
+  displacements = 'disp_x'
+  first_point = '2.374 1.924 9.0805'# basesd on hand calculation
+  last_point = '1.924 2.374 9.0805'
+ [../]
+ [./dome_tang_y]# 500 mm gauge length (not the arc length)
+  type = AveragePointSeparation
+  displacements = 'disp_y'
+  first_point = '2.374 1.924 9.0805'# basesd on hand calculation
+  last_point = '1.924 2.374 9.0805'
+ [../]
 
-  [./cyl_abv_gnd_45_rx]
-    type = AveragePointSeparation
-    displacements = 'disp_x'
-    first_point = '15.067 15.067 32.792'# (21.30 45)
-    last_point =  '14.713 14.713 32.792'# (20.80 45)
-  [../]
-  [./cyl_abv_gnd_45_ry]
-    type = AveragePointSeparation
-    displacements = 'disp_y'
-    first_point = '15.067 15.067 32.792'# (21.30 45)
-    last_point =  '14.713 14.713 32.792'# (20.80 45)
-  [../]
-  [./cyl_abv_gnd_45_thx]
-    type = AveragePointSeparation
-    displacements = 'disp_x'
-    first_point = '16.321 13.698 32.792'# (21.30 40)
-    last_point =  '13.698 16.321 32.792'# (21.30 50)
-  [../]
-  [./cyl_abv_gnd_45_thy]
-    type = AveragePointSeparation
-    displacements = 'disp_y'
-    first_point = '16.321 13.698 32.792'# (21.30 40)
-    last_point =  '13.698 16.321 32.792'# (21.30 50)
-  [../]
-  [./cyl_abv_gnd_45_z]
-    type = AveragePointSeparation
-    displacements = 'disp_z'
-    first_point = '15.067 15.067 32.542'# (21.30 45)
-    last_point =  '15.067 15.067 33.042'# (21.30 45)
-  [../]
-
-  [./cyl_abv_gnd_neg45_rx]
-    type = AveragePointSeparation
-    displacements = 'disp_x'
-    first_point = '15.067 -15.067 32.792'# (21.30 45)
-    last_point =  '14.713 -14.713 32.792'# (20.80 45)
-  [../]
-  [./cyl_abv_gnd_neg45_ry]
-    type = AveragePointSeparation
-    displacements = 'disp_y'
-    first_point = '15.067 -15.067 32.792'# (21.30 45)
-    last_point =  '14.713 -14.713 32.792'# (20.80 45)
-  [../]
-  [./cyl_abv_gnd_neg45_thx]
-    type = AveragePointSeparation
-    displacements = 'disp_x'
-    first_point = '16.321 -13.698 32.792'# (21.30 40)
-    last_point =  '13.698 -16.321 32.792'# (21.30 50)
-  [../]
-  [./cyl_abv_gnd_neg45_thy]
-    type = AveragePointSeparation
-    displacements = 'disp_y'
-    first_point = '16.321 -13.698 32.792'# (21.30 40)
-    last_point =  '13.698 -16.321 32.792'# (21.30 50)
-  [../]
-  [./cyl_abv_gnd_neg45_z]
-    type = AveragePointSeparation
-    displacements = 'disp_z'
-    first_point = '15.067 -15.067 32.542'# (21.30 45)
-    last_point =  '15.067 -15.067 33.042'# (21.30 45)
-  [../]
-
-  [./cyl_blw_gnd_45_rx]
-    type = AveragePointSeparation
-    displacements = 'disp_x'
-    first_point = '15.067 15.067 10.596'# (21.30 45)
-    last_point =  '14.713 14.713 10.596'# (20.80 45)
-  [../]
-  [./cyl_blw_gnd_45_ry]
-    type = AveragePointSeparation
-    displacements = 'disp_y'
-    first_point = '15.067 15.067 10.596'# (21.30 45)
-    last_point =  '14.713 14.713 10.596'# (20.80 45)
-  [../]
-  [./cyl_blw_gnd_45_thx]
-    type = AveragePointSeparation
-    displacements = 'disp_x'
-    first_point = '16.321 13.698 10.596'# (21.30 40)
-    last_point =  '13.698 16.321 10.596'# (21.30 50)
-  [../]
-  [./cyl_blw_gnd_45_thy]
-    type = AveragePointSeparation
-    displacements = 'disp_y'
-    first_point = '16.321 13.698 10.596'# (21.30 40)
-    last_point =  '13.698 16.321 10.596'# (21.30 50)
-  [../]
-  [./cyl_blw_gnd_45_z]
-    type = AveragePointSeparation
-    displacements = 'disp_z'
-    first_point = '15.067 15.067 32.542'# (21.30 45)
-    last_point =  '15.067 15.067 33.042'# (21.30 45)
-  [../]
-
-  [./cyl_blw_gnd_neg45_rx]
-    type = AveragePointSeparation
-    displacements = 'disp_x'
-    first_point = '15.067 -15.067 10.596'# (21.30 45)
-    last_point =  '14.713 -14.713 10.596'# (20.80 45)
-  [../]
-  [./cyl_blw_gnd_neg45_ry]
-    type = AveragePointSeparation
-    displacements = 'disp_y'
-    first_point = '15.067 -15.067 10.596'# (21.30 45)
-    last_point =  '14.713 -14.713 10.596'# (20.80 45)
-  [../]
-  [./cyl_blw_gnd_neg45_thx]
-    type = AveragePointSeparation
-    displacements = 'disp_x'
-    first_point = '16.321 -13.698 10.596'# (21.30 40)
-    last_point =  '13.698 -16.321 10.596'# (21.30 50)
-  [../]
-  [./cyl_blw_gnd_neg45_thy]
-    type = AveragePointSeparation
-    displacements = 'disp_y'
-    first_point = '16.321 -13.698 10.596'# (21.30 40)
-    last_point =  '13.698 -16.321 10.596'# (21.30 50)
-  [../]
-  [./cyl_blw_gnd_neg45_z]
-    type = AveragePointSeparation
-    displacements = 'disp_z'
-    first_point = '15.067 -15.067 10.346'# (21.30 45)
-    last_point =  '15.067 -15.067 10.846'# (21.30 45)
-  [../]
-
-  [./dome_45_rx]
-    type = AveragePointSeparation
-    displacements = 'disp_x'
-    first_point = '10.595 10.595 58.857'# (21.175 45, 45) z=43.89
-    last_point =  '10.345 10.345 58.503'# (20.675 45, 45) z=43.89
-  [../]
-  [./dome_45_ry]
-    type = AveragePointSeparation
-    displacements = 'disp_y'
-    first_point = '10.595 10.595 58.857'# (21.175 45, 45) z=43.89
-    last_point =  '10.345 10.345 58.503'# (20.675 45, 45) z=43.89
-  [../]
-  [./dome_45_thx]
-    type = AveragePointSeparation
-    displacements = 'disp_x'
-    first_point = '11.477  9.633 58.857'# (21.175 45, 40) z=43.89
-    last_point =  '9.633  11.477 58.857'# (21.175 45, 50) z=43.89
-  [../]
-  [./dome_45_thy]
-    type = AveragePointSeparation
-    displacements = 'disp_y'
-    first_point = '11.477  9.633 55.358'# (21.175 45, 40) z=43.89
-    last_point =  '9.633  11.477 57.495'# (21.175 45, 50) z=43.89
-  [../]
-  [./dome_45_phix]
-    type = AveragePointSeparation
-    displacements = 'disp_x'
-    first_point = '11.477 11.477 60.104'# (21.175 40, 45) z=43.89
-    last_point =  '9.633   9.633 57.495'# (21.175 50, 45) z=43.89
-  [../]
-  [./dome_45_phiy]
-    type = AveragePointSeparation
-    displacements = 'disp_y'
-    first_point = '11.477 11.477 60.104'# (21.175 40, 45) z=43.89
-    last_point =  '9.633   9.633 57.495'# (21.175 50, 45) z=43.89
-  [../]
-  [./dome_45_phiz]
-    type = AveragePointSeparation
-    displacements = 'disp_z'
-    first_point = '11.477 11.477 60.104'# (21.175 40, 45) z=43.89
-    last_point =  '9.633   9.633 57.495'# (21.175 50, 45) z=43.89
-  [../]
-
-
-
-
-  #
-  #
-  # [./dme_45deg_x]
-  # type = PointValue
-  # variable = disp_x
-  # point = '11.10 14.20 55.005559-43.89'
-  # [../]
-  # [./dme_45deg_y]
-  # type = PointValue
-  # variable = disp_x
-  # point = '11.10 14.20 55.005559'
-  # [../]
-  # [./dme_45deg_z]
-  # type = PointValue
-  # variable = disp_x
-  # point = '11.10 14.20 55.005559'
-  # [../]
-  # [./dme_neg45deg_x]
-  # type = PointValue
-  # variable = disp_x
-  # point = '11.10 -14.20 55.005559'
-  # [../]
-  # [./dme_neg45deg_y]
-  # type = PointValue
-  # variable = disp_x
-  # point = '11.10 -14.20 55.005559'
-  # [../]
-  # [./dme_neg45deg_z]
-  # type = PointValue
-  # variable = disp_x
-  # point = '11.10 -14.20 55.005559'
-  # [../]
-
-  [./base_btm_45_disp_x]
-  type = PointValue
+ [./disp_base_mat_x]# 500 mm gauge length (not the arc length)
+  type = SideAverageValue
   variable = disp_x
-  point = '14.694125 17.511776 -2.89'
-  [../]
-  [./base_btm_45_disp_y]
-  type = PointValue
+  boundary = '35'
+ [../]
+ [./disp_base_mat_y]# 500 mm gauge length (not the arc length)
+  type = SideAverageValue
+  variable = disp_y
+  boundary = '35'
+ [../]
+ [./disp_soil_x]# 500 mm gauge length (not the arc length)
+  type = SideAverageValue
   variable = disp_x
-  point = '14.694125 17.511776 -2.89'
-  [../]
-  [./base_btm_45_disp_z]
-  type = PointValue
-  variable = disp_x
-  point = '14.694125 17.511776 -2.89'
-  [../]
-  [./base_btm_neg45_disp_x]
-  type = PointValue
-  variable = disp_x
-  point = '14.694125 -17.511776 -2.89'
-  [../]
-  [./base_btm_neg45_disp_y]
-  type = PointValue
-  variable = disp_x
-  point = '14.694125 -17.511776 -2.89'
-  [../]
-  [./base_btm_neg45_disp_z]
-  type = PointValue
-  variable = disp_x
-  point = '14.694125 -17.511776 -2.89'
-  [../]
-
-  [./basemat_top_45_disp_x]
-  type = PointValue
-  variable = disp_x
-  point = '14.694125 17.511776 -2.90'
-  [../]
-  [./basemat_top_45_disp_y]
-  type = PointValue
-  variable = disp_x
-  point = '14.694125 17.511776 -2.90'
-  [../]
-  [./basemat_top_45_disp_z]
-  type = PointValue
-  variable = disp_x
-  point = '14.694125 17.511776 -2.90'
-  [../]
-  [./basemat_top_neg45_disp_x]
-  type = PointValue
-  variable = disp_x
-  point = '14.694125 -17.511776 -2.90'
-  [../]
-  [./basemat_top_neg45_disp_y]
-  type = PointValue
-  variable = disp_x
-  point = '14.694125 -17.511776 -2.90'
-  [../]
-  [./basemat_top_neg45_disp_z]
-  type = PointValue
-  variable = disp_x
-  point = '14.694125 -17.511776 -2.90'
-  [../]
-
-  [./surfaceAvg_base_x]
-    type = SideAverageValue
-    variable = disp_x
-    boundary = '33'
-  [../]
-  [./surfaceAvg_base_y]
-    type = SideAverageValue
-    variable = disp_y
-    boundary = '33'
-  [../]
-  [./surfaceAvg_base_z]
-    type = SideAverageValue
-    variable = disp_z
-    boundary = '33'
-  [../]
-  [./surfaceAvg_cyl_x]
-    type = SideAverageValue
-    variable = disp_x
-    boundary = '32'
-  [../]
-  [./surfaceAvg_cyl_y]
-    type = SideAverageValue
-    variable = disp_y
-    boundary = '32'
-  [../]
-  [./surfaceAvg_cyl_z]
-    type = SideAverageValue
-    variable = disp_z
-    boundary = '32'
-  [../]
-  [./surfaceAvg_cyl_sunshine_x]
-    type = SideAverageValue
-    variable = disp_x
-    boundary = '39'
-  [../]
-  [./surfaceAvg_cyl_sunshine_y]
-    type = SideAverageValue
-    variable = disp_y
-    boundary = '39'
-  [../]
-  [./surfaceAvg_cyl_sunshine_z]
-    type = SideAverageValue
-    variable = disp_z
-    boundary = '39'
-  [../]
-  [./surfaceAvg_cyl_sunshade_x]
-    type = SideAverageValue
-    variable = disp_x
-    boundary = '40'
-  [../]
-  [./surfaceAvg_cyl_sunshade_y]
-    type = SideAverageValue
-    variable = disp_y
-    boundary = '40'
-  [../]
-  [./surfaceAvg_cyl_sunshade_z]
-    type = SideAverageValue
-    variable = disp_z
-    boundary = '40'
-  [../]
-
-  [./surfaceAvg_dome_x]
-    type = SideAverageValue
-    variable = disp_x
-    boundary = '31'
-  [../]
-  [./surfaceAvg_dome_y]
-    type = SideAverageValue
-    variable = disp_y
-    boundary = '31'
-  [../]
-  [./surfaceAvg_dome_z]
-    type = SideAverageValue
-    variable = disp_z
-    boundary = '31'
-  [../]
-  [./surfaceAvg_dome_sunshine_x]
-    type = SideAverageValue
-    variable = disp_x
-    boundary = '37'
-  [../]
-  [./surfaceAvg_dome_sunshine_y]
-    type = SideAverageValue
-    variable = disp_y
-    boundary = '37'
-  [../]
-  [./surfaceAvg_dome_sunshine_z]
-    type = SideAverageValue
-    variable = disp_z
-    boundary = '37'
-  [../]
-  [./surfaceAvg_dome_sunshade_x]
-    type = SideAverageValue
-    variable = disp_x
-    boundary = '38'
-  [../]
-  [./surfaceAvg_dome_sunshade_y]
-    type = SideAverageValue
-    variable = disp_y
-    boundary = '38'
-  [../]
-  [./surfaceAvg_dome_sunshade_z]
-    type = SideAverageValue
-    variable = disp_z
-    boundary = '38'
-  [../]
-
-  [./cyl_z] # 500 mm gauge length
-    type = AveragePointSeparation
-    displacements = 'disp_z'
-    first_point = '2.438776     2.597033     4.252161'
-    last_point = '2.435685     2.593741     4.689710'
-  [../]
-  [./cyl_tang_x] # 500 mm gauge length (not the arc length)
-    type = AveragePointSeparation
-    displacements = 'disp_x'
-    first_point = '2.59     2.43     4.470935'
-    last_point = '2.26     2.743     4.470935'
-  [../]
-  [./cyl_tang_y] # 500 mm gauge length (not the arc length)
-    type = AveragePointSeparation
-    displacements = 'disp_y'
-    first_point = '2.59     2.43     4.470935'
-    last_point = '2.26     2.743     4.470935'
-  [../]
-  [./dome_z_arc]# 500 mm gauge length (not the arc length)
-    type = AveragePointSeparation
-    displacements = 'disp_z'
-    first_point = '2.149293     2.303640     8.909285'
-    last_point = '1.876000     2.020725     9.520732'
-  [../]
-  [./dome_tang_x]# 500 mm gauge length (not the arc length)
-    type = AveragePointSeparation
-    displacements = 'disp_x'
-    first_point = '2.374 1.924 9.0805'# basesd on hand calculation
-    last_point = '1.924 2.374 9.0805'
-  [../]
-  [./dome_tang_y]# 500 mm gauge length (not the arc length)
-    type = AveragePointSeparation
-    displacements = 'disp_y'
-    first_point = '2.374 1.924 9.0805'# basesd on hand calculation
-    last_point = '1.924 2.374 9.0805'
-  [../]
-
-  [./disp_base_x]
-    type = SideAverageValue
-    variable = disp_x
-    boundary = '35'
-  [../]
-  [./disp_base_y]
-    type = SideAverageValue
-    variable = disp_y
-    boundary = '35'
-  [../]
-  [./disp_base_mat_x]
-    type = SideAverageValue
-    variable = disp_x
-    boundary = '36'
-  [../]
-  [./disp_base_mat_y]
-    type = SideAverageValue
-    variable = disp_y
-    boundary = '36'
-  [../]
+  boundary = '36'
+ [../]
+ [./disp_soil_y]# 500 mm gauge length (not the arc length)
+  type = SideAverageValue
+  variable = disp_y
+  boundary = '36'
+ [../]
 []
 
 [Outputs]
