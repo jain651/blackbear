@@ -1026,331 +1026,510 @@
     block = '1'
   [../]
 
-  [./base_45_rx]
-    type = AveragePointSeparation
-    displacements = 'disp_x'
-    first_point = '16.158 16.158 0.15'# (22.86 45)
-    last_point =  '15.804 15.804 0.15'# (22.36 45)
+  [./base_sun_rx0]
+    type = PointValue
+    variable = disp_x
+    point = '15.804 15.804 0.15'# (22.36 45)
   [../]
-  [./base_45_ry]
-    type = AveragePointSeparation
-    displacements = 'disp_y'
-    first_point = '16.158 16.158 0.15'# (22.86 45)
-    last_point =  '15.804 15.804 0.15'# (22.36 45)
+  [./base_sun_rx1]
+    type = PointValue
+    variable = disp_x
+    point = '16 16 0.15'# (22.86 45)
   [../]
-  [./base_45_thx]
-    type = AveragePointSeparation
-    displacements = 'disp_x'
-    first_point = '14.366 17.122 0.15' # (22.86 40)
-    last_point =  '17.122 14.366 0.15' # (22.86 50)
+  [./base_sun_ry0]
+    type = PointValue
+    variable = disp_y
+    point = '15.804 15.804 0.15'# (22.36 45)
   [../]
-  [./base_45_thy]
-    type = AveragePointSeparation
-    displacements = 'disp_y'
-    first_point = '14.366 17.122 0.15' # (22.86 40)
-    last_point =  '17.122 14.366 0.15' # (22.86 50)
+  [./base_sun_ry1]
+    type = PointValue
+    variable = disp_y
+    point = '16 16 0.15'# (22.86 45)
   [../]
-  [./base_45_z]
-    type = AveragePointSeparation
-    displacements = 'disp_z'
-    first_point = '14.694125 17.511776 -2.0'
-    last_point =  '14.694125 17.511776 3.0'
+  [./base_sun_thx0]
+    type = PointValue
+    variable = disp_x
+    point = '14.366 17.122 0.15' # (22.86 40)
   [../]
-
-  [./base_neg_45_rx]
-    type = AveragePointSeparation
-    displacements = 'disp_x'
-    first_point = '16.158 -16.158 0.15'# (22.86 45)
-    last_point =  '15.804 -15.804 0.15'# (22.36 45)
+  [./base_sun_thx1]
+    type = PointValue
+    variable = disp_x
+    point = '17.122 14.366 0.15' # (22.86 50)
   [../]
-  [./base_neg_45_ry]
-    type = AveragePointSeparation
-    displacements = 'disp_y'
-    first_point = '16.158 -16.158 0.15'# (22.86 45)
-    last_point =  '15.804 -15.804 0.15'# (22.36 45)
+  [./base_sun_thy0]
+    type = PointValue
+    variable = disp_y
+    point = '14.366 17.122 0.15' # (22.86 40)
   [../]
-  [./base_neg_45_thx]
-    type = AveragePointSeparation
-    displacements = 'disp_x'
-    first_point = '14.366 -17.122 0.15' # (22.86 40)
-    last_point =  '17.122 -14.366 0.15' # (22.86 50)
+  [./base_sun_thy1]
+    type = PointValue
+    variable = disp_y
+    point = '17.122 14.366 0.15' # (22.86 50)
   [../]
-  [./base_neg_45_thy]
-    type = AveragePointSeparation
-    displacements = 'disp_y'
-    first_point = '14.366 -17.122 0.15' # (22.86 40)
-    last_point =  '17.122 -14.366 0.15' # (22.86 50)
-  [../]
-  [./base_neg_45_z]
+  [./base_sun_z]
     type = AveragePointSeparation
     displacements = 'disp_z'
-    first_point = '14.694125 -17.511776 -2.0'
-    last_point =  '14.694125 -17.511776 3.0'
+    first_point = '14.694 17.511 -2.00'
+    last_point =  '14.694 17.511  3.00'
   [../]
 
-  [./cyl_abv_gnd_45_rx]
-    type = AveragePointSeparation
-    displacements = 'disp_x'
-    first_point = '15.067 15.067 32.792'# (21.30 45)
-    last_point =  '14.713 14.713 32.792'# (20.80 45)
+  [./base_shade_rx0]
+    type = PointValue
+    variable = disp_x
+    point = '15.804 -15.804 0.15'# (22.36 -45)
   [../]
-  [./cyl_abv_gnd_45_ry]
-    type = AveragePointSeparation
-    displacements = 'disp_y'
-    first_point = '15.067 15.067 32.792'# (21.30 45)
-    last_point =  '14.713 14.713 32.792'# (20.80 45)
+  [./base_shade_rx1]
+    type = PointValue
+    variable = disp_x
+    point = '16 -16 0.15'# (22.86 -45)
   [../]
-  [./cyl_abv_gnd_45_thx]
-    type = AveragePointSeparation
-    displacements = 'disp_x'
-    first_point = '16.321 13.698 32.792'# (21.30 40)
-    last_point =  '13.698 16.321 32.792'# (21.30 50)
+  [./base_shade_ry0]
+    type = PointValue
+    variable = disp_y
+    point = '15.804 -15.804 0.15'# (22.36 -45)
   [../]
-  [./cyl_abv_gnd_45_thy]
-    type = AveragePointSeparation
-    displacements = 'disp_y'
-    first_point = '16.321 13.698 32.792'# (21.30 40)
-    last_point =  '13.698 16.321 32.792'# (21.30 50)
+  [./base_shade_ry1]
+    type = PointValue
+    variable = disp_y
+    point = '16 -16 0.15'# (22.86 -45)
   [../]
-  [./cyl_abv_gnd_45_z]
+  [./base_shade_thx0]
+    type = PointValue
+    variable = disp_x
+    point = '14.366 -17.122 0.15' # (22.86 -40)
+  [../]
+  [./base_shade_thx1]
+    type = PointValue
+    variable = disp_x
+    point = '17.122 -14.366 0.15' # (22.86 -50)
+  [../]
+  [./base_shade_thy0]
+    type = PointValue
+    variable = disp_y
+    point = '14.366 -17.122 0.15' # (22.86 -40)
+  [../]
+  [./base_shade_thy1]
+    type = PointValue
+    variable = disp_y
+    point = '17.122 -14.366 0.15' # (22.86 -50)
+  [../]
+  [./base_shade_z]
     type = AveragePointSeparation
     displacements = 'disp_z'
-    first_point = '15.067 15.067 32.542'# (21.30 45)
-    last_point =  '15.067 15.067 33.042'# (21.30 45)
+    first_point = '14.694 -17.511 -2.00'
+    last_point =  '14.694 -17.511  3.00'
   [../]
 
-  [./cyl_abv_gnd_neg45_rx]
-    type = AveragePointSeparation
-    displacements = 'disp_x'
-    first_point = '15.067 -15.067 32.792'# (21.30 45)
-    last_point =  '14.713 -14.713 32.792'# (20.80 45)
+  [./cyl_air_sun_rx0]
+    type = PointValue
+    variable = disp_x
+    point = '14.713 14.713 32.792'# (20.80 45)
   [../]
-  [./cyl_abv_gnd_neg45_ry]
-    type = AveragePointSeparation
-    displacements = 'disp_y'
-    first_point = '15.067 -15.067 32.792'# (21.30 45)
-    last_point =  '14.713 -14.713 32.792'# (20.80 45)
+  [./cyl_air_sun_rx1]
+    type = PointValue
+    variable = disp_x
+    point = '14.9 14.9 32.792'# (21.30 45)
   [../]
-  [./cyl_abv_gnd_neg45_thx]
-    type = AveragePointSeparation
-    displacements = 'disp_x'
-    first_point = '16.321 -13.698 32.792'# (21.30 40)
-    last_point =  '13.698 -16.321 32.792'# (21.30 50)
+  [./cyl_air_sun_ry0]
+    type = PointValue
+    variable = disp_y
+    point = '14.713 14.713 32.792'# (20.80 45)
   [../]
-  [./cyl_abv_gnd_neg45_thy]
-    type = AveragePointSeparation
-    displacements = 'disp_y'
-    first_point = '16.321 -13.698 32.792'# (21.30 40)
-    last_point =  '13.698 -16.321 32.792'# (21.30 50)
+  [./cyl_air_sun_ry1]
+    type = PointValue
+    variable = disp_y
+    point = '14.9 14.9 32.792'# (21.30 45)
   [../]
-  [./cyl_abv_gnd_neg45_z]
+  [./cyl_air_sun_thx0]
+    type = PointValue
+    variable = disp_x
+    point = '16.321 13.600 32.792'# (21.30 40)
+  [../]
+  [./cyl_air_sun_thx1]
+    type = PointValue
+    variable = disp_x
+    point = '13.600 16.321 32.792'# (21.30 50)
+  [../]
+  [./cyl_air_sun_thy0]
+    type = PointValue
+    variable = disp_y
+    point = '16.321 13.600 32.792'# (21.30 40)
+  [../]
+  [./cyl_air_sun_thy1]
+    type = PointValue
+    variable = disp_y
+    point = '13.600 16.321 32.792'# (21.30 50)
+  [../]
+  [./cyl_air_sun_z]
     type = AveragePointSeparation
     displacements = 'disp_z'
-    first_point = '15.067 -15.067 32.542'# (21.30 45)
-    last_point =  '15.067 -15.067 33.042'# (21.30 45)
+    first_point = '14.9 14.9 32.542'# (21.30 45)
+    last_point =  '14.9 14.9 33.042'# (21.30 45)
   [../]
 
-  [./cyl_blw_gnd_45_rx]
-    type = AveragePointSeparation
-    displacements = 'disp_x'
-    first_point = '15.067 15.067 10.596'# (21.30 45)
-    last_point =  '14.713 14.713 10.596'# (20.80 45)
+  [./cyl_air_shade_rx0]
+    type = PointValue
+    variable = disp_x
+    point = '14.713 -14.713 32.792'# (20.80 -45)
   [../]
-  [./cyl_blw_gnd_45_ry]
-    type = AveragePointSeparation
-    displacements = 'disp_y'
-    first_point = '15.067 15.067 10.596'# (21.30 45)
-    last_point =  '14.713 14.713 10.596'# (20.80 45)
+  [./cyl_air_shade_rx1]
+    type = PointValue
+    variable = disp_x
+    point = '14.9 -14.9 32.792'# (21.30 -45)
   [../]
-  [./cyl_blw_gnd_45_thx]
-    type = AveragePointSeparation
-    displacements = 'disp_x'
-    first_point = '16.321 13.698 10.596'# (21.30 40)
-    last_point =  '13.698 16.321 10.596'# (21.30 50)
+  [./cyl_air_shade_ry0]
+    type = PointValue
+    variable = disp_y
+    point = '14.713 -14.713 32.792'# (20.80 -45)
   [../]
-  [./cyl_blw_gnd_45_thy]
-    type = AveragePointSeparation
-    displacements = 'disp_y'
-    first_point = '16.321 13.698 10.596'# (21.30 40)
-    last_point =  '13.698 16.321 10.596'# (21.30 50)
+  [./cyl_air_shade_ry1]
+    type = PointValue
+    variable = disp_y
+    point = '14.9 -14.9 32.792'# (21.30 -45)
   [../]
-  [./cyl_blw_gnd_45_z]
+  [./cyl_air_shade_thx0]
+    type = PointValue
+    variable = disp_x
+    point = '16.321 -13.600 32.792'# (21.30 -40)
+  [../]
+  [./cyl_air_shade_thx1]
+    type = PointValue
+    variable = disp_x
+    point = '13.600 -16.321 32.792'# (21.30 -50)
+  [../]
+  [./cyl_air_shade_thy0]
+    type = PointValue
+    variable = disp_y
+    point = '16.321 -13.600 32.792'# (21.30 -40)
+  [../]
+  [./cyl_air_shade_thy1]
+    type = PointValue
+    variable = disp_y
+    point = '13.600 -16.321 32.792'# (21.30 -50)
+  [../]
+  [./cyl_air_shade_z]
     type = AveragePointSeparation
     displacements = 'disp_z'
-    first_point = '15.067 15.067 32.542'# (21.30 45)
-    last_point =  '15.067 15.067 33.042'# (21.30 45)
+    first_point = '14.9 -14.9 32.542'# (21.30 -45)
+    last_point =  '14.9 -14.9 33.042'# (21.30 -45)
   [../]
 
-  [./cyl_blw_gnd_neg45_rx]
-    type = AveragePointSeparation
-    displacements = 'disp_x'
-    first_point = '15.067 -15.067 10.596'# (21.30 45)
-    last_point =  '14.713 -14.713 10.596'# (20.80 45)
+  [./cyl_gnd_sun_rx0]
+    type = PointValue
+    variable = disp_x
+    point = '14.713 14.713 10.596'# (20.80 45)
   [../]
-  [./cyl_blw_gnd_neg45_ry]
-    type = AveragePointSeparation
-    displacements = 'disp_y'
-    first_point = '15.067 -15.067 10.596'# (21.30 45)
-    last_point =  '14.713 -14.713 10.596'# (20.80 45)
+  [./cyl_gnd_sun_rx1]
+    type = PointValue
+    variable = disp_x
+    point = '14.9 14.9 10.596'# (21.30 45)
   [../]
-  [./cyl_blw_gnd_neg45_thx]
-    type = AveragePointSeparation
-    displacements = 'disp_x'
-    first_point = '16.321 -13.698 10.596'# (21.30 40)
-    last_point =  '13.698 -16.321 10.596'# (21.30 50)
+  [./cyl_gnd_sun_ry0]
+    type = PointValue
+    variable = disp_y
+    point = '14.713 14.713 10.596'# (20.80 45)
   [../]
-  [./cyl_blw_gnd_neg45_thy]
-    type = AveragePointSeparation
-    displacements = 'disp_y'
-    first_point = '16.321 -13.698 10.596'# (21.30 40)
-    last_point =  '13.698 -16.321 10.596'# (21.30 50)
+  [./cyl_gnd_sun_ry1]
+    type = PointValue
+    variable = disp_y
+    point = '14.9 14.9 10.596'# (21.30 45)
   [../]
-  [./cyl_blw_gnd_neg45_z]
+  [./cyl_gnd_sun_thx0]
+    type = PointValue
+    variable = disp_x
+    point = '16.321 13.600 10.596'# (21.30 40)
+  [../]
+  [./cyl_gnd_sun_thx1]
+    type = PointValue
+    variable = disp_x
+    point = '13.600 16.321 10.596'# (21.30 50)
+  [../]
+  [./cyl_gnd_sun_thy0]
+    type = PointValue
+    variable = disp_y
+    point = '16.321 13.600 10.596'# (21.30 40)
+  [../]
+  [./cyl_gnd_sun_thy1]
+    type = PointValue
+    variable = disp_y
+    point = '13.600 16.321 10.596'# (21.30 50)
+  [../]
+  [./cyl_gnd_sun_z]
     type = AveragePointSeparation
     displacements = 'disp_z'
-    first_point = '15.067 -15.067 10.346'# (21.30 45)
-    last_point =  '15.067 -15.067 10.846'# (21.30 45)
+    first_point = '14.9 14.9 10.346'# (21.30 45)
+    last_point =  '14.9 14.9 10.846'# (21.30 45)
   [../]
 
-  [./dome_45_rx]
-    type = AveragePointSeparation
-    displacements = 'disp_x'
-    first_point = '10.595 10.595 58.857'# (21.175 45, 45) z=43.89
-    last_point =  '10.345 10.345 58.503'# (20.675 45, 45) z=43.89
+  [./cyl_gnd_shade_rx0]
+    type = PointValue
+    variable = disp_x
+    point = '14.713 -14.713 10.596'# (20.80 -45)
   [../]
-  [./dome_45_ry]
-    type = AveragePointSeparation
-    displacements = 'disp_y'
-    first_point = '10.595 10.595 58.857'# (21.175 45, 45) z=43.89
-    last_point =  '10.345 10.345 58.503'# (20.675 45, 45) z=43.89
+  [./cyl_gnd_shade_rx1]
+    type = PointValue
+    variable = disp_x
+    point = '14.9 -14.9 10.596'# (21.30 -45)
   [../]
-  [./dome_45_thx]
-    type = AveragePointSeparation
-    displacements = 'disp_x'
-    first_point = '11.477  9.633 58.857'# (21.175 45, 40) z=43.89
-    last_point =  '9.633  11.477 58.857'# (21.175 45, 50) z=43.89
+  [./cyl_gnd_shade_ry0]
+    type = PointValue
+    variable = disp_y
+    point = '14.713 -14.713 10.596'# (20.80 -45)
   [../]
-  [./dome_45_thy]
-    type = AveragePointSeparation
-    displacements = 'disp_y'
-    first_point = '11.477  9.633 55.358'# (21.175 45, 40) z=43.89
-    last_point =  '9.633  11.477 57.495'# (21.175 45, 50) z=43.89
+  [./cyl_gnd_shade_ry1]
+    type = PointValue
+    variable = disp_y
+    point = '14.9 -14.9 10.596'# (21.30 -45)
   [../]
-  [./dome_45_phix]
-    type = AveragePointSeparation
-    displacements = 'disp_x'
-    first_point = '11.477 11.477 60.104'# (21.175 40, 45) z=43.89
-    last_point =  '9.633   9.633 57.495'# (21.175 50, 45) z=43.89
+  [./cyl_gnd_shade_thx0]
+    type = PointValue
+    variable = disp_x
+    point = '16.321 -13.600 10.596'# (21.30 -40)
   [../]
-  [./dome_45_phiy]
-    type = AveragePointSeparation
-    displacements = 'disp_y'
-    first_point = '11.477 11.477 60.104'# (21.175 40, 45) z=43.89
-    last_point =  '9.633   9.633 57.495'# (21.175 50, 45) z=43.89
+  [./cyl_gnd_shade_thx1]
+    type = PointValue
+    variable = disp_x
+    point = '13.600 -16.321 10.596'# (21.30 -50)
   [../]
-  [./dome_45_phiz]
+  [./cyl_gnd_shade_thy0]
+    type = PointValue
+    variable = disp_y
+    point = '16.321 -13.600 10.596'# (21.30 -40)
+  [../]
+  [./cyl_gnd_shade_thy1]
+    type = PointValue
+    variable = disp_y
+    point = '13.600 -16.321 10.596'# (21.30 -50)
+  [../]
+  [./cyl_gnd_shade_z]
     type = AveragePointSeparation
     displacements = 'disp_z'
-    first_point = '11.477 11.477 60.104'# (21.175 40, 45) z=43.89
-    last_point =  '9.633   9.633 57.495'# (21.175 50, 45) z=43.89
+    first_point = '14.9 -14.9 10.346'# (21.30 -45)
+    last_point =  '14.9 -14.9 10.846'# (21.30 -45)
   [../]
 
+  [./dome_sun_rx0]
+    type = PointValue
+    variable = disp_x
+    point = '10.345 10.345 58.503'# (20.675 45, 45) z=43.89
+  [../]
+  [./dome_sun_rx1]
+    type = PointValue
+    variable = disp_x
+    point = '10.400 10.400 58.857'# (21.175 45, 45) z=43.89
+  [../]
+  [./dome_sun_ry0]
+    type = PointValue
+    variable = disp_y
+    point = '10.345 10.345 58.503'# (20.675 45, 45) z=43.89
+  [../]
+  [./dome_sun_ry1]
+    type = PointValue
+    variable = disp_y
+    point = '10.400 10.400 58.857'# (21.175 45, 45) z=43.89
+  [../]
+  [./dome_sun_rz0]
+    type = PointValue
+    variable = disp_z
+    point = '10.345 10.345 58.503'# (20.675 45, 45) z=43.89
+  [../]
+  [./dome_sun_rz1]
+    type = PointValue
+    variable = disp_z
+    point = '10.400 10.400 58.857'# (21.175 45, 45) z=43.89
+  [../]
+  [./dome_sun_thx0]
+    type = PointValue
+    variable = disp_x
+    point = '10.900  9.633 58.857'# (21.175 45, 40) z=43.89
+  [../]
+  [./dome_sun_thx1]
+    type = PointValue
+    variable = disp_x
+    point = '9.633  10.900 58.857'# (21.175 45, 50) z=43.89
+  [../]
+  [./dome_sun_thy0]
+    type = PointValue
+    variable = disp_y
+    point = '10.900  9.633 58.857'# (21.175 45, 40) z=43.89
+  [../]
+  [./dome_sun_thy1]
+    type = PointValue
+    variable = disp_y
+    point = '9.633  10.900 58.857'# (21.175 45, 50) z=43.89
+  [../]
+  [./dome_sun_phix0]
+    type = PointValue
+    variable = disp_x
+    point = '9.300 9.300 60.104'# (21.175 40, 45) z=43.89
+  [../]
+  [./dome_sun_phix1]
+    type = PointValue
+    variable = disp_x
+    point = '10.500   10.500 57.495'# (21.175 50, 45) z=43.89
+  [../]
+  [./dome_sun_phiy0]
+    type = PointValue
+    variable = disp_y
+    point = '9.300 9.300 60.104'# (21.175 40, 45) z=43.89
+  [../]
+  [./dome_sun_phiy1]
+    type = PointValue
+    variable = disp_y
+    point = '10.500   10.500 57.495'# (21.175 50, 45) z=43.89
+  [../]
+  [./dome_sun_phiz0]
+    type = PointValue
+    variable = disp_z
+    point = '9.300 9.300 60.104'# (21.175 40, 45) z=43.89
+  [../]
+  [./dome_sun_phiz1]
+    type = PointValue
+    variable = disp_z
+    point = '10.500   10.500 57.495'# (21.175 50, 45) z=43.89
+  [../]
 
+  [./dome_shade_rx0]
+    type = PointValue
+    variable = disp_x
+    point = '10.345 -10.345 58.503'# (20.675 -45, 45) z=43.89
+  [../]
+  [./dome_shade_rx1]
+    type = PointValue
+    variable = disp_x
+    point = '10.400 -10.400 58.857'# (21.175 -45, 45) z=43.89
+  [../]
+  [./dome_shade_ry0]
+    type = PointValue
+    variable = disp_y
+    point = '10.345 -10.345 58.503'# (20.675 -45, 45) z=43.89
+  [../]
+  [./dome_shade_ry1]
+    type = PointValue
+    variable = disp_y
+    point = '10.400 -10.400 58.857'# (21.175 -45, 45) z=43.89
+  [../]
+  [./dome_shade_rz0]
+    type = PointValue
+    variable = disp_z
+    point = '10.345 -10.345 58.503'# (20.675 -45, 45) z=43.89
+  [../]
+  [./dome_shade_rz1]
+    type = PointValue
+    variable = disp_z
+    point = '10.400 -10.400 58.857'# (21.175 -45, 45) z=43.89
+  [../]
+  [./dome_shade_thx0]
+    type = PointValue
+    variable = disp_x
+    point = '10.900  -9.633 58.857'# (21.175 -45, 40) z=43.89
+  [../]
+  [./dome_shade_thx1]
+    type = PointValue
+    variable = disp_x
+    point = '9.633  -10.900 58.857'# (21.175 -45, 50) z=43.89
+  [../]
+  [./dome_shade_thy0]
+    type = PointValue
+    variable = disp_y
+    point = '10.900  -9.633 58.857'# (21.175 -45, 40) z=43.89
+  [../]
+  [./dome_shade_thy1]
+    type = PointValue
+    variable = disp_y
+    point = '9.633  -10.900 58.857'# (21.175 -45, 50) z=43.89
+  [../]
+  [./dome_shade_phix0]
+    type = PointValue
+    variable = disp_x
+    point = '9.300 -9.300 60.104'# (21.175 -40, 45) z=43.89
+  [../]
+  [./dome_shade_phix1]
+    type = PointValue
+    variable = disp_x
+    point = '10.500   -10.500 57.495'# (21.175 -50, 45) z=43.89
+  [../]
+  [./dome_shade_phiy0]
+    type = PointValue
+    variable = disp_y
+    point = '9.300 -9.300 60.104'# (21.175 -40, 45) z=43.89
+  [../]
+  [./dome_shade_phiy1]
+    type = PointValue
+    variable = disp_y
+    point = '10.500   -10.500 57.495'# (21.175 -50, 45) z=43.89
+  [../]
+  [./dome_shade_phiz0]
+    type = PointValue
+    variable = disp_z
+    point = '9.300 -9.300 60.104'# (21.175 -40, 45) z=43.89
+  [../]
+  [./dome_shade_phiz1]
+    type = PointValue
+    variable = disp_z
+    point = '10.500   -10.500 57.495'# (21.175 -50, 45) z=43.89
+  [../]
 
-
-  #
-  #
-  # [./dme_45deg_x]
-  # type = PointValue
-  # variable = disp_x
-  # point = '11.10 14.20 55.005559-43.89'
-  # [../]
-  # [./dme_45deg_y]
-  # type = PointValue
-  # variable = disp_x
-  # point = '11.10 14.20 55.005559'
-  # [../]
-  # [./dme_45deg_z]
-  # type = PointValue
-  # variable = disp_x
-  # point = '11.10 14.20 55.005559'
-  # [../]
-  # [./dme_neg45deg_x]
-  # type = PointValue
-  # variable = disp_x
-  # point = '11.10 -14.20 55.005559'
-  # [../]
-  # [./dme_neg45deg_y]
-  # type = PointValue
-  # variable = disp_x
-  # point = '11.10 -14.20 55.005559'
-  # [../]
-  # [./dme_neg45deg_z]
-  # type = PointValue
-  # variable = disp_x
-  # point = '11.10 -14.20 55.005559'
-  # [../]
-
-  [./base_btm_45_disp_x]
-  type = PointValue
-  variable = disp_x
-  point = '14.694125 17.511776 -2.89'
+  [./base_bot_sun_x]
+    type = PointValue
+    variable = disp_x
+    point = '16 16 -2.89'# (22.86 45)
   [../]
-  [./base_btm_45_disp_y]
-  type = PointValue
-  variable = disp_x
-  point = '14.694125 17.511776 -2.89'
+  [./base_bot_sun_y]
+    type = PointValue
+    variable = disp_x
+    point = '16 16 -2.89'# (22.86 45)
   [../]
-  [./base_btm_45_disp_z]
-  type = PointValue
-  variable = disp_x
-  point = '14.694125 17.511776 -2.89'
+  [./base_bot_sun_z]
+    type = PointValue
+    variable = disp_x
+    point = '16 16 -2.89'# (22.86 45)
   [../]
-  [./base_btm_neg45_disp_x]
-  type = PointValue
-  variable = disp_x
-  point = '14.694125 -17.511776 -2.89'
+  [./base_bot_shade_x]
+    type = PointValue
+    variable = disp_x
+    point = '16 -16 -2.89'# (22.86 45)
   [../]
-  [./base_btm_neg45_disp_y]
-  type = PointValue
-  variable = disp_x
-  point = '14.694125 -17.511776 -2.89'
+  [./base_bot_shade_y]
+    type = PointValue
+    variable = disp_x
+    point = '16 -16 -2.89'# (22.86 45)
   [../]
-  [./base_btm_neg45_disp_z]
-  type = PointValue
-  variable = disp_x
-  point = '14.694125 -17.511776 -2.89'
+  [./base_bot_shade_z]
+    type = PointValue
+    variable = disp_x
+    point = '16 -16 -2.89'# (22.86 45)
   [../]
 
-  [./basemat_top_45_disp_x]
-  type = PointValue
-  variable = disp_x
-  point = '14.694125 17.511776 -2.90'
+  [./basemat_top_sun_x]
+    type = PointValue
+    variable = disp_x
+    point = '16 16 -2.90' # (37.49 45)
   [../]
-  [./basemat_top_45_disp_y]
-  type = PointValue
-  variable = disp_x
-  point = '14.694125 17.511776 -2.90'
+  [./basemat_top_sun_y]
+    type = PointValue
+    variable = disp_y
+    point = '16 16 -2.90' # (37.49 45)
   [../]
-  [./basemat_top_45_disp_z]
-  type = PointValue
-  variable = disp_x
-  point = '14.694125 17.511776 -2.90'
+  [./basemat_top_sun_z]
+    type = PointValue
+    variable = disp_z
+    point = '16 16 -2.90' # (37.49 45)
   [../]
-  [./basemat_top_neg45_disp_x]
-  type = PointValue
-  variable = disp_x
-  point = '14.694125 -17.511776 -2.90'
+  [./basemat_top_shade_x]
+    type = PointValue
+    variable = disp_x
+    point = '16 -16 -2.90' # (37.49 45)
   [../]
-  [./basemat_top_neg45_disp_y]
-  type = PointValue
-  variable = disp_x
-  point = '14.694125 -17.511776 -2.90'
+  [./basemat_top_shade_y]
+    type = PointValue
+    variable = disp_y
+    point = '16 -16 -2.90' # (37.49 45)
   [../]
-  [./basemat_top_neg45_disp_z]
-  type = PointValue
-  variable = disp_x
-  point = '14.694125 -17.511776 -2.90'
+  [./basemat_top_shade_z]
+    type = PointValue
+    variable = disp_z
+    point = '16 -16 -2.90' # (37.49 45)
   [../]
 
   [./surfaceAvg_base_x]

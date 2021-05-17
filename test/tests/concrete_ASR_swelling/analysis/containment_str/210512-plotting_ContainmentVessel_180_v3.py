@@ -85,7 +85,7 @@ def dphi(dx,dy,dz,rho,loc,r):
 def rad_exp(dx0,dy0,theta0,dx1,dy1,theta1,gauge):
     return (dr(dx0,dy0,theta0)-dr(dx1,dy1,theta1))/gauge
 
-def th_exp(loc0,loc1,dx0,dx1,dy0,dy1,gauge_th):
+def th_exp(dx0,dy0,loc0,dx1,dy1,loc1,gauge_th):
     return (dtheta(loc0,dx0,dy0,r0)-dtheta(loc1,dx1,dy1,r1))/gauge_th
 
 def rho_exp(dx0,dy0,dz0,rho0,loc0,dx1,dy1,dz1,rho1,loc1,gauge_rho):
@@ -97,13 +97,81 @@ def phi_exp(dx0,dy0,dz0,rho0,loc0,r0,dx1,dy1,dz1,rho1,loc1,r1,gauge_phi):
 t = out['time']/86400/365
 num_row = len(t)
 base_r_exp = [0]*(num_row)
+
+base_rad_gauge = 0.5
+base_th_gauge = 10
+cyl_rad_gauge = 0.5
+cyl_th_gauge = 10
+dome_rad_gauge = 0.5
+dome_th_gauge = 10
+dome_phi_gauge = 10
+dome_45_r_rho0 = (dome_45_r_loc0[0]**2 +
+                  dome_45_r_loc0[1]**2 +
+                  dome_45_r_loc0[2]**2)**0.5
+dome_45_r_rho1 = (dome_45_r_loc1[0]**2 +
+                  dome_45_r_loc1[1]**2 +
+                  dome_45_r_loc1[2]**2)**0.5
+dome_45_r_r0 = (dome_45_r_loc0[0]**2 +
+                dome_45_r_loc0[1]**2)**0.5
+dome_45_r_r1 = (dome_45_r_loc1[0]**2 +
+                dome_45_r_loc1[1]**2)**0.5
+
 for i in range(num_row):
-    # print(cyl_hz_exp)
-    base_r_exp[i]  = rad_exp (out['base_45_rx'][i],
-                              out['base_45_ry'][i],
-                              math.atan(base_45_r_loc0[1]/base_45_r_loc0[0]),
-                              dx1,dy1,theta1,gauge)
-    base_r_exp[i]  = rad_exp (fp_hz_cyl,  lp_hz_cyl,  out['cyl_tang_x'][i],
+    base_45_r_exp[i] = rad_exp( out['base_45_rx0'][i],
+                                out['base_45_ry0'][i],
+                                math.atan(base_45_r_loc0[1]/base_45_r_loc0[0]),
+                                out['base_45_rx1'][i],
+                                out['base_45_ry1'][i],
+                                math.atan(base_45_r_loc1[1]/base_45_r_loc1[0]),
+                                base_rad_gauge)
+    base_45_th_exp[i] = th_exp( out['base_45_rx0'][i],
+                                out['base_45_ry0'][i],
+                                base_45_r_loc0,
+                                out['base_45_rx1'][i],
+                                out['base_45_ry1'][i],
+                                base_45_r_loc1,
+                                base_th_gauge)
+
+    cyl_abv_gnd_45_r_exp[i] = rad_exp(  out['cyl_abv_gnd_45_rx0'][i],
+                                        out['cyl_abv_gnd_45_ry0'][i],
+                                        math.atan(cyl_abv_gnd_45_r_loc0[1]/cyl_abv_gnd_45_r_loc0[0]),
+                                        out['cyl_abv_gnd_45_rx1'][i],
+                                        out['cyl_abv_gnd_45_ry1'][i],
+                                        math.atan(cyl_abv_gnd_45_r_loc1[1]/cyl_abv_gnd_45_r_loc1[0]),
+                                        cyl_rad_gauge)
+    cyl_abv_gnd_45_th_exp[i] = th_exp(  out['cyl_abv_gnd_45_rx0'][i],
+                                        out['cyl_abv_gnd_45_ry0'][i],
+                                        cyl_abv_gnd_45_r_loc0,
+                                        out['cyl_abv_gnd_45_rx1'][i],
+                                        out['cyl_abv_gnd_45_ry1'][i],
+                                        cyl_abv_gnd_45_r_loc1,
+                                        cyl_th_gauge)
+
+    dome_45_r_exp[i] = rho_exp( out['dome_45_rx0'][i],
+                                out['dome_45_ry0'][i],
+                                out['dome_45_rz0'][i],
+                                rho0,
+                                dome_45_r_loc0,
+                                out['dome_45_rx1'][i],
+                                out['dome_45_ry1'][i],
+                                out['dome_45_rz1'][i],
+                                rho1,
+                                dome_45_r_loc1,
+                                dome_rad_gauge)
+    dome_45_phi_exp[i] = phi_exp( out['dome_45_rx0'][i],
+                                  out['dome_45_ry0'][i],
+                                  out['dome_45_rz0'][i],
+                                  rho0,
+                                  dome_45_th_loc0,
+                                  dome_45_th_r0,
+                                  out['dome_45_rx1'][i],
+                                  out['dome_45_ry1'][i],
+                                  out['dome_45_rz1'][i],
+                                  rho1,
+                                  dome_45_th_loc1,
+                                  dome_45_th_r1,
+                                  dome_rad_gauge)
+
 
 
 
