@@ -945,756 +945,1398 @@
 []
 
 [Postprocessors]
-  [./ASR_strain]
-    type = ElementAverageValue
-    variable = ASR_vstrain
-    block = '1'
-  [../]
-  [./ASR_strain_xx]
-    type = ElementAverageValue
-    variable = ASR_strain_xx
-    block = '1'
-  [../]
-  [./ASR_strain_yy]
-    type = ElementAverageValue
-    variable = ASR_strain_yy
-    block = '1'
-  [../]
-  [./ASR_strain_zz]
-    type = ElementAverageValue
-    variable = ASR_strain_zz
-    block = '1'
-  [../]
-  [ASR_ext]
-    type = ElementAverageValue
+  [./base_shade_ASR_ex]
+    type = PointValue
     variable = ASR_ex
-    block = '1'
-  []
-
-  [./vonmises]
-    type = ElementAverageValue
-    variable = vonmises_stress
-    block = '1'
+    point = '15.90 15.90 0.15'# (22.36 45)
   [../]
-
-  [./vstrain]
-    type = ElementAverageValue
-    variable = volumetric_strain
-    block = '1'
+  [./base_shade_ASR_strainxx]
+    type = PointValue
+    variable = ASR_strain_xx
+    point = '15.90 15.90 0.15'# (22.36 45)
   [../]
-
-  [./strain_xx]
-    type = ElementAverageValue
-    variable = strain_xx
-    block = '1'
+  [./base_shade_ASR_strainxy]
+    type = PointValue
+    variable = ASR_strain_xy
+    point = '15.90 15.90 0.15'# (22.36 45)
   [../]
-  [./strain_yy]
-    type = ElementAverageValue
-    variable = strain_yy
-    block = '1'
+  [./base_shade_ASR_strainxz]
+    type = PointValue
+    variable = ASR_strain_zx
+    point = '15.90 15.90 0.15'# (22.36 45)
   [../]
-  [./strain_zz]
-    type = ElementAverageValue
-    variable = strain_zz
-    block = '1'
+  [./base_shade_ASR_strainyy]
+    type = PointValue
+    variable = ASR_strain_yy
+    point = '15.90 15.90 0.15'# (22.36 45)
   [../]
-
-  [./temp]
-    type = ElementAverageValue
+  [./base_shade_ASR_strainyz]
+    type = PointValue
+    variable = ASR_strain_yz
+    point = '15.90 15.90 0.15'# (22.36 45)
+  [../]
+  [./base_shade_ASR_strainzz]
+    type = PointValue
+    variable = ASR_strain_zz
+    point = '15.90 15.90 0.15'# (22.36 45)
+  [../]
+  [./base_shade_ASR_vstrain]
+    type = PointValue
+    variable = ASR_vstrain
+    point = '15.90 15.90 0.15'# (22.36 45)
+  [../]
+  [./base_shade_T]
+    type = PointValue
     variable = T
-    block = '1'
+    point = '15.90 15.90 0.15'# (22.36 45)
   [../]
-  [./humidity]
-    type = ElementAverageValue
+  [./base_shade_rh]
+    type = PointValue
     variable = rh
-    block = '1'
+    point = '15.90 15.90 0.15'# (22.36 45)
   [../]
-
-  [./thermal_strain_xx]
-    type = ElementAverageValue
+  [./base_shade_damage_index]
+    type = PointValue
+    variable = damage_index
+    point = '15.90 15.90 0.15'# (22.36 45)
+  [../]
+  [./base_shade_hydrostatic_stress]
+    type = PointValue
+    variable = hydrostatic_stress
+    point = '15.90 15.90 0.15'# (22.36 45)
+  [../]
+  [./base_shade_vonmises_stress]
+    type = PointValue
+    variable = vonmises_stress
+    point = '15.90 15.90 0.15'# (22.36 45)
+  [../]
+  [./base_shade_water_content]
+    type = PointValue
+    variable = water_content
+    point = '15.90 15.90 0.15'# (22.36 45)
+  [../]
+  [./base_shade_water_hydrated]
+    type = PointValue
+    variable = water_hydrated
+    point = '15.90 15.90 0.15'# (22.36 45)
+  [../]
+  [./base_shade_thermal_capacity]
+    type = PointValue
+    variable = thermal_capacity
+    point = '15.90 15.90 0.15'# (22.36 45)
+  [../]
+  [./base_shade_thermal_conductivity]
+    type = PointValue
+    variable = thermal_conductivity
+    point = '15.90 15.90 0.15'# (22.36 45)
+  [../]
+  [./base_shade_thermal_strain_xx]
+    type = PointValue
     variable = thermal_strain_xx
-    block = '1'
+    point = '15.90 15.90 0.15'# (22.36 45)
   [../]
-  [./thermal_strain_yy]
-    type = ElementAverageValue
+  [./base_shade_thermal_strain_yy]
+    type = PointValue
     variable = thermal_strain_yy
-    block = '1'
+    point = '15.90 15.90 0.15'# (22.36 45)
   [../]
-  [./thermal_strain_zz]
-    type = ElementAverageValue
+  [./base_shade_thermal_strain_zz]
+    type = PointValue
     variable = thermal_strain_zz
-    block = '1'
+    point = '15.90 15.90 0.15'# (22.36 45)
+  [../]
+  [./base_shade_humidity_diffusivity]
+    type = PointValue
+    variable = humidity_diffusivity
+    point = '15.90 15.90 0.15'# (22.36 45)
+  [../]
+  [./base_shade_moisture_capacity]
+    type = PointValue
+    variable = moisture_capacity
+    point = '15.90 15.90 0.15'# (22.36 45)
   [../]
 
-  [./base_sun_rx0]
+  [./cyl_air_shade_ASR_ex]
+    type = PointValue
+    variable = ASR_ex
+    point = '14.80 14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_shade_ASR_strainxx]
+    type = PointValue
+    variable = ASR_strain_xx
+    point = '14.80 14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_shade_ASR_strainxy]
+    type = PointValue
+    variable = ASR_strain_xy
+    point = '14.80 14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_shade_ASR_strainxz]
+    type = PointValue
+    variable = ASR_strain_zx
+    point = '14.80 14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_shade_ASR_strainyy]
+    type = PointValue
+    variable = ASR_strain_yy
+    point = '14.80 14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_shade_ASR_strainyz]
+    type = PointValue
+    variable = ASR_strain_yz
+    point = '14.80 14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_shade_ASR_strainzz]
+    type = PointValue
+    variable = ASR_strain_zz
+    point = '14.80 14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_shade_ASR_vstrain]
+    type = PointValue
+    variable = ASR_vstrain
+    point = '14.80 14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_shade_T]
+    type = PointValue
+    variable = T
+    point = '14.80 14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_shade_rh]
+    type = PointValue
+    variable = rh
+    point = '14.80 14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_shade_damage_index]
+    type = PointValue
+    variable = damage_index
+    point = '14.80 14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_shade_hydrostatic_stress]
+    type = PointValue
+    variable = hydrostatic_stress
+    point = '14.80 14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_shade_vonmises_stress]
+    type = PointValue
+    variable = vonmises_stress
+    point = '14.80 14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_shade_water_content]
+    type = PointValue
+    variable = water_content
+    point = '14.80 14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_shade_water_hydrated]
+    type = PointValue
+    variable = water_hydrated
+    point = '14.80 14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_shade_thermal_capacity]
+    type = PointValue
+    variable = thermal_capacity
+    point = '14.80 14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_shade_thermal_conductivity]
+    type = PointValue
+    variable = thermal_conductivity
+    point = '14.80 14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_shade_thermal_strain_xx]
+    type = PointValue
+    variable = thermal_strain_xx
+    point = '14.80 14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_shade_thermal_strain_yy]
+    type = PointValue
+    variable = thermal_strain_yy
+    point = '14.80 14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_shade_thermal_strain_zz]
+    type = PointValue
+    variable = thermal_strain_zz
+    point = '14.80 14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_shade_humidity_diffusivity]
+    type = PointValue
+    variable = humidity_diffusivity
+    point = '14.80 14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_shade_moisture_capacity]
+    type = PointValue
+    variable = moisture_capacity
+    point = '14.80 14.80 32.792'# (22.36 45)
+  [../]
+
+  [./cyl_gnd_shade_ASR_ex]
+    type = PointValue
+    variable = ASR_ex
+    point = '14.80 14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_shade_ASR_strainxx]
+    type = PointValue
+    variable = ASR_strain_xx
+    point = '14.80 14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_shade_ASR_strainxy]
+    type = PointValue
+    variable = ASR_strain_xy
+    point = '14.80 14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_shade_ASR_strainxz]
+    type = PointValue
+    variable = ASR_strain_zx
+    point = '14.80 14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_shade_ASR_strainyy]
+    type = PointValue
+    variable = ASR_strain_yy
+    point = '14.80 14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_shade_ASR_strainyz]
+    type = PointValue
+    variable = ASR_strain_yz
+    point = '14.80 14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_shade_ASR_strainzz]
+    type = PointValue
+    variable = ASR_strain_zz
+    point = '14.80 14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_shade_ASR_vstrain]
+    type = PointValue
+    variable = ASR_vstrain
+    point = '14.80 14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_shade_T]
+    type = PointValue
+    variable = T
+    point = '14.80 14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_shade_rh]
+    type = PointValue
+    variable = rh
+    point = '14.80 14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_shade_damage_index]
+    type = PointValue
+    variable = damage_index
+    point = '14.80 14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_shade_hydrostatic_stress]
+    type = PointValue
+    variable = hydrostatic_stress
+    point = '14.80 14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_shade_vonmises_stress]
+    type = PointValue
+    variable = vonmises_stress
+    point = '14.80 14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_shade_water_content]
+    type = PointValue
+    variable = water_content
+    point = '14.80 14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_shade_water_hydrated]
+    type = PointValue
+    variable = water_hydrated
+    point = '14.80 14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_shade_thermal_capacity]
+    type = PointValue
+    variable = thermal_capacity
+    point = '14.80 14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_shade_thermal_conductivity]
+    type = PointValue
+    variable = thermal_conductivity
+    point = '14.80 14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_shade_thermal_strain_xx]
+    type = PointValue
+    variable = thermal_strain_xx
+    point = '14.80 14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_shade_thermal_strain_yy]
+    type = PointValue
+    variable = thermal_strain_yy
+    point = '14.80 14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_shade_thermal_strain_zz]
+    type = PointValue
+    variable = thermal_strain_zz
+    point = '14.80 14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_shade_humidity_diffusivity]
+    type = PointValue
+    variable = humidity_diffusivity
+    point = '14.80 14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_shade_moisture_capacity]
+    type = PointValue
+    variable = moisture_capacity
+    point = '14.80 14.80 10.596'# (22.36 45)
+  [../]
+
+  [./dome_shade_ASR_ex]
+    type = PointValue
+    variable = ASR_ex
+    point = '10.37 10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_shade_ASR_strainxx]
+    type = PointValue
+    variable = ASR_strain_xx
+    point = '10.37 10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_shade_ASR_strainxy]
+    type = PointValue
+    variable = ASR_strain_xy
+    point = '10.37 10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_shade_ASR_strainxz]
+    type = PointValue
+    variable = ASR_strain_zx
+    point = '10.37 10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_shade_ASR_strainyy]
+    type = PointValue
+    variable = ASR_strain_yy
+    point = '10.37 10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_shade_ASR_strainyz]
+    type = PointValue
+    variable = ASR_strain_yz
+    point = '10.37 10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_shade_ASR_strainzz]
+    type = PointValue
+    variable = ASR_strain_zz
+    point = '10.37 10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_shade_ASR_vstrain]
+    type = PointValue
+    variable = ASR_vstrain
+    point = '10.37 10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_shade_T]
+    type = PointValue
+    variable = T
+    point = '10.37 10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_shade_rh]
+    type = PointValue
+    variable = rh
+    point = '10.37 10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_shade_damage_index]
+    type = PointValue
+    variable = damage_index
+    point = '10.37 10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_shade_hydrostatic_stress]
+    type = PointValue
+    variable = hydrostatic_stress
+    point = '10.37 10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_shade_vonmises_stress]
+    type = PointValue
+    variable = vonmises_stress
+    point = '10.37 10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_shade_water_content]
+    type = PointValue
+    variable = water_content
+    point = '10.37 10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_shade_water_hydrated]
+    type = PointValue
+    variable = water_hydrated
+    point = '10.37 10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_shade_thermal_capacity]
+    type = PointValue
+    variable = thermal_capacity
+    point = '10.37 10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_shade_thermal_conductivity]
+    type = PointValue
+    variable = thermal_conductivity
+    point = '10.37 10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_shade_thermal_strain_xx]
+    type = PointValue
+    variable = thermal_strain_xx
+    point = '10.37 10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_shade_thermal_strain_yy]
+    type = PointValue
+    variable = thermal_strain_yy
+    point = '10.37 10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_shade_thermal_strain_zz]
+    type = PointValue
+    variable = thermal_strain_zz
+    point = '10.37 10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_shade_humidity_diffusivity]
+    type = PointValue
+    variable = humidity_diffusivity
+    point = '10.37 10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_shade_moisture_capacity]
+    type = PointValue
+    variable = moisture_capacity
+    point = '10.37 10.37 58.857'# (22.36 45)
+  [../]
+
+  [./base_sun_ASR_ex]
+    type = PointValue
+    variable = ASR_ex
+    point = '15.90 -15.90 0.15'# (22.36 45)
+  [../]
+  [./base_sun_ASR_strainxx]
+    type = PointValue
+    variable = ASR_strain_xx
+    point = '15.90 -15.90 0.15'# (22.36 45)
+  [../]
+  [./base_sun_ASR_strainxy]
+    type = PointValue
+    variable = ASR_strain_xy
+    point = '15.90 -15.90 0.15'# (22.36 45)
+  [../]
+  [./base_sun_ASR_strainxz]
+    type = PointValue
+    variable = ASR_strain_zx
+    point = '15.90 -15.90 0.15'# (22.36 45)
+  [../]
+  [./base_sun_ASR_strainyy]
+    type = PointValue
+    variable = ASR_strain_yy
+    point = '15.90 -15.90 0.15'# (22.36 45)
+  [../]
+  [./base_sun_ASR_strainyz]
+    type = PointValue
+    variable = ASR_strain_yz
+    point = '15.90 -15.90 0.15'# (22.36 45)
+  [../]
+  [./base_sun_ASR_strainzz]
+    type = PointValue
+    variable = ASR_strain_zz
+    point = '15.90 -15.90 0.15'# (22.36 45)
+  [../]
+  [./base_sun_ASR_vstrain]
+    type = PointValue
+    variable = ASR_vstrain
+    point = '15.90 -15.90 0.15'# (22.36 45)
+  [../]
+  [./base_sun_T]
+    type = PointValue
+    variable = T
+    point = '15.90 -15.90 0.15'# (22.36 45)
+  [../]
+  [./base_sun_rh]
+    type = PointValue
+    variable = rh
+    point = '15.90 -15.90 0.15'# (22.36 45)
+  [../]
+  [./base_sun_damage_index]
+    type = PointValue
+    variable = damage_index
+    point = '15.90 -15.90 0.15'# (22.36 45)
+  [../]
+  [./base_sun_hydrostatic_stress]
+    type = PointValue
+    variable = hydrostatic_stress
+    point = '15.90 -15.90 0.15'# (22.36 45)
+  [../]
+  [./base_sun_vonmises_stress]
+    type = PointValue
+    variable = vonmises_stress
+    point = '15.90 -15.90 0.15'# (22.36 45)
+  [../]
+  [./base_sun_water_content]
+    type = PointValue
+    variable = water_content
+    point = '15.90 -15.90 0.15'# (22.36 45)
+  [../]
+  [./base_sun_water_hydrated]
+    type = PointValue
+    variable = water_hydrated
+    point = '15.90 -15.90 0.15'# (22.36 45)
+  [../]
+  [./base_sun_thermal_capacity]
+    type = PointValue
+    variable = thermal_capacity
+    point = '15.90 -15.90 0.15'# (22.36 45)
+  [../]
+  [./base_sun_thermal_conductivity]
+    type = PointValue
+    variable = thermal_conductivity
+    point = '15.90 -15.90 0.15'# (22.36 45)
+  [../]
+  [./base_sun_thermal_strain_xx]
+    type = PointValue
+    variable = thermal_strain_xx
+    point = '15.90 -15.90 0.15'# (22.36 45)
+  [../]
+  [./base_sun_thermal_strain_yy]
+    type = PointValue
+    variable = thermal_strain_yy
+    point = '15.90 -15.90 0.15'# (22.36 45)
+  [../]
+  [./base_sun_thermal_strain_zz]
+    type = PointValue
+    variable = thermal_strain_zz
+    point = '15.90 -15.90 0.15'# (22.36 45)
+  [../]
+  [./base_sun_humidity_diffusivity]
+    type = PointValue
+    variable = humidity_diffusivity
+    point = '15.90 -15.90 0.15'# (22.36 45)
+  [../]
+  [./base_sun_moisture_capacity]
+    type = PointValue
+    variable = moisture_capacity
+    point = '15.90 -15.90 0.15'# (22.36 45)
+  [../]
+
+  [./cyl_air_sun_ASR_ex]
+    type = PointValue
+    variable = ASR_ex
+    point = '14.80 -14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_sun_ASR_strainxx]
+    type = PointValue
+    variable = ASR_strain_xx
+    point = '14.80 -14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_sun_ASR_strainxy]
+    type = PointValue
+    variable = ASR_strain_xy
+    point = '14.80 -14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_sun_ASR_strainxz]
+    type = PointValue
+    variable = ASR_strain_zx
+    point = '14.80 -14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_sun_ASR_strainyy]
+    type = PointValue
+    variable = ASR_strain_yy
+    point = '14.80 -14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_sun_ASR_strainyz]
+    type = PointValue
+    variable = ASR_strain_yz
+    point = '14.80 -14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_sun_ASR_strainzz]
+    type = PointValue
+    variable = ASR_strain_zz
+    point = '14.80 -14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_sun_ASR_vstrain]
+    type = PointValue
+    variable = ASR_vstrain
+    point = '14.80 -14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_sun_T]
+    type = PointValue
+    variable = T
+    point = '14.80 -14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_sun_rh]
+    type = PointValue
+    variable = rh
+    point = '14.80 -14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_sun_damage_index]
+    type = PointValue
+    variable = damage_index
+    point = '14.80 -14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_sun_hydrostatic_stress]
+    type = PointValue
+    variable = hydrostatic_stress
+    point = '14.80 -14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_sun_vonmises_stress]
+    type = PointValue
+    variable = vonmises_stress
+    point = '14.80 -14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_sun_water_content]
+    type = PointValue
+    variable = water_content
+    point = '14.80 -14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_sun_water_hydrated]
+    type = PointValue
+    variable = water_hydrated
+    point = '14.80 -14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_sun_thermal_capacity]
+    type = PointValue
+    variable = thermal_capacity
+    point = '14.80 -14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_sun_thermal_conductivity]
+    type = PointValue
+    variable = thermal_conductivity
+    point = '14.80 -14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_sun_thermal_strain_xx]
+    type = PointValue
+    variable = thermal_strain_xx
+    point = '14.80 -14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_sun_thermal_strain_yy]
+    type = PointValue
+    variable = thermal_strain_yy
+    point = '14.80 -14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_sun_thermal_strain_zz]
+    type = PointValue
+    variable = thermal_strain_zz
+    point = '14.80 -14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_sun_humidity_diffusivity]
+    type = PointValue
+    variable = humidity_diffusivity
+    point = '14.80 -14.80 32.792'# (22.36 45)
+  [../]
+  [./cyl_air_sun_moisture_capacity]
+    type = PointValue
+    variable = moisture_capacity
+    point = '14.80 -14.80 32.792'# (22.36 45)
+  [../]
+
+  [./cyl_gnd_sun_ASR_ex]
+    type = PointValue
+    variable = ASR_ex
+    point = '14.80 -14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_sun_ASR_strainxx]
+    type = PointValue
+    variable = ASR_strain_xx
+    point = '14.80 -14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_sun_ASR_strainxy]
+    type = PointValue
+    variable = ASR_strain_xy
+    point = '14.80 -14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_sun_ASR_strainxz]
+    type = PointValue
+    variable = ASR_strain_zx
+    point = '14.80 -14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_sun_ASR_strainyy]
+    type = PointValue
+    variable = ASR_strain_yy
+    point = '14.80 -14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_sun_ASR_strainyz]
+    type = PointValue
+    variable = ASR_strain_yz
+    point = '14.80 -14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_sun_ASR_strainzz]
+    type = PointValue
+    variable = ASR_strain_zz
+    point = '14.80 -14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_sun_ASR_vstrain]
+    type = PointValue
+    variable = ASR_vstrain
+    point = '14.80 -14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_sun_T]
+    type = PointValue
+    variable = T
+    point = '14.80 -14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_sun_rh]
+    type = PointValue
+    variable = rh
+    point = '14.80 -14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_sun_damage_index]
+    type = PointValue
+    variable = damage_index
+    point = '14.80 -14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_sun_hydrostatic_stress]
+    type = PointValue
+    variable = hydrostatic_stress
+    point = '14.80 -14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_sun_vonmises_stress]
+    type = PointValue
+    variable = vonmises_stress
+    point = '14.80 -14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_sun_water_content]
+    type = PointValue
+    variable = water_content
+    point = '14.80 -14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_sun_water_hydrated]
+    type = PointValue
+    variable = water_hydrated
+    point = '14.80 -14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_sun_thermal_capacity]
+    type = PointValue
+    variable = thermal_capacity
+    point = '14.80 -14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_sun_thermal_conductivity]
+    type = PointValue
+    variable = thermal_conductivity
+    point = '14.80 -14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_sun_thermal_strain_xx]
+    type = PointValue
+    variable = thermal_strain_xx
+    point = '14.80 -14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_sun_thermal_strain_yy]
+    type = PointValue
+    variable = thermal_strain_yy
+    point = '14.80 -14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_sun_thermal_strain_zz]
+    type = PointValue
+    variable = thermal_strain_zz
+    point = '14.80 -14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_sun_humidity_diffusivity]
+    type = PointValue
+    variable = humidity_diffusivity
+    point = '14.80 -14.80 10.596'# (22.36 45)
+  [../]
+  [./cyl_gnd_sun_moisture_capacity]
+    type = PointValue
+    variable = moisture_capacity
+    point = '14.80 -14.80 10.596'# (22.36 45)
+  [../]
+
+  [./dome_sun_ASR_ex]
+    type = PointValue
+    variable = ASR_ex
+    point = '10.37 -10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_sun_ASR_strainxx]
+    type = PointValue
+    variable = ASR_strain_xx
+    point = '10.37 -10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_sun_ASR_strainxy]
+    type = PointValue
+    variable = ASR_strain_xy
+    point = '10.37 -10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_sun_ASR_strainxz]
+    type = PointValue
+    variable = ASR_strain_zx
+    point = '10.37 -10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_sun_ASR_strainyy]
+    type = PointValue
+    variable = ASR_strain_yy
+    point = '10.37 -10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_sun_ASR_strainyz]
+    type = PointValue
+    variable = ASR_strain_yz
+    point = '10.37 -10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_sun_ASR_strainzz]
+    type = PointValue
+    variable = ASR_strain_zz
+    point = '10.37 -10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_sun_ASR_vstrain]
+    type = PointValue
+    variable = ASR_vstrain
+    point = '10.37 -10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_sun_T]
+    type = PointValue
+    variable = T
+    point = '10.37 -10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_sun_rh]
+    type = PointValue
+    variable = rh
+    point = '10.37 -10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_sun_damage_index]
+    type = PointValue
+    variable = damage_index
+    point = '10.37 -10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_sun_hydrostatic_stress]
+    type = PointValue
+    variable = hydrostatic_stress
+    point = '10.37 -10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_sun_vonmises_stress]
+    type = PointValue
+    variable = vonmises_stress
+    point = '10.37 -10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_sun_water_content]
+    type = PointValue
+    variable = water_content
+    point = '10.37 -10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_sun_water_hydrated]
+    type = PointValue
+    variable = water_hydrated
+    point = '10.37 -10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_sun_thermal_capacity]
+    type = PointValue
+    variable = thermal_capacity
+    point = '10.37 -10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_sun_thermal_conductivity]
+    type = PointValue
+    variable = thermal_conductivity
+    point = '10.37 -10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_sun_thermal_strain_xx]
+    type = PointValue
+    variable = thermal_strain_xx
+    point = '10.37 -10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_sun_thermal_strain_yy]
+    type = PointValue
+    variable = thermal_strain_yy
+    point = '10.37 -10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_sun_thermal_strain_zz]
+    type = PointValue
+    variable = thermal_strain_zz
+    point = '10.37 -10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_sun_humidity_diffusivity]
+    type = PointValue
+    variable = humidity_diffusivity
+    point = '10.37 -10.37 58.857'# (22.36 45)
+  [../]
+  [./dome_sun_moisture_capacity]
+    type = PointValue
+    variable = moisture_capacity
+    point = '10.37 -10.37 58.857'# (22.36 45)
+  [../]
+
+  [./base_shade_rx0]
     type = PointValue
     variable = disp_x
     point = '15.804 15.804 0.15'# (22.36 45)
   [../]
-  [./base_sun_rx1]
+  [./base_shade_rx1]
     type = PointValue
     variable = disp_x
     point = '16 16 0.15'# (22.86 45)
   [../]
-  [./base_sun_ry0]
+  [./base_shade_ry0]
     type = PointValue
     variable = disp_y
     point = '15.804 15.804 0.15'# (22.36 45)
   [../]
-  [./base_sun_ry1]
+  [./base_shade_ry1]
     type = PointValue
     variable = disp_y
     point = '16 16 0.15'# (22.86 45)
   [../]
-  [./base_sun_thx0]
+  [./base_shade_thx0]
     type = PointValue
     variable = disp_x
     point = '14.366 17.122 0.15' # (22.86 40)
   [../]
-  [./base_sun_thx1]
+  [./base_shade_thx1]
     type = PointValue
     variable = disp_x
     point = '17.122 14.366 0.15' # (22.86 50)
   [../]
-  [./base_sun_thy0]
+  [./base_shade_thy0]
     type = PointValue
     variable = disp_y
     point = '14.366 17.122 0.15' # (22.86 40)
   [../]
-  [./base_sun_thy1]
+  [./base_shade_thy1]
     type = PointValue
     variable = disp_y
     point = '17.122 14.366 0.15' # (22.86 50)
   [../]
-  [./base_sun_z]
+  [./base_shade_z]
     type = AveragePointSeparation
     displacements = 'disp_z'
     first_point = '14.694 17.511 -2.00'
     last_point =  '14.694 17.511  3.00'
   [../]
 
-  [./base_shade_rx0]
+  [./base_sun_rx0]
     type = PointValue
     variable = disp_x
     point = '15.804 -15.804 0.15'# (22.36 -45)
   [../]
-  [./base_shade_rx1]
+  [./base_sun_rx1]
     type = PointValue
     variable = disp_x
     point = '16 -16 0.15'# (22.86 -45)
   [../]
-  [./base_shade_ry0]
+  [./base_sun_ry0]
     type = PointValue
     variable = disp_y
     point = '15.804 -15.804 0.15'# (22.36 -45)
   [../]
-  [./base_shade_ry1]
+  [./base_sun_ry1]
     type = PointValue
     variable = disp_y
     point = '16 -16 0.15'# (22.86 -45)
   [../]
-  [./base_shade_thx0]
+  [./base_sun_thx0]
     type = PointValue
     variable = disp_x
     point = '14.366 -17.122 0.15' # (22.86 -40)
   [../]
-  [./base_shade_thx1]
+  [./base_sun_thx1]
     type = PointValue
     variable = disp_x
     point = '17.122 -14.366 0.15' # (22.86 -50)
   [../]
-  [./base_shade_thy0]
+  [./base_sun_thy0]
     type = PointValue
     variable = disp_y
     point = '14.366 -17.122 0.15' # (22.86 -40)
   [../]
-  [./base_shade_thy1]
+  [./base_sun_thy1]
     type = PointValue
     variable = disp_y
     point = '17.122 -14.366 0.15' # (22.86 -50)
   [../]
-  [./base_shade_z]
+  [./base_sun_z]
     type = AveragePointSeparation
     displacements = 'disp_z'
     first_point = '14.694 -17.511 -2.00'
     last_point =  '14.694 -17.511  3.00'
   [../]
 
-  [./cyl_air_sun_rx0]
+  [./cyl_air_shade_rx0]
     type = PointValue
     variable = disp_x
     point = '14.713 14.713 32.792'# (20.80 45)
   [../]
-  [./cyl_air_sun_rx1]
+  [./cyl_air_shade_rx1]
     type = PointValue
     variable = disp_x
     point = '14.9 14.9 32.792'# (21.30 45)
   [../]
-  [./cyl_air_sun_ry0]
+  [./cyl_air_shade_ry0]
     type = PointValue
     variable = disp_y
     point = '14.713 14.713 32.792'# (20.80 45)
   [../]
-  [./cyl_air_sun_ry1]
+  [./cyl_air_shade_ry1]
     type = PointValue
     variable = disp_y
     point = '14.9 14.9 32.792'# (21.30 45)
   [../]
-  [./cyl_air_sun_thx0]
+  [./cyl_air_shade_thx0]
     type = PointValue
     variable = disp_x
     point = '16.321 13.600 32.792'# (21.30 40)
   [../]
-  [./cyl_air_sun_thx1]
+  [./cyl_air_shade_thx1]
     type = PointValue
     variable = disp_x
     point = '13.600 16.321 32.792'# (21.30 50)
   [../]
-  [./cyl_air_sun_thy0]
+  [./cyl_air_shade_thy0]
     type = PointValue
     variable = disp_y
     point = '16.321 13.600 32.792'# (21.30 40)
   [../]
-  [./cyl_air_sun_thy1]
+  [./cyl_air_shade_thy1]
     type = PointValue
     variable = disp_y
     point = '13.600 16.321 32.792'# (21.30 50)
   [../]
-  [./cyl_air_sun_z]
+  [./cyl_air_shade_z]
     type = AveragePointSeparation
     displacements = 'disp_z'
     first_point = '14.9 14.9 32.542'# (21.30 45)
     last_point =  '14.9 14.9 33.042'# (21.30 45)
   [../]
 
-  [./cyl_air_shade_rx0]
+  [./cyl_air_sun_rx0]
     type = PointValue
     variable = disp_x
     point = '14.713 -14.713 32.792'# (20.80 -45)
   [../]
-  [./cyl_air_shade_rx1]
+  [./cyl_air_sun_rx1]
     type = PointValue
     variable = disp_x
     point = '14.9 -14.9 32.792'# (21.30 -45)
   [../]
-  [./cyl_air_shade_ry0]
+  [./cyl_air_sun_ry0]
     type = PointValue
     variable = disp_y
     point = '14.713 -14.713 32.792'# (20.80 -45)
   [../]
-  [./cyl_air_shade_ry1]
+  [./cyl_air_sun_ry1]
     type = PointValue
     variable = disp_y
     point = '14.9 -14.9 32.792'# (21.30 -45)
   [../]
-  [./cyl_air_shade_thx0]
+  [./cyl_air_sun_thx0]
     type = PointValue
     variable = disp_x
     point = '16.321 -13.600 32.792'# (21.30 -40)
   [../]
-  [./cyl_air_shade_thx1]
+  [./cyl_air_sun_thx1]
     type = PointValue
     variable = disp_x
     point = '13.600 -16.321 32.792'# (21.30 -50)
   [../]
-  [./cyl_air_shade_thy0]
+  [./cyl_air_sun_thy0]
     type = PointValue
     variable = disp_y
     point = '16.321 -13.600 32.792'# (21.30 -40)
   [../]
-  [./cyl_air_shade_thy1]
+  [./cyl_air_sun_thy1]
     type = PointValue
     variable = disp_y
     point = '13.600 -16.321 32.792'# (21.30 -50)
   [../]
-  [./cyl_air_shade_z]
+  [./cyl_air_sun_z]
     type = AveragePointSeparation
     displacements = 'disp_z'
     first_point = '14.9 -14.9 32.542'# (21.30 -45)
     last_point =  '14.9 -14.9 33.042'# (21.30 -45)
   [../]
 
-  [./cyl_gnd_sun_rx0]
+  [./cyl_gnd_shade_rx0]
     type = PointValue
     variable = disp_x
     point = '14.713 14.713 10.596'# (20.80 45)
   [../]
-  [./cyl_gnd_sun_rx1]
+  [./cyl_gnd_shade_rx1]
     type = PointValue
     variable = disp_x
     point = '14.9 14.9 10.596'# (21.30 45)
   [../]
-  [./cyl_gnd_sun_ry0]
+  [./cyl_gnd_shade_ry0]
     type = PointValue
     variable = disp_y
     point = '14.713 14.713 10.596'# (20.80 45)
   [../]
-  [./cyl_gnd_sun_ry1]
+  [./cyl_gnd_shade_ry1]
     type = PointValue
     variable = disp_y
     point = '14.9 14.9 10.596'# (21.30 45)
   [../]
-  [./cyl_gnd_sun_thx0]
+  [./cyl_gnd_shade_thx0]
     type = PointValue
     variable = disp_x
     point = '16.321 13.600 10.596'# (21.30 40)
   [../]
-  [./cyl_gnd_sun_thx1]
+  [./cyl_gnd_shade_thx1]
     type = PointValue
     variable = disp_x
     point = '13.600 16.321 10.596'# (21.30 50)
   [../]
-  [./cyl_gnd_sun_thy0]
+  [./cyl_gnd_shade_thy0]
     type = PointValue
     variable = disp_y
     point = '16.321 13.600 10.596'# (21.30 40)
   [../]
-  [./cyl_gnd_sun_thy1]
+  [./cyl_gnd_shade_thy1]
     type = PointValue
     variable = disp_y
     point = '13.600 16.321 10.596'# (21.30 50)
   [../]
-  [./cyl_gnd_sun_z]
+  [./cyl_gnd_shade_z]
     type = AveragePointSeparation
     displacements = 'disp_z'
     first_point = '14.9 14.9 10.346'# (21.30 45)
     last_point =  '14.9 14.9 10.846'# (21.30 45)
   [../]
 
-  [./cyl_gnd_shade_rx0]
+  [./cyl_gnd_sun_rx0]
     type = PointValue
     variable = disp_x
     point = '14.713 -14.713 10.596'# (20.80 -45)
   [../]
-  [./cyl_gnd_shade_rx1]
+  [./cyl_gnd_sun_rx1]
     type = PointValue
     variable = disp_x
     point = '14.9 -14.9 10.596'# (21.30 -45)
   [../]
-  [./cyl_gnd_shade_ry0]
+  [./cyl_gnd_sun_ry0]
     type = PointValue
     variable = disp_y
     point = '14.713 -14.713 10.596'# (20.80 -45)
   [../]
-  [./cyl_gnd_shade_ry1]
+  [./cyl_gnd_sun_ry1]
     type = PointValue
     variable = disp_y
     point = '14.9 -14.9 10.596'# (21.30 -45)
   [../]
-  [./cyl_gnd_shade_thx0]
+  [./cyl_gnd_sun_thx0]
     type = PointValue
     variable = disp_x
     point = '16.321 -13.600 10.596'# (21.30 -40)
   [../]
-  [./cyl_gnd_shade_thx1]
+  [./cyl_gnd_sun_thx1]
     type = PointValue
     variable = disp_x
     point = '13.600 -16.321 10.596'# (21.30 -50)
   [../]
-  [./cyl_gnd_shade_thy0]
+  [./cyl_gnd_sun_thy0]
     type = PointValue
     variable = disp_y
     point = '16.321 -13.600 10.596'# (21.30 -40)
   [../]
-  [./cyl_gnd_shade_thy1]
+  [./cyl_gnd_sun_thy1]
     type = PointValue
     variable = disp_y
     point = '13.600 -16.321 10.596'# (21.30 -50)
   [../]
-  [./cyl_gnd_shade_z]
+  [./cyl_gnd_sun_z]
     type = AveragePointSeparation
     displacements = 'disp_z'
     first_point = '14.9 -14.9 10.346'# (21.30 -45)
     last_point =  '14.9 -14.9 10.846'# (21.30 -45)
   [../]
 
-  [./dome_sun_rx0]
-    type = PointValue
-    variable = disp_x
-    point = '10.345 10.345 58.503'# (20.675 45, 45) z=43.89
-  [../]
-  [./dome_sun_rx1]
-    type = PointValue
-    variable = disp_x
-    point = '10.400 10.400 58.857'# (21.175 45, 45) z=43.89
-  [../]
-  [./dome_sun_ry0]
-    type = PointValue
-    variable = disp_y
-    point = '10.345 10.345 58.503'# (20.675 45, 45) z=43.89
-  [../]
-  [./dome_sun_ry1]
-    type = PointValue
-    variable = disp_y
-    point = '10.400 10.400 58.857'# (21.175 45, 45) z=43.89
-  [../]
-  [./dome_sun_rz0]
-    type = PointValue
-    variable = disp_z
-    point = '10.345 10.345 58.503'# (20.675 45, 45) z=43.89
-  [../]
-  [./dome_sun_rz1]
-    type = PointValue
-    variable = disp_z
-    point = '10.400 10.400 58.857'# (21.175 45, 45) z=43.89
-  [../]
-  [./dome_sun_thx0]
-    type = PointValue
-    variable = disp_x
-    point = '10.900  9.633 58.857'# (21.175 45, 40) z=43.89
-  [../]
-  [./dome_sun_thx1]
-    type = PointValue
-    variable = disp_x
-    point = '9.633  10.900 58.857'# (21.175 45, 50) z=43.89
-  [../]
-  [./dome_sun_thy0]
-    type = PointValue
-    variable = disp_y
-    point = '10.900  9.633 58.857'# (21.175 45, 40) z=43.89
-  [../]
-  [./dome_sun_thy1]
-    type = PointValue
-    variable = disp_y
-    point = '9.633  10.900 58.857'# (21.175 45, 50) z=43.89
-  [../]
-  [./dome_sun_phix0]
-    type = PointValue
-    variable = disp_x
-    point = '9.300 9.300 60.104'# (21.175 40, 45) z=43.89
-  [../]
-  [./dome_sun_phix1]
-    type = PointValue
-    variable = disp_x
-    point = '10.500   10.500 57.495'# (21.175 50, 45) z=43.89
-  [../]
-  [./dome_sun_phiy0]
-    type = PointValue
-    variable = disp_y
-    point = '9.300 9.300 60.104'# (21.175 40, 45) z=43.89
-  [../]
-  [./dome_sun_phiy1]
-    type = PointValue
-    variable = disp_y
-    point = '10.500   10.500 57.495'# (21.175 50, 45) z=43.89
-  [../]
-  [./dome_sun_phiz0]
-    type = PointValue
-    variable = disp_z
-    point = '9.300 9.300 60.104'# (21.175 40, 45) z=43.89
-  [../]
-  [./dome_sun_phiz1]
-    type = PointValue
-    variable = disp_z
-    point = '10.500   10.500 57.495'# (21.175 50, 45) z=43.89
-  [../]
-
   [./dome_shade_rx0]
     type = PointValue
     variable = disp_x
-    point = '10.345 -10.345 58.503'# (20.675 -45, 45) z=43.89
+    point = '10.345 10.345 58.503'# (20.675 45, 45) z=43.89
   [../]
   [./dome_shade_rx1]
     type = PointValue
     variable = disp_x
-    point = '10.400 -10.400 58.857'# (21.175 -45, 45) z=43.89
+    point = '10.400 10.400 58.857'# (21.175 45, 45) z=43.89
   [../]
   [./dome_shade_ry0]
     type = PointValue
     variable = disp_y
-    point = '10.345 -10.345 58.503'# (20.675 -45, 45) z=43.89
+    point = '10.345 10.345 58.503'# (20.675 45, 45) z=43.89
   [../]
   [./dome_shade_ry1]
     type = PointValue
     variable = disp_y
-    point = '10.400 -10.400 58.857'# (21.175 -45, 45) z=43.89
+    point = '10.400 10.400 58.857'# (21.175 45, 45) z=43.89
   [../]
   [./dome_shade_rz0]
     type = PointValue
     variable = disp_z
-    point = '10.345 -10.345 58.503'# (20.675 -45, 45) z=43.89
+    point = '10.345 10.345 58.503'# (20.675 45, 45) z=43.89
   [../]
   [./dome_shade_rz1]
     type = PointValue
     variable = disp_z
-    point = '10.400 -10.400 58.857'# (21.175 -45, 45) z=43.89
+    point = '10.400 10.400 58.857'# (21.175 45, 45) z=43.89
   [../]
   [./dome_shade_thx0]
     type = PointValue
     variable = disp_x
-    point = '10.900  -9.633 58.857'# (21.175 -45, 40) z=43.89
+    point = '10.900  9.633 58.857'# (21.175 45, 40) z=43.89
   [../]
   [./dome_shade_thx1]
     type = PointValue
     variable = disp_x
-    point = '9.633  -10.900 58.857'# (21.175 -45, 50) z=43.89
+    point = '9.633  10.900 58.857'# (21.175 45, 50) z=43.89
   [../]
   [./dome_shade_thy0]
     type = PointValue
     variable = disp_y
-    point = '10.900  -9.633 58.857'# (21.175 -45, 40) z=43.89
+    point = '10.900  9.633 58.857'# (21.175 45, 40) z=43.89
   [../]
   [./dome_shade_thy1]
     type = PointValue
     variable = disp_y
-    point = '9.633  -10.900 58.857'# (21.175 -45, 50) z=43.89
+    point = '9.633  10.900 58.857'# (21.175 45, 50) z=43.89
   [../]
   [./dome_shade_phix0]
     type = PointValue
     variable = disp_x
-    point = '9.300 -9.300 60.104'# (21.175 -40, 45) z=43.89
+    point = '9.300 9.300 60.104'# (21.175 40, 45) z=43.89
   [../]
   [./dome_shade_phix1]
     type = PointValue
     variable = disp_x
-    point = '10.500   -10.500 57.495'# (21.175 -50, 45) z=43.89
+    point = '10.500   10.500 57.495'# (21.175 50, 45) z=43.89
   [../]
   [./dome_shade_phiy0]
     type = PointValue
     variable = disp_y
-    point = '9.300 -9.300 60.104'# (21.175 -40, 45) z=43.89
+    point = '9.300 9.300 60.104'# (21.175 40, 45) z=43.89
   [../]
   [./dome_shade_phiy1]
     type = PointValue
     variable = disp_y
-    point = '10.500   -10.500 57.495'# (21.175 -50, 45) z=43.89
+    point = '10.500   10.500 57.495'# (21.175 50, 45) z=43.89
   [../]
   [./dome_shade_phiz0]
     type = PointValue
     variable = disp_z
-    point = '9.300 -9.300 60.104'# (21.175 -40, 45) z=43.89
+    point = '9.300 9.300 60.104'# (21.175 40, 45) z=43.89
   [../]
   [./dome_shade_phiz1]
+    type = PointValue
+    variable = disp_z
+    point = '10.500   10.500 57.495'# (21.175 50, 45) z=43.89
+  [../]
+
+  [./dome_sun_rx0]
+    type = PointValue
+    variable = disp_x
+    point = '10.345 -10.345 58.503'# (20.675 -45, 45) z=43.89
+  [../]
+  [./dome_sun_rx1]
+    type = PointValue
+    variable = disp_x
+    point = '10.400 -10.400 58.857'# (21.175 -45, 45) z=43.89
+  [../]
+  [./dome_sun_ry0]
+    type = PointValue
+    variable = disp_y
+    point = '10.345 -10.345 58.503'# (20.675 -45, 45) z=43.89
+  [../]
+  [./dome_sun_ry1]
+    type = PointValue
+    variable = disp_y
+    point = '10.400 -10.400 58.857'# (21.175 -45, 45) z=43.89
+  [../]
+  [./dome_sun_rz0]
+    type = PointValue
+    variable = disp_z
+    point = '10.345 -10.345 58.503'# (20.675 -45, 45) z=43.89
+  [../]
+  [./dome_sun_rz1]
+    type = PointValue
+    variable = disp_z
+    point = '10.400 -10.400 58.857'# (21.175 -45, 45) z=43.89
+  [../]
+  [./dome_sun_thx0]
+    type = PointValue
+    variable = disp_x
+    point = '10.900  -9.633 58.857'# (21.175 -45, 40) z=43.89
+  [../]
+  [./dome_sun_thx1]
+    type = PointValue
+    variable = disp_x
+    point = '9.633  -10.900 58.857'# (21.175 -45, 50) z=43.89
+  [../]
+  [./dome_sun_thy0]
+    type = PointValue
+    variable = disp_y
+    point = '10.900  -9.633 58.857'# (21.175 -45, 40) z=43.89
+  [../]
+  [./dome_sun_thy1]
+    type = PointValue
+    variable = disp_y
+    point = '9.633  -10.900 58.857'# (21.175 -45, 50) z=43.89
+  [../]
+  [./dome_sun_phix0]
+    type = PointValue
+    variable = disp_x
+    point = '9.300 -9.300 60.104'# (21.175 -40, 45) z=43.89
+  [../]
+  [./dome_sun_phix1]
+    type = PointValue
+    variable = disp_x
+    point = '10.500   -10.500 57.495'# (21.175 -50, 45) z=43.89
+  [../]
+  [./dome_sun_phiy0]
+    type = PointValue
+    variable = disp_y
+    point = '9.300 -9.300 60.104'# (21.175 -40, 45) z=43.89
+  [../]
+  [./dome_sun_phiy1]
+    type = PointValue
+    variable = disp_y
+    point = '10.500   -10.500 57.495'# (21.175 -50, 45) z=43.89
+  [../]
+  [./dome_sun_phiz0]
+    type = PointValue
+    variable = disp_z
+    point = '9.300 -9.300 60.104'# (21.175 -40, 45) z=43.89
+  [../]
+  [./dome_sun_phiz1]
     type = PointValue
     variable = disp_z
     point = '10.500   -10.500 57.495'# (21.175 -50, 45) z=43.89
   [../]
 
-  [./base_bot_sun_x]
-    type = PointValue
-    variable = disp_x
-    point = '16 16 -2.89'# (22.86 45)
-  [../]
-  [./base_bot_sun_y]
-    type = PointValue
-    variable = disp_x
-    point = '16 16 -2.89'# (22.86 45)
-  [../]
-  [./base_bot_sun_z]
-    type = PointValue
-    variable = disp_x
-    point = '16 16 -2.89'# (22.86 45)
-  [../]
   [./base_bot_shade_x]
     type = PointValue
     variable = disp_x
-    point = '16 -16 -2.89'# (22.86 45)
+    point = '16 16 -2.89'# (22.86 45)
   [../]
   [./base_bot_shade_y]
     type = PointValue
     variable = disp_x
-    point = '16 -16 -2.89'# (22.86 45)
+    point = '16 16 -2.89'# (22.86 45)
   [../]
   [./base_bot_shade_z]
     type = PointValue
     variable = disp_x
+    point = '16 16 -2.89'# (22.86 45)
+  [../]
+  [./base_bot_sun_x]
+    type = PointValue
+    variable = disp_x
+    point = '16 -16 -2.89'# (22.86 45)
+  [../]
+  [./base_bot_sun_y]
+    type = PointValue
+    variable = disp_x
+    point = '16 -16 -2.89'# (22.86 45)
+  [../]
+  [./base_bot_sun_z]
+    type = PointValue
+    variable = disp_x
     point = '16 -16 -2.89'# (22.86 45)
   [../]
 
-  [./basemat_top_sun_x]
-    type = PointValue
-    variable = disp_x
-    point = '16 16 -2.90' # (37.49 45)
-  [../]
-  [./basemat_top_sun_y]
-    type = PointValue
-    variable = disp_y
-    point = '16 16 -2.90' # (37.49 45)
-  [../]
-  [./basemat_top_sun_z]
-    type = PointValue
-    variable = disp_z
-    point = '16 16 -2.90' # (37.49 45)
-  [../]
   [./basemat_top_shade_x]
     type = PointValue
     variable = disp_x
-    point = '16 -16 -2.90' # (37.49 45)
+    point = '16 16 -2.90' # (37.49 45)
   [../]
   [./basemat_top_shade_y]
     type = PointValue
     variable = disp_y
-    point = '16 -16 -2.90' # (37.49 45)
+    point = '16 16 -2.90' # (37.49 45)
   [../]
   [./basemat_top_shade_z]
     type = PointValue
     variable = disp_z
+    point = '16 16 -2.90' # (37.49 45)
+  [../]
+  [./basemat_top_sun_x]
+    type = PointValue
+    variable = disp_x
     point = '16 -16 -2.90' # (37.49 45)
   [../]
-
-  [./surfaceAvg_base_x]
-    type = SideAverageValue
-    variable = disp_x
-    boundary = '33'
-  [../]
-  [./surfaceAvg_base_y]
-    type = SideAverageValue
+  [./basemat_top_sun_y]
+    type = PointValue
     variable = disp_y
-    boundary = '33'
+    point = '16 -16 -2.90' # (37.49 45)
   [../]
-  [./surfaceAvg_base_z]
-    type = SideAverageValue
+  [./basemat_top_sun_z]
+    type = PointValue
     variable = disp_z
-    boundary = '33'
-  [../]
-  [./surfaceAvg_cyl_x]
-    type = SideAverageValue
-    variable = disp_x
-    boundary = '32'
-  [../]
-  [./surfaceAvg_cyl_y]
-    type = SideAverageValue
-    variable = disp_y
-    boundary = '32'
-  [../]
-  [./surfaceAvg_cyl_z]
-    type = SideAverageValue
-    variable = disp_z
-    boundary = '32'
-  [../]
-  [./surfaceAvg_cyl_sunshine_x]
-    type = SideAverageValue
-    variable = disp_x
-    boundary = '39'
-  [../]
-  [./surfaceAvg_cyl_sunshine_y]
-    type = SideAverageValue
-    variable = disp_y
-    boundary = '39'
-  [../]
-  [./surfaceAvg_cyl_sunshine_z]
-    type = SideAverageValue
-    variable = disp_z
-    boundary = '39'
-  [../]
-  [./surfaceAvg_cyl_sunshade_x]
-    type = SideAverageValue
-    variable = disp_x
-    boundary = '40'
-  [../]
-  [./surfaceAvg_cyl_sunshade_y]
-    type = SideAverageValue
-    variable = disp_y
-    boundary = '40'
-  [../]
-  [./surfaceAvg_cyl_sunshade_z]
-    type = SideAverageValue
-    variable = disp_z
-    boundary = '40'
-  [../]
-
-  [./surfaceAvg_dome_x]
-    type = SideAverageValue
-    variable = disp_x
-    boundary = '31'
-  [../]
-  [./surfaceAvg_dome_y]
-    type = SideAverageValue
-    variable = disp_y
-    boundary = '31'
-  [../]
-  [./surfaceAvg_dome_z]
-    type = SideAverageValue
-    variable = disp_z
-    boundary = '31'
-  [../]
-  [./surfaceAvg_dome_sunshine_x]
-    type = SideAverageValue
-    variable = disp_x
-    boundary = '37'
-  [../]
-  [./surfaceAvg_dome_sunshine_y]
-    type = SideAverageValue
-    variable = disp_y
-    boundary = '37'
-  [../]
-  [./surfaceAvg_dome_sunshine_z]
-    type = SideAverageValue
-    variable = disp_z
-    boundary = '37'
-  [../]
-  [./surfaceAvg_dome_sunshade_x]
-    type = SideAverageValue
-    variable = disp_x
-    boundary = '38'
-  [../]
-  [./surfaceAvg_dome_sunshade_y]
-    type = SideAverageValue
-    variable = disp_y
-    boundary = '38'
-  [../]
-  [./surfaceAvg_dome_sunshade_z]
-    type = SideAverageValue
-    variable = disp_z
-    boundary = '38'
-  [../]
-
-  [./cyl_z] # 500 mm gauge length
-    type = AveragePointSeparation
-    displacements = 'disp_z'
-    first_point = '2.438776     2.597033     4.252161'
-    last_point = '2.435685     2.593741     4.689710'
-  [../]
-  [./cyl_tang_x] # 500 mm gauge length (not the arc length)
-    type = AveragePointSeparation
-    displacements = 'disp_x'
-    first_point = '2.59     2.43     4.470935'
-    last_point = '2.26     2.743     4.470935'
-  [../]
-  [./cyl_tang_y] # 500 mm gauge length (not the arc length)
-    type = AveragePointSeparation
-    displacements = 'disp_y'
-    first_point = '2.59     2.43     4.470935'
-    last_point = '2.26     2.743     4.470935'
-  [../]
-  [./dome_z_arc]# 500 mm gauge length (not the arc length)
-    type = AveragePointSeparation
-    displacements = 'disp_z'
-    first_point = '2.149293     2.303640     8.909285'
-    last_point = '1.876000     2.020725     9.520732'
-  [../]
-  [./dome_tang_x]# 500 mm gauge length (not the arc length)
-    type = AveragePointSeparation
-    displacements = 'disp_x'
-    first_point = '2.374 1.924 9.0805'# basesd on hand calculation
-    last_point = '1.924 2.374 9.0805'
-  [../]
-  [./dome_tang_y]# 500 mm gauge length (not the arc length)
-    type = AveragePointSeparation
-    displacements = 'disp_y'
-    first_point = '2.374 1.924 9.0805'# basesd on hand calculation
-    last_point = '1.924 2.374 9.0805'
-  [../]
-
-  [./disp_base_x]
-    type = SideAverageValue
-    variable = disp_x
-    boundary = '35'
-  [../]
-  [./disp_base_y]
-    type = SideAverageValue
-    variable = disp_y
-    boundary = '35'
-  [../]
-  [./disp_base_mat_x]
-    type = SideAverageValue
-    variable = disp_x
-    boundary = '36'
-  [../]
-  [./disp_base_mat_y]
-    type = SideAverageValue
-    variable = disp_y
-    boundary = '36'
+    point = '16 -16 -2.90' # (37.49 45)
   [../]
 []
 

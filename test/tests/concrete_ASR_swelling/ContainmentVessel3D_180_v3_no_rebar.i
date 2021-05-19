@@ -6,7 +6,6 @@
 
 [Mesh]
   file = gold/containment_structure/ContainmentVessel3D_180_v3_no_rebar.e
-  # file = gold/TwoElement3D.e
   construct_side_list_from_node_list = true
   patch_update_strategy=iteration
 []
@@ -31,84 +30,35 @@
   [../]
 []
 
-# [Modules/TensorMechanics/LineElementMaster]
-#   [./btm_grid]
-#     # block = '2'
-#     block = '3 4 5 6 7 8 9 10 11'
-#     truss = true
-#     area = area_no6
-#     displacements = 'disp_x disp_y disp_z'
-#     save_in = 'resid_x resid_y resid_z'
-#   [../]
-# []
-
-# [Constraints/EqualValueEmbeddedConstraint/EqualValueEmbeddedConstraintAction]
-#   primary_block = '1'
-#   # secondary_block = '2'
-#   secondary_block = '3 4 5 6 7 8 9 10 11'
-#   primary_variable = 'disp_x disp_y disp_z'
-#   displacements = 'disp_x disp_y disp_z'
-#   penalty = 1e12
-#   formulation = penalty
-# []
-#
-# [Constraints]
-#   [./rebar_x2]
-#     type = EqualValueEmbeddedConstraint
-#     secondary = 2
-#     primary = 1
-#     variable = 'disp_x'
-#     primary_variable = 'disp_x'
-#     penalty = 1e12
-#     formulation = penalty
-#   [../]
-#   [./rebar_y2]
-#     type = EqualValueEmbeddedConstraint
-#     secondary = 2
-#     primary = 1
-#     variable = 'disp_y'
-#     primary_variable = 'disp_y'
-#     penalty = 1e12
-#     formulation = penalty
-#   [../]
-#   [./rebar_z2]
-#     type = EqualValueEmbeddedConstraint
-#     secondary = 2
-#     primary = 1
-#     variable = 'disp_z'
-#     primary_variable = 'disp_z'
-#     penalty = 1e12
-#     formulation = penalty
-#   [../]
-# []
-
-# [Dampers]
-#   # [limitx]
-#   #   type = MaxIncrement
-#   #   max_increment = .05
-#   #   variable = disp_x
-#   # []
-#   # [limity]
-#   #   type = MaxIncrement
-#   #   max_increment = .05
-#   #   variable = disp_y
-#   # []
-#   [limitz]
-#     type = MaxIncrement
-#     max_increment = .05
-#     variable = disp_z
-#   []
-#   # [limitT]
-#   #   type = MaxIncrement
-#   #   max_increment = .5
-#   #   variable = T
-#   # []
-#   # [limitRH]
-#   #   type = MaxIncrement
-#   #   max_increment = .5
-#   #   variable = rh
-#   # []
-# []
+[Constraints]
+  [./rebar_x2]
+    type = EqualValueEmbeddedConstraint
+    secondary = 2
+    primary = 1
+    variable = 'disp_x'
+    primary_variable = 'disp_x'
+    penalty = 1e12
+    formulation = penalty
+  [../]
+  [./rebar_y2]
+    type = EqualValueEmbeddedConstraint
+    secondary = 2
+    primary = 1
+    variable = 'disp_y'
+    primary_variable = 'disp_y'
+    penalty = 1e12
+    formulation = penalty
+  [../]
+  [./rebar_z2]
+    type = EqualValueEmbeddedConstraint
+    secondary = 2
+    primary = 1
+    variable = 'disp_z'
+    primary_variable = 'disp_z'
+    penalty = 1e12
+    formulation = penalty
+  [../]
+[]
 
 [Contact]
   [./leftright]
@@ -127,8 +77,8 @@
     order = FIRST
     family = LAGRANGE
     initial_condition = 5.0
+    # block = '1 2'
     block = '1'
-    # block = '1 3 4 5 6 7 8 9 10 11'
   [../]
   [./rh]
     order = FIRST
@@ -172,19 +122,6 @@
     temperature = T
     block = '1'
   [../]
-  # [./heat_dt]
-  #   type = TimeDerivative
-  #   variable = T
-  #   # block = '2'
-  #   block = '3 4 5 6 7 8 9 10 11'
-  # [../]
-  # [./heat_conduction]
-  #   type = HeatConduction
-  #   variable = T
-  #   diffusion_coefficient = 53.0
-  #   # block = '2'
-  #   block = '3 4 5 6 7 8 9 10 11'
-  # [../]
   [./gravity]
     type = Gravity
     variable = disp_z
@@ -294,52 +231,6 @@
     family = Monomial
     block = '1'
   []
-
-  [./area_no6]
-    order = CONSTANT
-    family = MONOMIAL
-  [../]
-
-  # [./stress_xx_soil]
-  #   order = CONSTANT
-  #   family = MONOMIAL
-  #   block = '12'
-  # [../]
-  # [./stress_xy_soil]
-  #   order = CONSTANT
-  #   family = MONOMIAL
-  #   block = '12'
-  # [../]
-  # [./stress_xz_soil]
-  #   order = CONSTANT
-  #   family = MONOMIAL
-  #   block = '12'
-  # [../]
-  # [./stress_yy_soil]
-  #   order = CONSTANT
-  #   family = MONOMIAL
-  #   block = '12'
-  # [../]
-  # [./stress_yz_soil]
-  #   order = CONSTANT
-  #   family = MONOMIAL
-  #   block = '12'
-  # [../]
-  # [./stress_zz_soil]
-  #   order = CONSTANT
-  #   family = MONOMIAL
-  #   block = '12'
-  # [../]
-  # [./mc_int]
-  #   order = CONSTANT
-  #   family = MONOMIAL
-  #   block = '12'
-  # [../]
-  # [./yield_fcn]
-  #   order = CONSTANT
-  #   family = MONOMIAL
-  #   block = '12'
-  # [../]
 []
 
 [AuxKernels]
@@ -494,78 +385,6 @@
     property = damage_index
     execute_on = timestep_end
   []
-
-  # [./area_no6]
-  #   type = ConstantAux
-  #   # block = '2'
-  #   block = '3 4 5 6 7 8 9 10 11'
-  #   variable = area_no6
-  #   value = 284e-6
-  #   execute_on = 'initial timestep_begin'
-  # [../]
-
-  # [./stress_xx]
-  #   type = RankTwoAux
-  #   rank_two_tensor = stress
-  #   variable = stress_xx_soil
-  #   block = '12'
-  #   index_i = 0
-  #   index_j = 0
-  # [../]
-  # [./stress_xy]
-  #   type = RankTwoAux
-  #   rank_two_tensor = stress
-  #   variable = stress_xy_soil
-  #   block = '12'
-  #   index_i = 0
-  #   index_j = 1
-  # [../]
-  # [./stress_xz]
-  #   type = RankTwoAux
-  #   rank_two_tensor = stress
-  #   variable = stress_xz_soil
-  #   block = '12'
-  #   index_i = 0
-  #   index_j = 2
-  # [../]
-  # [./stress_yy]
-  #   type = RankTwoAux
-  #   rank_two_tensor = stress
-  #   variable = stress_yy_soil
-  #   block = '12'
-  #   index_i = 1
-  #   index_j = 1
-  # [../]
-  # [./stress_yz]
-  #   type = RankTwoAux
-  #   rank_two_tensor = stress
-  #   variable = stress_yz_soil
-  #   block = '12'
-  #   index_i = 1
-  #   index_j = 2
-  # [../]
-  # [./stress_zz]
-  #   type = RankTwoAux
-  #   rank_two_tensor = stress
-  #   variable = stress_zz_soil
-  #   block = '12'
-  #   index_i = 2
-  #   index_j = 2
-  # [../]
-  # [./mc_int_auxk]
-  #   type = MaterialStdVectorAux
-  #   index = 0
-  #   property = plastic_internal_parameter
-  #   variable = mc_int
-  #   block = '12'
-  # [../]
-  # [./yield_fcn_auxk]
-  #   type = MaterialStdVectorAux
-  #   index = 0
-  #   property = plastic_yield_function
-  #   variable = yield_fcn
-  #   block = '12'
-  # [../]
 []
 
 [Functions]
@@ -877,45 +696,12 @@
    prop_values                          = 2231.0 # kg/m3
   [../]
 
-  # [truss]
-  #   type                                 = LinearElasticTruss
-  #   # block = '2'
-  #   block = '3 4 5 6 7 8 9 10 11'
-  #   youngs_modulus                       = 2.14e11
-  #   temperature                          = T
-  #   thermal_expansion_coeff              = 11.3e-6
-  #   temperature_ref                      = 23.0
-  # []
-  # [./density_steel]
-  #   type                                = GenericFunctionMaterial
-  #   # block = '2'
-  #   block = '3 4 5 6 7 8 9 10 11'
-  #   prop_names                          = density
-  #   prop_values                         = 7850.0 # kg/m3
-  # [../]
-
-  # [./elastic_stress]
-  #   type = ComputeFiniteStrainElasticStress
-  #   block = '1 2'
-  # [../]
-  # [./elasticity_tensor]
-  #   type = ComputeIsotropicElasticityTensor
-  #   poissons_ratio = 0.3
-  #   youngs_modulus = 1e6
-  #   block = '1 2'
-  # [../]
   [elastic_soil]
     type = ComputeElasticityTensor
     fill_method = symmetric_isotropic
     C_ijkl = '0 1E7'
     block = '12'
   []
-  # [elastic_soil]
-  #   type = ComputeIsotropicElasticityTensor
-  #   youngs_modulus = 2e11
-  #   poissons_ratio = 0.3
-  #   block = '12'
-  # []
   [./mc_soil_stress]
     type = ComputeMultiPlasticityStress
     block = '12'
@@ -986,198 +772,7 @@
   nl_abs_tol = 5e-3
   nl_rel_tol = 1e-5
   line_search = none
-  # petsc_options = '-ksp_snes_ew'
   petsc_options = '-snes_converged_reason'
-#   solve_type = 'NEWTON'
-#   petsc_options_iname = '-pc_type -pc_hypre_type -ksp_gmres_restart -snes_ls -pc_hypre_boomeramg_strong_threshold'
-#   petsc_options_value = 'hypre boomeramg 201 cubic 0.7'
-[]
-
-[Postprocessors]
- [./ASR_strain]
-   type = ElementAverageValue
-   variable = ASR_vstrain
-   block = '1'
- [../]
- [./ASR_strain_xx]
-   type = ElementAverageValue
-   variable = ASR_strain_xx
-   block = '1'
- [../]
- [./ASR_strain_yy]
-   type = ElementAverageValue
-   variable = ASR_strain_yy
-   block = '1'
- [../]
- [./ASR_strain_zz]
-   type = ElementAverageValue
-   variable = ASR_strain_zz
-   block = '1'
- [../]
- [ASR_ext]
-   type = ElementAverageValue
-   variable = ASR_ex
-   block = '1'
- []
-
- [./vonmises]
-   type = ElementAverageValue
-   variable = vonmises_stress
-   block = '1'
- [../]
-
- [./vstrain]
-   type = ElementAverageValue
-   variable = volumetric_strain
-   block = '1'
- [../]
-
- [./strain_xx]
-   type = ElementAverageValue
-   variable = strain_xx
-   block = '1'
- [../]
- [./strain_yy]
-   type = ElementAverageValue
-   variable = strain_yy
-   block = '1'
- [../]
- [./strain_zz]
-   type = ElementAverageValue
-   variable = strain_zz
-   block = '1'
- [../]
-
- [./temp]
-   type = ElementAverageValue
-   variable = T
-   block = '1'
- [../]
- [./humidity]
-   type = ElementAverageValue
-   variable = rh
-   block = '1'
- [../]
-
- [./thermal_strain_xx]
-   type = ElementAverageValue
-   variable = thermal_strain_xx
-   block = '1'
- [../]
- [./thermal_strain_yy]
-   type = ElementAverageValue
-   variable = thermal_strain_yy
-   block = '1'
- [../]
- [./thermal_strain_zz]
-   type = ElementAverageValue
-   variable = thermal_strain_zz
-   block = '1'
- [../]
-
- [./surfaceAvg_base_x]
-   type = SideAverageValue
-   variable = disp_x
-   boundary = '33'
- [../]
- [./surfaceAvg_base_y]
-   type = SideAverageValue
-   variable = disp_y
-   boundary = '33'
- [../]
- [./surfaceAvg_base_z]
-   type = SideAverageValue
-   variable = disp_z
-   boundary = '33'
- [../]
- [./surfaceAvg_cyl_x]
-   type = SideAverageValue
-   variable = disp_x
-   boundary = '32'
- [../]
- [./surfaceAvg_cyl_y]
-   type = SideAverageValue
-   variable = disp_y
-   boundary = '32'
- [../]
- [./surfaceAvg_cyl_z]
-   type = SideAverageValue
-   variable = disp_z
-   boundary = '32'
- [../]
- [./surfaceAvg_dome_x]
-   type = SideAverageValue
-   variable = disp_x
-   boundary = '31'
- [../]
- [./surfaceAvg_dome_y]
-   type = SideAverageValue
-   variable = disp_y
-   boundary = '31'
- [../]
- [./surfaceAvg_dome_z]
-   type = SideAverageValue
-   variable = disp_z
-   boundary = '31'
- [../]
-
- [./cyl_z] # 500 mm gauge length
-  type = AveragePointSeparation
-  displacements = 'disp_z'
-  first_point = '2.438776     2.597033     4.252161'
-  last_point = '2.435685     2.593741     4.689710'
- [../]
- [./cyl_tang_x] # 500 mm gauge length (not the arc length)
-  type = AveragePointSeparation
-  displacements = 'disp_x'
-  first_point = '2.59     2.43     4.470935'
-  last_point = '2.26     2.743     4.470935'
- [../]
- [./cyl_tang_y] # 500 mm gauge length (not the arc length)
-  type = AveragePointSeparation
-  displacements = 'disp_y'
-  first_point = '2.59     2.43     4.470935'
-  last_point = '2.26     2.743     4.470935'
- [../]
- [./dome_z_arc]# 500 mm gauge length (not the arc length)
-  type = AveragePointSeparation
-  displacements = 'disp_z'
-  first_point = '2.149293     2.303640     8.909285'
-  last_point = '1.876000     2.020725     9.520732'
- [../]
- [./dome_tang_x]# 500 mm gauge length (not the arc length)
-  type = AveragePointSeparation
-  displacements = 'disp_x'
-  first_point = '2.374 1.924 9.0805'# basesd on hand calculation
-  last_point = '1.924 2.374 9.0805'
- [../]
- [./dome_tang_y]# 500 mm gauge length (not the arc length)
-  type = AveragePointSeparation
-  displacements = 'disp_y'
-  first_point = '2.374 1.924 9.0805'# basesd on hand calculation
-  last_point = '1.924 2.374 9.0805'
- [../]
-
- [./disp_base_mat_x]# 500 mm gauge length (not the arc length)
-  type = SideAverageValue
-  variable = disp_x
-  boundary = '35'
- [../]
- [./disp_base_mat_y]# 500 mm gauge length (not the arc length)
-  type = SideAverageValue
-  variable = disp_y
-  boundary = '35'
- [../]
- [./disp_soil_x]# 500 mm gauge length (not the arc length)
-  type = SideAverageValue
-  variable = disp_x
-  boundary = '36'
- [../]
- [./disp_soil_y]# 500 mm gauge length (not the arc length)
-  type = SideAverageValue
-  variable = disp_y
-  boundary = '36'
- [../]
 []
 
 [Outputs]

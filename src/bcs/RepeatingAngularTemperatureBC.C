@@ -25,7 +25,7 @@ RepeatingAngularTemperatureBC::validParams()
   params.addRequiredParam<Real>("repetition_period",
                              "period after which boundary condition is repeated");
   params.addClassDescription(
-      "Imposes the essential boundary condition $u=g(t,\\vec{x})$, where $g$ "
+      "Imposes a repeating boundary condition $u=g(t,\\vec{x})$, where $g$ "
       "is a (possibly) time and space-dependent MOOSE Function.");
   return params;
 }
@@ -47,20 +47,15 @@ RepeatingAngularTemperatureBC::computeQpValue()
   Real value =  _scaling_function.value(time_of_the_period, *_current_node) * _T_air.value(time_of_the_period, *_current_node);
 
   const Point & p = *_current_node;
-  out <<" p " << p(0) << " "   << p(1) << " "  << p(2) << std::endl;
-  Real angle = atan(p(1)/p(0))*180/3.14;
-  // Real factor = (angle+90.)/180.;
-  Real factor;
-  if (angle >= 30)
-    factor = 1/6;
-  else if (angle >= -30)
-    factor = 1/3.;
+  Real angle;
+  if(p(0)!=0)
+  {
+    angle = atan(p(1)/p(0))*180./M_PI;
+  }
   else
-    factor = 1/2.;
-  out << " angle factor2 " << angle << " "<< factor <<std::endl;
+  {
+    angle = p(1)>0 ? 90 : -90;
+  }
 
-  // factor = (angle+90.)/180.;
-  // out << " angle factor1 "<< angle <<" " << factor <<std::endl;
-
-  return value + factor * _dT_sun_shade;
+  return value + (angle+90.)/180. * _dT_sun_shade;
 }
