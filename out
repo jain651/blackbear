@@ -1,0 +1,18 @@
+
+
+*** Warning, This code is deprecated and will be removed in future versions:
+The parameter 'use_legacy_dirichlet_bc' is no longer valid.
+
+All Dirichlet boundary conditions are preset by default.
+
+Remove said parameter in main to remove this deprecation warning.
+
+
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   PID 30921 RUNNING AT r1i1n3.ib0.ice.inl.gov
+=   EXIT CODE: 1
+=   CLEANING UP REMAINING PROCESSES
+=   YOU CAN IGNORE THE BELOW CLEANUP MESSAGES
+===================================================================================
