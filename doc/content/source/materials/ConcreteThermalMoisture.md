@@ -415,6 +415,28 @@ Also, $f_H = 1$ when $H > 1$ and $\alpha_D$ is given by
 
 where $T$ is in $\degree$C. $\alpha \in [0.037:1]$ from $T\in[0\degree C : 95\degree C]$ and $n\in[6:16]$.
 
+3. [!cite](xi1999model) (for $w/c$ >= 0.5)
+
+Xi and Bazant's model provides moisture diffusivity of cement paste, $D_{Hcp}$. The moisture diffusivity for concrete, $D_{h,0}$, is obtained using the composite theory as presented in [!cite](christensen2012mechanics)
+
+!equation id=Dh
+D_{h,0} = D_{Hcp}\left[1 + \frac{g_i}{\frac{1-g_i}{3} + \frac{1}{\frac{D_{Hagg}}{D_{Hcp}}-1}}\right],
+
+where
+
+$D_{Hagg}$ = humidity diffusion coefficient of aggregate\\
+$g_i$ = the volume fraction of aggregate
+
+The humidity diffusion coefficient, $D_{Hcp}$, for cement paste from [!cite](xi1999model) is expressed as:
+
+$D_{Hcp}$  =  $\alpha_h$ + $\beta_h$ $(1-2^{-10\gamma_h(H-1)})$\\
+$\alpha_h$  =  1.05 - 3.8$\frac{w}{c}$ + 3.56$(\frac{w}{c})^2$\\
+$\beta_h$  =  -14.4 + 50.4$\frac{w}{c}$ - 41.8$(\frac{w}{c})^2$\\
+$\gamma_h$  =  31.3 - 136$\frac{w}{c}$ + 162$(\frac{w}{c})^2$
+
+where $\alpha_h$, $\beta_h$ and $\gamma_h$ are coefficients from test data. Since the value of the humidity diffusivity coefficient for aggregates, $D_{Hagg}$, typically
+is negligible compared with the value of $D_{Hcp}$, it is assumed to be zero in the current implementation.
+
 It's obvious that all three reference moisture diffusivity models strongly depend on the value of humidity $H$, and indirectly on the temperature $T$. Once the value of
 reference moisture diffusivity $D_{h,0}$ is obtained, the actual concrete moisture diffusivity $D_h$ required by the moisture diffusion governing equation, [!eqref](moisture_governing),
 can then be calculated by

@@ -58,7 +58,7 @@ ConcreteThermalMoisture::validParams()
   params.addParam<MooseEnum>(
       "aggregate_pore_type", aggregate_pore_type, "aggregate pore structure");
 
-  MooseEnum moisture_diffusivity_model("Bazant Mensi", "Bazant");
+  MooseEnum moisture_diffusivity_model("Mensi Bazant Xi", "Bazant");
   params.addParam<MooseEnum>(
       "moisture_diffusivity_model", moisture_diffusivity_model, "moisture diffusivity models");
 
@@ -113,6 +113,8 @@ ConcreteThermalMoisture::ConcreteThermalMoisture(const InputParameters & paramet
     _B(getParam<Real>("B")),
     _C0(getParam<Real>("C0")),
 
+    _agg_vol_fraction(getParam<Real>("aggregate_vol_fraction")),
+
     _input_density_of_concrete(getParam<Real>("ref_density_of_concrete")),
     _input_specific_heat_of_concrete(getParam<Real>("ref_specific_heat_of_concrete")),
     _input_thermal_conductivity_of_concrete(getParam<Real>("ref_thermal_conductivity_of_concrete")),
@@ -148,6 +150,9 @@ ConcreteThermalMoisture::ConcreteThermalMoisture(const InputParameters & paramet
     _has_temperature(isCoupled("temperature")),
     _temp(_has_temperature ? coupledValue("temperature") : _zero)
 {
+  if (getParam<MooseEnum>("moisture_diffusivity_model") == 2 && _water_to_cement < 0.5)
+    mooseError("water_to_cement_ratio should be >= 0.5 to use Xi's model for moisture diffusivity");
+
   if (getParam<std::string>("type") == "PorousMediaBase")
     mooseWarning(
         "PorousMediaBase is being replaced by ConcreteThermalMosture. Note that in "
@@ -570,17 +575,33 @@ ConcreteThermalMoisture::computeProperties()
     Real C0 = _C0;
     Real C1 = H * C0;
 
+    // Parameters associated with Xi's model
+    Real gi = _agg_vol_fraction;
+    Real wc = _water_to_cement;
+
+    Real alfa_h = 1.05 - 3.8 * wc + 3.56 * std::pow(wc, 2.0);
+    Real betta_h = -14.4 + 50.4 * wc - 41.8 * std::pow(wc, 2.0);
+    Real gamma_h = 31.3 - 136.0 * wc + 162.0 * std::pow(wc, 2.0);
+
+    Real power1 = std::pow(10.0, gamma_h * (H - 1));
+    Real power2 = std::pow(2.0, -1.0 * power1);
+
+    Real Dhcp = alfa_h + betta_h * (1.0 - power2);
+
     switch (_moisture_diffusivity_model)
     {
-      case 0: // Bazant
+      case 0: // Mensi
+        Dh0 = A * std::exp(B * C1);
+        break;
+      case 1: // Bazant
         if (T <= 95.0)
           Dh0 =
               _D1 * (alfa_d + (1 - alfa_d) / (1.0 + std::pow((1.0 - H) / (1.0 - 0.75), _n_power)));
         else
           Dh0 = _D1;
         break;
-      case 1: // Mensi
-        Dh0 = A * std::exp(B * C1);
+      case 2: // Xi
+        Dh0 = Dhcp * (1 + gi / ((1 - gi) / 3 - 1));
         break;
       default:
         mooseError("Unknown moisture diffusivity model");

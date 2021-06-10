@@ -51,5 +51,12 @@
       cli_args = 'Materials/concrete/moisture_diffusivity_model=Mensi Outputs/file_base=concrete_thermal_moisture_properties_mensi_out'
       csvdiff = 'concrete_thermal_moisture_properties_mensi_out.csv'
     []
+    [xi]
+      detail = 'and using the Xi model'
+      type = 'CSVDiff'
+      input = 'concrete_thermal_moisture_properties.i'
+      cli_args = 'Materials/concrete/moisture_diffusivity_model=Xi Materials/concrete/water_to_cement_ratio=0.51 Outputs/file_base=concrete_thermal_moisture_properties_xi_out'
+      csvdiff = 'concrete_thermal_moisture_properties_xi_out.csv'
+    []
   []
 []
