@@ -1,6 +1,6 @@
 [Mesh]
   construct_side_list_from_node_list=true
-  file = gold/fusion_tube_v1.e
+  file = gold/fusion_tube_v4.e
   block_id = '1 2 3'
   block_name = 'sml_circles big_circles boundary'
 
@@ -44,7 +44,7 @@
   [./heat_conduction_big_circles]
     type = HeatConduction
     variable = temperature
-    diffusion_coefficient = 100.0
+    diffusion_coefficient = 1e-4
     block = 'big_circles'
   [../]
 []
@@ -84,30 +84,6 @@
     family = MONOMIAL
     block = 'sml_circles big_circles'
   [../]
-  [./accel_x]
-    order = FIRST
-    family = LAGRANGE
-  [../]
-  [./vel_x]
-    order = FIRST
-    family = LAGRANGE
-  [../]
-  [./accel_y]
-    order = FIRST
-    family = LAGRANGE
-  [../]
-  [./vel_y]
-    order = FIRST
-    family = LAGRANGE
-  [../]
-  # [./rot_accel_z]
-  #   order = FIRST
-  #   family = LAGRANGE
-  # [../]
-  # [./rot_vel_z]
-  #   order = FIRST
-  #   family = LAGRANGE
-  # [../]
 []
 
 [AuxKernels]
@@ -129,92 +105,7 @@
     index_j = 1
     execute_on = 'timestep_end'
   [../]
-  # [./accel_x]
-  #   type = NewmarkAccelAux
-  #   variable = accel_x
-  #   displacement = disp_x
-  #   velocity = vel_x
-  #   beta = 0.25
-  #   execute_on = timestep_end
-  # [../]
-  # [./vel_x]
-  #   type = NewmarkVelAux
-  #   variable = vel_x
-  #   acceleration = accel_x
-  #   gamma = 0.5
-  #   execute_on = timestep_end
-  # [../]
-  # [./accel_y]
-  #   type = NewmarkAccelAux
-  #   variable = accel_y
-  #   displacement = disp_y
-  #   velocity = vel_y
-  #   beta = 0.25
-  #   execute_on = timestep_end
-  # [../]
-  # [./vel_y]
-  #   type = NewmarkVelAux
-  #   variable = vel_y
-  #   acceleration = accel_y
-  #   gamma = 0.5
-  #   execute_on = timestep_end
-  # [../]
-  # # [./rot_accel_z]
-  # #   type = NewmarkAccelAux
-  # #   variable = rot_accel_z
-  # #   displacement = rot_z
-  # #   velocity = rot_vel_z
-  # #   beta = 0.4225
-  # #   execute_on = timestep_end
-  # # [../]
-  # # [./rot_vel_z]
-  # #   type = NewmarkVelAux
-  # #   variable = rot_vel_z
-  # #   acceleration = rot_accel_z
-  # #   gamma = 0.8
-  # #   execute_on = timestep_end
-  # # [../]
 []
-
-# [NodalKernels]
-#   [./x_inertial]
-#     type = NodalTranslationalInertia
-#     variable = disp_x
-#     velocity = vel_x
-#     acceleration = accel_x
-#     boundary = 'all_cir_peri'
-#     beta = 0.25
-#     gamma = 0.5
-#     mass = 0.01899772
-#     eta = 0.1
-#   [../]
-#   [./y_inertial]
-#     type = NodalTranslationalInertia
-#     variable = disp_y
-#     velocity = vel_y
-#     acceleration = accel_y
-#     boundary = 'all_cir_peri'
-#     beta = 0.25
-#     gamma = 0.5
-#     mass = 0.01899772
-#     eta = 0.1
-#   [../]
-#   # [./rot_z_inertial]
-#   #   type = NodalRotationalInertia
-#   #   variable = rot_z
-#   #   rotations = 'rot_z'
-#   #   rotational_velocities = 'rot_vel_z'
-#   #   rotational_accelerations= 'rot_accel_z'
-#   #   boundary = 'all_cir_peri'
-#   #   beta = 0.25
-#   #   gamma = 0.5
-#   #   Ixx = 2e-1
-#   #   Iyy = 1e-1
-#   #   Izz = 1e-1
-#   #   eta = 0.1
-#   #   component = 2
-#   # [../]
-# []
 
 [Functions]
   [T]
@@ -226,77 +117,50 @@
 
 [Contact]
   [./circle_w_boundary]
-    secondary = 'circle1'
+    secondary = 'all_cir_peri'
     primary = 'inner_surface'
     penalty = 1e12
     model = glued
     formulation = penalty
   [../]
   [./bet_circles1]
-    secondary = 'circle1'
-    primary = 'circle2'
+    secondary = 'all_cir_peri'
+    primary = 'all_cir_peri'
     penalty = 1e12
     model = glued
     formulation = penalty
   [../]
   [./bet_circles2]
-    secondary = 'circle1'
-    primary = 'circle3'
+    secondary = 'all_cir_peri'
+    primary = 'all_cir_peri'
     penalty = 1e12
     model = glued
     formulation = penalty
   [../]
   # [./circle_w_boundary]
-  #   primary = 'circle1'
-  #   secondary = 'inner_surface'
-  #   penalty = 1e10
+  #   secondary = 'circle1'
+  #   primary = 'inner_surface'
+  #   penalty = 1e12
   #   model = glued
   #   formulation = penalty
   # [../]
   # [./bet_circles1]
-  #   primary = 'circle1'
-  #   secondary = 'circle2'
-  #   penalty = 1e10
+  #   secondary = 'circle1'
+  #   primary = 'circle2'
+  #   penalty = 1e12
   #   model = glued
   #   formulation = penalty
   # [../]
   # [./bet_circles2]
-  #   primary = 'circle1'
-  #   secondary = 'circle3'
-  #   penalty = 1e10
+  #   secondary = 'circle1'
+  #   primary = 'circle3'
+  #   penalty = 1e12
   #   model = glued
   #   formulation = penalty
-  # [../]
-  # [./bet_circles3]
-  #   primary = 'circle2'
-  #   secondary = 'circle3'
-  #   penalty = 1e6
-  #   model = glued
-  #   formulation = kinematic
   # [../]
 []
 
 [Dampers]
-  # [./contact_slip]
-  #   type = ContactSlipDamper
-  #   primary = '1'
-  #   secondary = '4'
-  # [../]
-  # [./contact_slip1]
-  #   type = ContactSlipDamper
-  #   primary = '10'
-  #   secondary = '11'
-  # [../]
-  # [./contact_slip2]
-  #   type = ContactSlipDamper
-  #   primary = '10'
-  #   secondary = '12'
-  # [../]
-  # [./contact_slip3]
-  #   type = ContactSlipDamper
-  #   primary = '11'
-  #   secondary = '12'
-  # [../]
   [limitx] #nonlinear iteration
     type = MaxIncrement
     max_increment = 1
@@ -376,12 +240,8 @@
   end_time = 635
 
   solve_type = 'PJFNK'
-  # petsc_options_iname = '-pc_type'
-  # petsc_options_value = 'lu'
   petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount -ksp_gmres_restart'
   petsc_options_value = 'lu NONZERO   1e-5 50'
-  # petsc_options_iname = '-pc_type -pc_factor_mat_solver_package -pc_factor_shift_type -pc_factor_shift_amount'
-  # petsc_options_value = 'lu     superlu_dist NONZERO   1e-5'
 
   nl_max_its = 50
   l_max_its = 50

@@ -1,0 +1,21 @@
+version history
+fusion_tube_v1
+  3 spheres
+  without modifying circle's geometry
+  converging
+
+fusion_tube_v2
+  7 spheres
+  without modifying circle's geometry
+  not converging
+
+
+fusion_tube_v3
+  3 spheres
+  modifying circle's geometry in cubit
+  converging
+
+fusion_tube_v4
+  7 spheres
+  modifying circle's geometry in cubit
+  converging
