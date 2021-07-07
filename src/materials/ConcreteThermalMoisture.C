@@ -582,7 +582,18 @@ ConcreteThermalMoisture::computeProperties()
         break;
 
       case 2: //Xi model
-      
+        Real gi = _agg_vol_fraction;
+        Real wc = _water_to_cement;
+        Real alfa_h = 1.05 - 3.8 * wc + 3.56 * std::pow(wc, 2.0);
+        Real betta_h = -14.4 + 50.4 * wc - 41.8 * std::pow(wc, 2.0);
+        Real gamma_h = 31.3 - 136.0 * wc + 162.0 * std::pow(wc, 2.0);
+        Real power1 = std::pow(10.0, gamma_h * (H - 1));
+        Real power2 = std::pow(2.0, -1.0 * power1);
+
+        Real Dhcp = alfa_h + betta_h * (1.0 - power2);
+        _Dh[qp] = Dhcp * (1 + gi / ((1 - gi) / 3 - 1));
+        break;
+
       default:
         mooseError("Unknown moisture diffusivity model");
         break;
