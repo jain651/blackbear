@@ -546,54 +546,46 @@ ConcreteThermalMoisture::computeProperties()
     _moisture_content[qp] = (_f_agg * W_agg + _f_cp * W_cement) * _input_density_of_concrete;
 
     // compute moisture diffusivity
-    Real Dh0 = 3.10e-10;
-    Real f1_T = 0.0;
-    if (T <= 95.0)
-      f1_T = std::exp(2700.0 * (1.0 / (25.0 + 273.15) - 1.0 / (T + 273.15)));
-    else
-      f1_T = std::exp(2700.0 * (1.0 / (25.0 + 273.15) - 1.0 / (95.0 + 273.15)));
-
-    Real f2_T = 0.0;
-    if (T > 95.0)
-      f2_T = std::exp((T - 95.0) / (0.881 + 0.214 * (T - 95.0)));
-
-    // parameters associated with Bazant model
-    Real alfa_d = 1.0;
-    if (T <= 95.0)
-      alfa_d = 1.0 / (1.0 + 19.0 * (95.0 - T) / 70.0);
-    else
-      alfa_d = 1.0;
-
-    // Parameters associated with Mensi's model
-    Real A = _A;
-    Real B = _B;
-    Real C0 = _C0;
-    Real C1 = H * C0;
+    // common parameters
+    Real Dh0;
 
     switch (_moisture_diffusivity_model)
     {
       case 0: // Bazant
+        // temperature dependent parameters
+        Real f1_T = 0.0;
+        Real f2_T = 0.0;
+        Real alfa_d = 1.0;
         if (T <= 95.0)
+        {
+          f1_T = std::exp(2700.0 * (1.0 / (25.0 + 273.15) - 1.0 / (T + 273.15)));
+          alfa_d = 1.0 / (1.0 + 19.0 * (95.0 - T) / 70.0);
           Dh0 =
               _D1 * (alfa_d + (1 - alfa_d) / (1.0 + std::pow((1.0 - H) / (1.0 - 0.75), _n_power)));
+          _Dh[qp] = Dh0 * f1_T;
+        }
         else
+        {
+          f1_T = std::exp(2700.0 * (1.0 / (25.0 + 273.15) - 1.0 / (95.0 + 273.15)));
+          f2_T = std::exp((T - 95.0) / (0.881 + 0.214 * (T - 95.0)));
+          alfa_d = 1.0;
           Dh0 = _D1;
+          _Dh[qp] = Dh0 * f1_T * f2_T;
+        }
+        // compute the coupled mositure diffusivity due to thermal gradient
+        _Dht[qp] = _alfa_Dht * _Dh[qp];
         break;
+
       case 1: // Mensi
-        Dh0 = A * std::exp(B * C1);
+        Real C1 = H * _C0;
+        _Dh[qp] = _A * std::exp(_B * C1);
         break;
+
+      case 2: //Xi model
+      
       default:
         mooseError("Unknown moisture diffusivity model");
         break;
     }
-
-    if (T <= 95.0)
-      _Dh[qp] = Dh0 * f1_T;
-    else
-      _Dh[qp] = Dh0 * f1_T * f2_T;
-
-    // compute the coupled mositure diffusivity due to thermal gradient
-    _Dht[qp] = _alfa_Dht * _Dh[qp];
-    _darcy_moisture_flux[qp] = -_Dh[qp] * _grad_rh[qp];
   }
 }
