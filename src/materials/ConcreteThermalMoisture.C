@@ -58,7 +58,7 @@ ConcreteThermalMoisture::validParams()
   params.addParam<MooseEnum>(
       "aggregate_pore_type", aggregate_pore_type, "aggregate pore structure");
 
-  MooseEnum moisture_diffusivity_model("Bazant Mensi", "Bazant");
+  MooseEnum moisture_diffusivity_model("Bazant Mensi Xi", "Bazant");
   params.addParam<MooseEnum>(
       "moisture_diffusivity_model", moisture_diffusivity_model, "moisture diffusivity models");
 
@@ -113,6 +113,8 @@ ConcreteThermalMoisture::ConcreteThermalMoisture(const InputParameters & paramet
     _B(getParam<Real>("B")),
     _C0(getParam<Real>("C0")),
 
+    _agg_vol_fraction(getParam<Real>("aggregate_vol_fraction")),
+
     _input_density_of_concrete(getParam<Real>("ref_density_of_concrete")),
     _input_specific_heat_of_concrete(getParam<Real>("ref_specific_heat_of_concrete")),
     _input_thermal_conductivity_of_concrete(getParam<Real>("ref_thermal_conductivity_of_concrete")),
@@ -148,6 +150,9 @@ ConcreteThermalMoisture::ConcreteThermalMoisture(const InputParameters & paramet
     _has_temperature(isCoupled("temperature")),
     _temp(_has_temperature ? coupledValue("temperature") : _zero)
 {
+  if (getParam<MooseEnum>("moisture_diffusivity_model") == 2 && _water_to_cement < 0.5)
+    mooseError("water_to_cement_ratio should be >= 0.5 to use Xi's model for moisture diffusivity");
+
   if (getParam<std::string>("type") == "PorousMediaBase")
     mooseWarning(
         "PorousMediaBase is being replaced by ConcreteThermalMosture. Note that in "
@@ -413,149 +418,174 @@ ConcreteThermalMoisture::computeProperties()
     _cw[qp] = 350000.0 * std::pow(374.15 - T, 1.0 / 3.0);
 
     // compute mositure capacity dw/dH for cement
-    Real C = std::exp(855.0 / (T + 273.15));
-    Real N_ct = 1.1;
-    switch (_cement_type)
+    switch (_moisture_diffusivity_model)
     {
-      case 0:
-        N_ct = 1.1;
+      case 0: // bazant
+      {
+        _moisture_capacity[qp] = 1.0;
+        _moisture_content[qp] = 1.0;
         break;
-      case 1:
-        N_ct = 1.0;
+      }
+
+      case 1: // Mensi
+      {
+        _moisture_capacity[qp] = 1.0;
+        _moisture_content[qp] = 1.0;
         break;
-      case 2:
-        N_ct = 1.15;
-        break;
-      case 3:
-        N_ct = 1.5;
-        break;
+      }
+
+      case 2: // Xi
+      {
+        Real C = std::exp(855.0 / (T + 273.15));
+        Real N_ct = 1.1;
+        switch (_cement_type)
+        {
+          case 0:
+            N_ct = 1.1;
+            break;
+          case 1:
+            N_ct = 1.0;
+            break;
+          case 2:
+            N_ct = 1.15;
+            break;
+          case 3:
+            N_ct = 1.5;
+            break;
+          default:
+            mooseError("Unknown cement type in mositure capacity calculations");
+            break;
+        }
+
+        Real N_wc = 0.9;
+        if (_water_to_cement < 0.3)
+          N_wc = 0.99;
+        else if (_water_to_cement >= 0.3 && _water_to_cement <= 0.7)
+          N_wc = 0.33 + 2.2 * _water_to_cement;
+        else
+          N_wc = 1.87;
+
+        Real N_te = 5.5;
+        if (_eqv_age[qp] >= 5)
+          N_te = 2.5 + 15.0 / _eqv_age[qp];
+
+        Real n = N_te * N_wc * N_ct * 1.0;
+
+        Real k = ((1.0 - 1.0 / n) * C - 1.0) / (C - 1.0);
+        if (k < 0.0)
+          k = 0.0;
+        else if (k > 1.0)
+          k = 1.0;
+
+        Real V_ct = 0.9;
+        switch (_cement_type)
+        {
+          case 0:
+            V_ct = 0.9;
+            break;
+          case 1:
+            V_ct = 1.0;
+            break;
+          case 2:
+            V_ct = 0.85;
+            break;
+          case 3:
+            V_ct = 0.6;
+            break;
+          default:
+            mooseError("Unknown cement type in mositure capacity calculations");
+            break;
+        }
+
+        Real V_wc = 0.985;
+        if (_water_to_cement < 0.3)
+          V_wc = 0.985;
+        else if (_water_to_cement >= 0.3 && _water_to_cement <= 0.7)
+          V_wc = 0.85 + 0.45 * _water_to_cement;
+        else
+          V_wc = 1.165;
+
+        Real V_te = 0.024;
+        if (_eqv_age[qp] >= 5)
+          V_te = 0.068 - 0.22 / _eqv_age[qp];
+
+        Real Vm = V_te * V_wc * V_ct * 1.0;
+
+        Real W_cement = C * k * Vm * H / (1.0 - k * H) / (1.0 + (C - 1.0) * k * H);
+
+        Real dWdH_cement = (C * k * Vm + W_cement * k * (1.0 + (C - 1.0) * k * H) -
+                            W_cement * k * (1.0 - k * H) * (C - 1.0)) /
+                           (1.0 - k * H) / (1.0 + (C - 1.0) * k * H);
+
+        // compute mositure capacity dw/dH for aggregates
+        Real n_agg = 1.5;
+        switch (_aggregate_pore_type)
+        {
+          case 0:
+            n_agg = 1.5;
+            break;
+          case 1:
+            n_agg = 2.0;
+            break;
+          default:
+            mooseError("Unknown aggregate pore structure");
+            break;
+        }
+
+        n = 4.063 * n_agg;
+        k = ((1.0 - 1.0 / n) * C - 1.0) / (C - 1.0);
+        if (k < 0.0)
+          k = 0.0;
+        else if (k > 1.0)
+          k = 1.0;
+
+        Real V_agg = 0.05;
+        switch (_aggregate_pore_type)
+        {
+          case 0:
+            V_agg = 0.05;
+            break;
+          case 1:
+            V_agg = 0.10;
+            break;
+          default:
+            mooseError("Unknown aggregate pore structure");
+            break;
+        }
+
+        Vm = 0.0647 * V_agg;
+
+        Real W_agg = C * k * Vm * H / (1.0 - k * H) / (1.0 + (C - 1.0) * k * H);
+        Real dWdH_agg = (C * k * Vm + W_agg * k * (1.0 + (C - 1.0) * k * H) -
+                         W_agg * k * (1.0 - k * H) * (C - 1.0)) /
+                        (1.0 - k * H) / (1.0 + (C - 1.0) * k * H);
+
+        // compute weight percentages of agrregates and cement paste
+        Real _f_agg = _aggregate_mass / (_aggregate_mass + _cement_mass);
+        Real _f_cp = _cement_mass / (_aggregate_mass + _cement_mass);
+
+        // compute combined dW/dH of concrete
+        _moisture_capacity[qp] = (_f_agg * dWdH_agg + _f_cp * dWdH_cement) * _input_density_of_concrete;
+        _moisture_content[qp] = (_f_agg * W_agg + _f_cp * W_cement) * _input_density_of_concrete;
+      }
+
       default:
-        mooseError("Unknown cement type in mositure capacity calculations");
+      {
+        mooseError("Unknown moisture diffusivity model");
         break;
+      }
     }
-
-    Real N_wc = 0.9;
-    if (_water_to_cement < 0.3)
-      N_wc = 0.99;
-    else if (_water_to_cement >= 0.3 && _water_to_cement <= 0.7)
-      N_wc = 0.33 + 2.2 * _water_to_cement;
-    else
-      N_wc = 1.87;
-
-    Real N_te = 5.5;
-    if (_eqv_age[qp] >= 5)
-      N_te = 2.5 + 15.0 / _eqv_age[qp];
-
-    Real n = N_te * N_wc * N_ct * 1.0;
-
-    Real k = ((1.0 - 1.0 / n) * C - 1.0) / (C - 1.0);
-    if (k < 0.0)
-      k = 0.0;
-    else if (k > 1.0)
-      k = 1.0;
-
-    Real V_ct = 0.9;
-    switch (_cement_type)
-    {
-      case 0:
-        V_ct = 0.9;
-        break;
-      case 1:
-        V_ct = 1.0;
-        break;
-      case 2:
-        V_ct = 0.85;
-        break;
-      case 3:
-        V_ct = 0.6;
-        break;
-      default:
-        mooseError("Unknown cement type in mositure capacity calculations");
-        break;
-    }
-
-    Real V_wc = 0.985;
-    if (_water_to_cement < 0.3)
-      V_wc = 0.985;
-    else if (_water_to_cement >= 0.3 && _water_to_cement <= 0.7)
-      V_wc = 0.85 + 0.45 * _water_to_cement;
-    else
-      V_wc = 1.165;
-
-    Real V_te = 0.024;
-    if (_eqv_age[qp] >= 5)
-      V_te = 0.068 - 0.22 / _eqv_age[qp];
-
-    Real Vm = V_te * V_wc * V_ct * 1.0;
-
-    Real W_cement = C * k * Vm * H / (1.0 - k * H) / (1.0 + (C - 1.0) * k * H);
-
-    Real dWdH_cement = (C * k * Vm + W_cement * k * (1.0 + (C - 1.0) * k * H) -
-                        W_cement * k * (1.0 - k * H) * (C - 1.0)) /
-                       (1.0 - k * H) / (1.0 + (C - 1.0) * k * H);
-
-    // compute mositure capacity dw/dH for aggregates
-    Real n_agg = 1.5;
-    switch (_aggregate_pore_type)
-    {
-      case 0:
-        n_agg = 1.5;
-        break;
-      case 1:
-        n_agg = 2.0;
-        break;
-      default:
-        mooseError("Unknown aggregate pore structure");
-        break;
-    }
-
-    n = 4.063 * n_agg;
-    k = ((1.0 - 1.0 / n) * C - 1.0) / (C - 1.0);
-    if (k < 0.0)
-      k = 0.0;
-    else if (k > 1.0)
-      k = 1.0;
-
-    Real V_agg = 0.05;
-    switch (_aggregate_pore_type)
-    {
-      case 0:
-        V_agg = 0.05;
-        break;
-      case 1:
-        V_agg = 0.10;
-        break;
-      default:
-        mooseError("Unknown aggregate pore structure");
-        break;
-    }
-
-    Vm = 0.0647 * V_agg;
-
-    Real W_agg = C * k * Vm * H / (1.0 - k * H) / (1.0 + (C - 1.0) * k * H);
-    Real dWdH_agg = (C * k * Vm + W_agg * k * (1.0 + (C - 1.0) * k * H) -
-                     W_agg * k * (1.0 - k * H) * (C - 1.0)) /
-                    (1.0 - k * H) / (1.0 + (C - 1.0) * k * H);
-
-    // compute weight percentages of agrregates and cement paste
-    Real _f_agg = _aggregate_mass / (_aggregate_mass + _cement_mass);
-    Real _f_cp = _cement_mass / (_aggregate_mass + _cement_mass);
-
-    // compute combined dW/dH of concrete
-    _moisture_capacity[qp] = (_f_agg * dWdH_agg + _f_cp * dWdH_cement) * _input_density_of_concrete;
-    _moisture_content[qp] = (_f_agg * W_agg + _f_cp * W_cement) * _input_density_of_concrete;
 
     // compute moisture diffusivity
-    // common parameters
-    Real Dh0;
-
     switch (_moisture_diffusivity_model)
     {
       case 0: // Bazant
+      {
         // temperature dependent parameters
         Real f1_T = 0.0;
         Real f2_T = 0.0;
         Real alfa_d = 1.0;
+        Real Dh0;
         if (T <= 95.0)
         {
           f1_T = std::exp(2700.0 * (1.0 / (25.0 + 273.15) - 1.0 / (T + 273.15)));
@@ -575,13 +605,18 @@ ConcreteThermalMoisture::computeProperties()
         // compute the coupled mositure diffusivity due to thermal gradient
         _Dht[qp] = _alfa_Dht * _Dh[qp];
         break;
+      }
 
       case 1: // Mensi
+      {
         Real C1 = H * _C0;
         _Dh[qp] = _A * std::exp(_B * C1);
+        _Dht[qp] = 0.;
         break;
+      }
 
       case 2: //Xi model
+      {
         Real gi = _agg_vol_fraction;
         Real wc = _water_to_cement;
         Real alfa_h = 1.05 - 3.8 * wc + 3.56 * std::pow(wc, 2.0);
@@ -592,11 +627,15 @@ ConcreteThermalMoisture::computeProperties()
 
         Real Dhcp = alfa_h + betta_h * (1.0 - power2);
         _Dh[qp] = Dhcp * (1 + gi / ((1 - gi) / 3 - 1));
+        // _Dht[qp] = 0.;
         break;
+      }
 
       default:
+      {
         mooseError("Unknown moisture diffusivity model");
         break;
+      }
     }
   }
 }

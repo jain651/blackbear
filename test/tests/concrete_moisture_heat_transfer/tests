@@ -24,7 +24,7 @@
         detail = 'and using the KODUR 2004 model with carbonate aggregates.'
         type = 'CSVDiff'
         input = 'concrete_thermal_moisture_properties.i'
-        cli_args = 'Materials/concrete/thermal_conductivity_model=KODUR-2004 Materials/concrete/thermal_capacity_model=KODUR-2004 Materials/concrete/aggregate_type=Carbonate Outputs/file_base=concrete_thermal_moisture_properties_kodur_2004_carbonate_out'
+        cli_args = '--show-input Materials/concrete/thermal_conductivity_model=KODUR-2004 Materials/concrete/thermal_capacity_model=KODUR-2004 Materials/concrete/aggregate_type=carbonate Outputs/file_base=concrete_thermal_moisture_properties_kodur_2004_carbonate_out'
         csvdiff = 'concrete_thermal_moisture_properties_kodur_2004_carbonate_out.csv'
       []
     []
@@ -40,7 +40,7 @@
         detail = 'using the ASCE 1992 model with carbonate aggregates, '
         type = 'CSVDiff'
         input = 'concrete_thermal_moisture_properties.i'
-        cli_args = 'Materials/concrete/thermal_conductivity_model=ASCE-1992 Materials/concrete/thermal_capacity_model=ASCE-1992 Outputs/file_base=concrete_thermal_moisture_properties_asce_1992_carbonate_out'
+        cli_args = 'Materials/concrete/thermal_conductivity_model=ASCE-1992 Materials/concrete/aggregate_type=carbonate Materials/concrete/thermal_capacity_model=ASCE-1992 Outputs/file_base=concrete_thermal_moisture_properties_asce_1992_carbonate_out'
         csvdiff = 'concrete_thermal_moisture_properties_asce_1992_carbonate_out.csv'
       []
     []
