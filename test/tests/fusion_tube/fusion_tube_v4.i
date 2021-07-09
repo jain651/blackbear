@@ -4,8 +4,8 @@
   block_id = '1 2 3'
   block_name = 'sml_circles big_circles boundary'
 
-  boundary_id = '1 2 4 10 11 12'
-  boundary_name = 'all_cir_peri top_circles_peri inner_surface circle1 circle2 circle3'
+  boundary_id = '1 2 4'
+  boundary_name = 'all_cir_peri top_circles_peri inner_surface'
   patch_update_strategy = iteration
 []
 
@@ -107,22 +107,14 @@
   [../]
 []
 
-[Functions]
-  [T]
-    type = PiecewiseLinear
-    xy_data = '0 50
-               635 635'
-  []
-[]
-
 [Contact]
-  [./circle_w_boundary]
-    secondary = 'all_cir_peri'
-    primary = 'inner_surface'
-    penalty = 1e12
-    model = glued
-    formulation = penalty
-  [../]
+  # [./first_circle]
+  #   secondary = '10001'
+  #   primary = '1001'
+  #   penalty = 1e12
+  #   model = glued
+  #   formulation = penalty
+  # [../]
   [./bet_circles1]
     secondary = 'all_cir_peri'
     primary = 'all_cir_peri'
@@ -130,13 +122,34 @@
     model = glued
     formulation = penalty
   [../]
-  [./bet_circles2]
+  # [./bet_circles2]
+  #   secondary = 'all_cir_peri'
+  #   primary = 'all_cir_peri'
+  #   penalty = 1e12
+  #   model = glued
+  #   formulation = penalty
+  # [../]
+  [./circle_w_boundary]
     secondary = 'all_cir_peri'
-    primary = 'all_cir_peri'
+    primary = 'inner_surface'
     penalty = 1e12
     model = glued
     formulation = penalty
   [../]
+  # [./bet_circles1]
+  #   secondary = 'all_cir_peri'
+  #   primary = 'all_cir_peri'
+  #   penalty = 1e12
+  #   model = glued
+  #   formulation = penalty
+  # [../]
+  # [./bet_circles2]
+  #   secondary = 'all_cir_peri'
+  #   primary = 'all_cir_peri'
+  #   penalty = 1e12
+  #   model = glued
+  #   formulation = penalty
+  # [../]
   # [./circle_w_boundary]
   #   secondary = 'circle1'
   #   primary = 'inner_surface'
@@ -190,7 +203,7 @@
     type = FunctionDirichletBC
     variable = temperature
     boundary = 'all_cir_peri'
-    function = T
+    function = '(100-2*y)*t'
   [../]
 []
 
@@ -235,9 +248,9 @@
 
 [Executioner]
   type = Transient
-  dt = 10
+  dt = 0.1
   automatic_scaling = true
-  end_time = 635
+  end_time = 50
 
   solve_type = 'PJFNK'
   petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount -ksp_gmres_restart'

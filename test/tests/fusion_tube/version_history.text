@@ -16,6 +16,13 @@ fusion_tube_v3
   converging
 
 fusion_tube_v4
-  707 spheres
+  actual geometry with all possible circles
   modifying circle's geometry in cubit
-  NOT converging
+  converging
+  not converging with multi processors
+  results are not convincing
+
+fusion_tube_v5
+  v4 with less number of circles
+  modifying circle's geometry in cubit
+  converging
