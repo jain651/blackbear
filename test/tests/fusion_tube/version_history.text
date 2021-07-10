@@ -23,6 +23,6 @@ fusion_tube_v4
   results are not convincing
 
 fusion_tube_v5
-  v4 with less number of circles
-  modifying circle's geometry in cubit
+  v4 with some modification in assigning nodeset/sidesets
   converging
+  using new feature for ContactAction to provide multiple pairs.

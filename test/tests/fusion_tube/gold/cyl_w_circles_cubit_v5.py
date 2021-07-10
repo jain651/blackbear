@@ -24,10 +24,9 @@ with open(lammps_file) as lines:
 
 r = [0.25, 0.5]
 x = [0, 10]
-y = [0, 5]
-z = 0
+domain_ymax = 50
+y = [0, domain_ymax]
 t = r[0]/2
-domain_ymax = 5
 dr = 0.01
 circle_mesh_size = r[0]/3
 circle_count = 0
@@ -43,9 +42,10 @@ cubit.cmd('create surface rectangle width '+str(x[1]-x[0]+2*t)+' height '+str(y[
 cubit.cmd('create surface rectangle width '+str(x[1]-x[0])+' height '+str(y[1]-y[0]+2*t)+' zplane ')
 cubit.cmd('subtract volume '+str(cubit.get_last_id('volume'))+' from volume '+str(cubit.get_last_id('volume')-1))
 cubit.cmd('move Volume '+str(cubit.get_last_id('volume')-1)+' x '+str(0.5*(x[1]+x[0]))+' y '+str(0.5*(y[1]+y[0]))+' include_merged ')
-cubit.cmd('block 3 add surface '+str(cubit.get_last_id('surface'))+' '+str(cubit.get_last_id('surface')-1))
+cubit.cmd('block 1 add surface '+str(cubit.get_last_id('surface'))+' '+str(cubit.get_last_id('surface')-1))
 cubit.cmd('surface '+str(cubit.get_last_id('surface'))+' '+str(cubit.get_last_id('surface')-1)+' size '+str(t))
-cubit.cmd('nodeset 4 add curve all in surface '+str(cubit.get_last_id('surface'))+' '+str(cubit.get_last_id('surface')-1)+' with x_coord > '+str(-t/2)+' and x_coord < '+str(x[1]+t/2))
+cubit.cmd('sideset 1 add curve all in surface '+str(cubit.get_last_id('surface'))+' '+str(cubit.get_last_id('surface')-1)+' with x_coord > '+str(-t/2)+' and x_coord < '+str(x[1]+t/2))
+cubit.cmd('color surface '+str(cubit.get_last_id('surface'))+' '+str(cubit.get_last_id('surface')-1)+' black')
 
 volumeID = [0]*(circle_count+1)
 volumeID[-1] = cubit.get_last_id('volume')-1
@@ -60,28 +60,29 @@ for i in range(circle_count+1):
         if(are_neighbours(bbi, bbj, r) or j==circle_count):
             cubit.cmd('Remove overlap volume '+str(volumeID[i])+' '+str(volumeID[j])+' modify volume '+str(volumeID[i]))
 
-nodeset_peri = 1001
-complementary_nodeset = 10001
+nodeset_circle_boundary = 1001
 for i in range(circle_count):
-    cubit.cmd('nodeset 1 add curve all in volume '+str(volumeID[i]))
     cubit.cmd('surface all in volume '+str(volumeID[i])+' Scheme circle ')
     cubit.cmd('surface all in volume '+str(volumeID[i])+' size '+str(circle_mesh_size))
     bb = cubit.get_bounding_box("volume",volumeID[i]) # axis-min, axis-max, and axis-range order, repeated for x-axis, y-axis, and z-axis and ending with the total diagonal measure.
     if(bb[3]>y[1]-3*r[1]): # fixed circles
-        cubit.cmd('nodeset 2 add curve all in surface all in volume '+str(volumeID[i]))
+        cubit.cmd('block 1 add surface all in volume '+str(volumeID[i]))
+        cubit.cmd('color volume '+str(volumeID[i])+' black')
+        cubit.cmd('sideset 1 add surface all in volume '+str(volumeID[i]))
+        continue
+    cubit.cmd('sideset 2 add curve all in volume '+str(volumeID[i])) # for temperature BC
     if(bb[2]>1.5*r[1]): # big circles
         cubit.cmd('color volume '+str(volumeID[i])+' blue')
-        cubit.cmd('block 2 add surface all in volume '+str(volumeID[i]))
+        cubit.cmd('block 3 add surface all in volume '+str(volumeID[i]))
     else: # small circles
         cubit.cmd('color volume '+str(volumeID[i])+' red')
-        cubit.cmd('block 1 add surface all in volume '+str(volumeID[i]))
-    cubit.cmd('nodeset '+str(nodeset_peri)+' add curve all in volume '+str(volumeID[i]))
-    nodeset_peri = nodeset_peri+1
-    for j in range(i+1, circle_count):
+        cubit.cmd('block 2 add surface all in volume '+str(volumeID[i]))
+    cubit.cmd('sideset '+str(nodeset_circle_boundary)+' add curve all in volume '+str(volumeID[i]))
+    for j in range(i+1, circle_count): # getting neighbor circles
         bb_complementary = cubit.get_bounding_box("volume",volumeID[j])
         if(are_neighbours(bb,bb_complementary,r)):
-            cubit.cmd('nodeset '+str(complementary_nodeset)+' add curve all in volume '+str(volumeID[j]))
-    complementary_nodeset = complementary_nodeset+1
+            cubit.cmd('sideset '+str(nodeset_circle_boundary+9000)+' add curve all in volume '+str(volumeID[j]))
+    nodeset_circle_boundary = nodeset_circle_boundary+1
 
 cubit.cmd('mesh surface all in volume all')
 cubit.cmd('export mesh "/Users/amitjain/projects/blackbear/test/tests/fusion_tube/gold/fusion_tube_v5.e" dimension 2 overwrite')
