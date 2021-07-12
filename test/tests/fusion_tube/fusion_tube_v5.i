@@ -1,3 +1,6 @@
+# thermal_expansion_coeff_circles = 8.0e-5
+# '${thermal_expansion_coeff_circles}'
+
 [Mesh]
   file = gold/fusion_tube_v5.e
   block_id = '1 2 3'
