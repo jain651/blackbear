@@ -399,31 +399,46 @@ ConcreteThermalMoisture::computeProperties()
         break;
     }
 
-    // compute heat absorption and thermal capacity of water
-    Real Clatent;
-    if (T <= 100.0)
-      Clatent = 900.0;
-    else if (T > 100.0 && T <= 200.0)
-      Clatent = 900.0 + (T - 100.0);
-    else if (T > 200.0 && T <= 400.0)
-      Clatent = 1000.0 + (T - 200.0) / 2.0;
-    else if (T > 400.0 && T <= 1200.0)
-      Clatent = 1100.0;
-    else
-      Clatent = 1100.0;
+    // // compute heat absorption and thermal capacity of water
+    // Real Clatent;
+    // if (T <= 100.0)
+    //   Clatent = 900.0;
+    // else if (T > 100.0 && T <= 200.0)
+    //   Clatent = 900.0 + (T - 100.0);
+    // else if (T > 200.0 && T <= 400.0)
+    //   Clatent = 1000.0 + (T - 200.0) / 2.0;
+    // else if (T > 400.0 && T <= 1200.0)
+    //   Clatent = 1100.0;
+    // else
+    //   Clatent = 1100.0;
 
     // adsorption heat of water vapor
     _ca[qp] = 0.001 * Clatent;
     // thermal_capacity of water
     _cw[qp] = 350000.0 * std::pow(374.15 - T, 1.0 / 3.0);
 
-    // compute mositure capacity dw/dH for cement
+    // compute moisture diffusivity
     switch (_moisture_diffusivity_model)
     {
-      case 0: // bazant
+      case 0: // Bazant
       {
         _moisture_capacity[qp] = 1.0;
         _moisture_content[qp] = 1.0;
+        if (T <= 95.0)
+        {
+          Real alfa_T = 0.05 + 0.95 / 70 * (T - 25);
+          Real f1_h = alfa_T + (1 - alfa_T) / (1.0 + std::pow(4 * (1.0 - H), _n_power));
+          Real f2_T = std::exp(2700.0 * (1.0 / (25.0 + 273.15) - 1.0 / (T + 273.15)));
+          _Dh[qp] = _D1 * f1_h * f2_T;
+        }
+        else
+        {
+          Real f2_T = std::exp(2700.0 * (1.0 / (25.0 + 273.15) - 1.0 / (95.0 + 273.15)));
+          Real f3_T = std::exp((T - 95.0) / (0.881 + 0.214 * (T - 95.0)));
+          _Dh[qp] = _D1 * f2_T * f3_T;
+        }
+        // compute the coupled mositure diffusivity due to thermal gradient
+        _Dht[qp] = _alfa_Dht * _Dh[qp];
         break;
       }
 
@@ -431,10 +446,13 @@ ConcreteThermalMoisture::computeProperties()
       {
         _moisture_capacity[qp] = 1.0;
         _moisture_content[qp] = 1.0;
+        Real C1 = H * _C0;
+        _Dh[qp] = _A * std::exp(_B * C1);
+        _Dht[qp] = 0.;
         break;
       }
 
-      case 2: // Xi
+      case 2: //Xi model
       {
         Real C = std::exp(855.0 / (T + 273.15));
         Real N_ct = 1.1;
@@ -567,48 +585,8 @@ ConcreteThermalMoisture::computeProperties()
         // compute combined dW/dH of concrete
         _moisture_capacity[qp] = (_f_agg * dWdH_agg + _f_cp * dWdH_cement) * _input_density_of_concrete;
         _moisture_content[qp] = (_f_agg * W_agg + _f_cp * W_cement) * _input_density_of_concrete;
-      }
 
-      default:
-      {
-        mooseError("Unknown moisture diffusivity model");
-        break;
-      }
-    }
-
-    // compute moisture diffusivity
-    switch (_moisture_diffusivity_model)
-    {
-      case 0: // Bazant
-      {
-        if (T <= 95.0)
-        {
-          Real alfa_T = 0.05 + 0.95 / 70 * (T - 25);
-          Real f1_h = alfa_T + (1 - alfa_T) / (1.0 + std::pow(4 * (1.0 - H), _n_power));
-          Real f2_T = std::exp(2700.0 * (1.0 / (25.0 + 273.15) - 1.0 / (T + 273.15)));
-          _Dh[qp] = _D1 * f1_h * f2_T;
-        }
-        else
-        {
-          Real f2_T = std::exp(2700.0 * (1.0 / (25.0 + 273.15) - 1.0 / (95.0 + 273.15)));
-          Real f3_T = std::exp((T - 95.0) / (0.881 + 0.214 * (T - 95.0)));
-          _Dh[qp] = _D1 * f2_T * f3_T;
-        }
-        // compute the coupled mositure diffusivity due to thermal gradient
-        _Dht[qp] = _alfa_Dht * _Dh[qp];
-        break;
-      }
-
-      case 1: // Mensi
-      {
-        Real C1 = H * _C0;
-        _Dh[qp] = _A * std::exp(_B * C1);
-        _Dht[qp] = 0.;
-        break;
-      }
-
-      case 2: //Xi model
-      {
+        // moisture diffusivity calculations
         Real gi = _agg_vol_fraction;
         Real wc = _water_to_cement;
         Real alfa_h = 1.05 - 3.8 * wc + 3.56 * std::pow(wc, 2.0);
