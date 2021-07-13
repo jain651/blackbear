@@ -71,7 +71,7 @@ ConcreteThermalMoisture::validParams()
 
   // parameters for Bazant mositure diffusivity model
   params.addParam<Real>("D1", 3.0e-10, "empirical constants (m2/s)");
-  params.addParam<Real>("n", 6.0, "empirical constants");
+  params.addParam<Real>("n", 4.0, "empirical constants");
 
   // parameters for Mensi's moisture diffusivity model
   params.addParam<Real>("A", 3.8e-13, "empirical constants (m2/s)");
@@ -581,26 +581,18 @@ ConcreteThermalMoisture::computeProperties()
     {
       case 0: // Bazant
       {
-        // temperature dependent parameters
-        Real f1_T = 0.0;
-        Real f2_T = 0.0;
-        Real alfa_d = 1.0;
-        Real Dh0;
         if (T <= 95.0)
         {
-          f1_T = std::exp(2700.0 * (1.0 / (25.0 + 273.15) - 1.0 / (T + 273.15)));
-          alfa_d = 1.0 / (1.0 + 19.0 * (95.0 - T) / 70.0);
-          Dh0 =
-              _D1 * (alfa_d + (1 - alfa_d) / (1.0 + std::pow((1.0 - H) / (1.0 - 0.75), _n_power)));
-          _Dh[qp] = Dh0 * f1_T;
+          Real alfa_T = 0.05 + 0.95 / 70 * (T - 25);
+          Real f1_h = alfa_T + (1 - alfa_T) / (1.0 + std::pow(4 * (1.0 - H), _n_power));
+          Real f2_T = std::exp(2700.0 * (1.0 / (25.0 + 273.15) - 1.0 / (T + 273.15)));
+          _Dh[qp] = _D1 * f1_h * f2_T;
         }
         else
         {
-          f1_T = std::exp(2700.0 * (1.0 / (25.0 + 273.15) - 1.0 / (95.0 + 273.15)));
-          f2_T = std::exp((T - 95.0) / (0.881 + 0.214 * (T - 95.0)));
-          alfa_d = 1.0;
-          Dh0 = _D1;
-          _Dh[qp] = Dh0 * f1_T * f2_T;
+          Real f2_T = std::exp(2700.0 * (1.0 / (25.0 + 273.15) - 1.0 / (95.0 + 273.15)));
+          Real f3_T = std::exp((T - 95.0) / (0.881 + 0.214 * (T - 95.0)));
+          _Dh[qp] = _D1 * f2_T * f3_T;
         }
         // compute the coupled mositure diffusivity due to thermal gradient
         _Dht[qp] = _alfa_Dht * _Dh[qp];
@@ -627,7 +619,7 @@ ConcreteThermalMoisture::computeProperties()
 
         Real Dhcp = alfa_h + betta_h * (1.0 - power2);
         _Dh[qp] = Dhcp * (1 + gi / ((1 - gi) / 3 - 1));
-        // _Dht[qp] = 0.;
+        _Dht[qp] = 0.;
         break;
       }
 
