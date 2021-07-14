@@ -24,7 +24,7 @@ with open(lammps_file) as lines:
 
 r = [0.25, 0.5]
 x = [0, 10]
-domain_ymax = 10
+domain_ymax = 50
 y = [0, domain_ymax]
 t = r[0]/2
 dr = 0.005

@@ -32,5 +32,4 @@ fusion_tube_v6
   using new feature for ContactAction to provide multiple pairs.
   those circles, which do not have any new neighbor, are not considered in the sideset
   removing fix circles to be part of a neighbor
-  converging on single processor
-  throwing error on multiple processors
+  converging on single/multiple processors

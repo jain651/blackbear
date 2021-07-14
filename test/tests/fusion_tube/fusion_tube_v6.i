@@ -33,7 +33,7 @@
   [./heat_conduction_sml_circles]
     type = HeatConduction
     variable = temperature
-    diffusion_coefficient = 1e-5
+    diffusion_coefficient = 1e-2
     block = 'sml_circles'
   [../]
   [./Tdot_big_circles]
@@ -45,7 +45,7 @@
   [./heat_conduction_big_circles]
     type = HeatConduction
     variable = temperature
-    diffusion_coefficient = 1e-4
+    diffusion_coefficient = 1e-1
     block = 'big_circles'
   [../]
 []
@@ -223,7 +223,7 @@
   petsc_options_value = 'lu NONZERO   1e-5 50'
 
   nl_max_its = 50
-  l_max_its = 30
+  l_max_its = 10
   nl_abs_tol = 5e-3
   nl_rel_tol = 1e-5
   line_search = none
