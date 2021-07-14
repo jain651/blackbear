@@ -399,23 +399,15 @@ ConcreteThermalMoisture::computeProperties()
         break;
     }
 
-    // // compute heat absorption and thermal capacity of water
-    // Real Clatent;
-    // if (T <= 100.0)
-    //   Clatent = 900.0;
-    // else if (T > 100.0 && T <= 200.0)
-    //   Clatent = 900.0 + (T - 100.0);
-    // else if (T > 200.0 && T <= 400.0)
-    //   Clatent = 1000.0 + (T - 200.0) / 2.0;
-    // else if (T > 400.0 && T <= 1200.0)
-    //   Clatent = 1100.0;
-    // else
-    //   Clatent = 1100.0;
-
     // adsorption heat of water vapor
-    _ca[qp] = 0.001 * Clatent;
+    Real adsorption_heat_water = 120*1000/0.018;// 120 kJ/mol (Bonnaud et al. 2012) for C-S-H
+    _ca[qp] = adsorption_heat_water;
+    // _ca[qp] = 0.001 * Clatent;
     // thermal_capacity of water
-    _cw[qp] = 350000.0 * std::pow(374.15 - T, 1.0 / 3.0);
+    Real density_water = 1000; // kg/m3
+    Real heat_capacity_water = 4180; // J/(kg-C)
+    _cw[qp] = density_water * heat_capacity_water;
+    // _cw[qp] = 350000.0 * std::pow(374.15 - T, 1.0 / 3.0);
 
     // compute moisture diffusivity
     switch (_moisture_diffusivity_model)
